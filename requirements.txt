@@ -1,3 +1,4 @@
 # Multi-Part Digital Contract Signing - Dependencies
 cryptography>=41.0.0
 pytest>=7.4.0
+flask>=3.0.0

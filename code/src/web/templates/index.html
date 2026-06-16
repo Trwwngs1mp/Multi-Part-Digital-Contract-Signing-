@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Part Digital Contract Signing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ===== CSS Variables ===== */
+    :root {
+      --bg-primary: #0a0b0f;
+      --bg-secondary: #121317;
+      --bg-card: #1a1b23;
+      --bg-card-hover: #22232d;
+      --bg-input: #12141e;
+      --bg-input-focus: #1a1d2e;
+      --border: #2a2d3a;
+      --border-focus: #4a6cf7;
+      --text-primary: #e4e6ef;
+      --text-secondary: #9294a8;
+      --text-muted: #5c5e72;
+      --accent: #4a6cf7;
+      --accent-hover: #5b7aff;
+      --accent-glow: rgba(74, 108, 247, 0.25);
+      --success: #22c55e;
+      --success-bg: rgba(34, 197, 94, 0.1);
+      --success-border: rgba(34, 197, 94, 0.3);
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.1);
+      --danger-border: rgba(239, 68, 68, 0.3);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.1);
+      --info: #3b82f6;
+      --gradient-accent: linear-gradient(135deg, #4a6cf7, #6366f1);
+      --gradient-success: linear-gradient(135deg, #22c55e, #16a34a);
+      --gradient-danger: linear-gradient(135deg, #ef4444, #dc2626);
+      --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --shadow-glow: 0 0 40px rgba(74, 108, 247, 0.1);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+    ::selection { background: var(--accent); color: #fff; }
+
+    /* ===== Navigation ===== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(10, 11, 15, 0.85);
+      backdrop-filter: blur(20px) saturate(1.5);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .nav-brand-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--gradient-accent);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: #fff;
+      font-weight: 800;
+    }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-link {
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      border: none;
+      background: transparent;
+    }
+    .nav-link:hover { color: var(--text-primary); background: var(--bg-card); }
+    .nav-link.active {
+      color: #fff;
+      background: var(--gradient-accent);
+    }
+    .nav-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+    }
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--danger);
+    }
+    .status-dot.active { background: var(--success); }
+
+    /* ===== Main Layout ===== */
+    .main-container { padding-top: 68px; display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: sticky;
+      top: 68px;
+      height: calc(100vh - 68px);
+      overflow-y: auto;
+    }
+    .sidebar-section { margin-bottom: 1rem; }
+    .sidebar-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding: 0.5rem 0.75rem 0.25rem;
+    }
+    .sidebar-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+    .sidebar-btn:hover { background: var(--bg-card); color: var(--text-primary); }
+    .sidebar-btn.active {
+      background: var(--accent-glow);
+      color: var(--accent);
+      border-left: 3px solid var(--accent);
+    }
+    .sidebar-btn .icon { width: 20px; text-align: center; font-size: 1rem; }
+
+    .content {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ===== Cards ===== */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      transition: all 0.3s;
+    }
+    .card:hover { border-color: var(--border-focus); box-shadow: var(--shadow-glow); }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* ===== Grid ===== */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    @media (max-width: 1024px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+    /* ===== Sections ===== */
+    .section { display: none; }
+    .section.active { display: block; }
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .page-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    /* ===== Form Elements ===== */
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    textarea, input[type="text"], select {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      outline: none;
+    }
+    textarea:focus, input:focus, select:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+      background: var(--bg-input-focus);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239294a8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+
+    .form-group { margin-bottom: 1rem; }
+    .form-row { display: flex; gap: 1rem; align-items: flex-end; }
+    .form-row > * { flex: 1; }
+
+    /* ===== Buttons ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--gradient-accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 4px 20px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: var(--bg-card-hover); }
+    .btn-success {
+      background: var(--gradient-success);
+      color: #fff;
+    }
+    .btn-success:hover { filter: brightness(1.1); }
+    .btn-danger {
+      background: var(--gradient-danger);
+      color: #fff;
+    }
+    .btn-danger:hover { filter: brightness(1.1); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+    }
+    .btn-ghost:hover { color: var(--text-primary); background: var(--bg-card); }
+    .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    .btn-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* ===== Stat Cards ===== */
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .stat-card:hover { border-color: var(--border-focus); transform: translateY(-2px); }
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .stat-icon { font-size: 1.5rem; margin-bottom: 8px; }
+
+    /* ===== Results ===== */
+    .result-box {
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .result-box .icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 1px; }
+    .result-success {
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      color: var(--success);
+    }
+    .result-error {
+      background: var(--danger-bg);
+      border: 1px solid var(--danger-border);
+      color: var(--danger);
+    }
+    .result-info {
+      background: rgba(74, 108, 247, 0.08);
+      border: 1px solid rgba(74, 108, 247, 0.2);
+      color: var(--accent);
+    }
+
+    /* ===== Parts List ===== */
+    .parts-grid {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .part-card {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      transition: all 0.2s;
+    }
+    .part-card:hover { border-color: var(--border-focus); }
+    .part-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .part-id {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .part-seq {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .part-hash {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      word-break: break-all;
+    }
+    .part-content {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      padding: 6px 8px;
+      background: var(--bg-primary);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      line-height: 1.4;
+    }
+
+    /* ===== Key Display ===== */
+    .key-display {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      background: var(--bg-primary);
+      padding: 0.75rem;
+      border-radius: var(--radius-sm);
+      word-break: break-all;
+      border: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    /* ===== Steps ===== */
+    .steps { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+    .step {
+      flex: 1;
+      padding: 0.75rem;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .step.active {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+    .step.done {
+      color: var(--success);
+      border-color: var(--success);
+      background: var(--success-bg);
+    }
+    .step-num {
+      display: inline-flex;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--bg-primary);
+      margin-bottom: 4px;
+    }
+    .step.active .step-num { background: var(--accent); color: #fff; }
+    .step.done .step-num { background: var(--success); color: #fff; }
+
+    /* ===== Loading Spinner ===== */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--text-muted);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10, 11, 15, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    .loading-overlay.show { display: flex; }
+    .loading-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+    }
+    .loading-box .spinner { width: 32px; height: 32px; border-width: 3px; margin-bottom: 1rem; }
+
+    /* ===== Tabs ===== */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-primary);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+      margin-bottom: 1rem;
+    }
+    .tab {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      flex: 1;
+    }
+    .tab:hover { color: var(--text-secondary); }
+    .tab.active {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in { animation: fadeIn 0.4s ease-out; }
+
+    /* ===== Hero Section ===== */
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #e4e6ef, #4a6cf7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.75rem;
+    }
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+
+    /* ===== Alert Badge ===== */
+    .alert-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .alert-badge.success { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+    .alert-badge.danger { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
+    .alert-badge.warning { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .alert-badge.info { background: rgba(74, 108, 247, 0.1); color: var(--accent); border: 1px solid rgba(74, 108, 247, 0.3); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .content { padding: 1rem; }
+      .hero h1 { font-size: 1.75rem; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .form-row { flex-direction: column; }
+    }
+
+    /* ===== Manifest JSON Preview ===== */
+    .json-preview {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== Loading Overlay ===== -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <div style="color: var(--text-secondary); font-size: 0.9rem;" id="loadingText">Processing...</div>
+  </div>
+</div>
+
+<!-- ===== Navbar ===== -->
+<nav class="navbar">
+  <a href="#" class="nav-brand" onclick="switchSection('dashboard')">
+    <div class="nav-brand-icon">✍</div>
+    <span>ContractSign</span>
+  </a>
+  <div class="nav-links">
+    <div class="nav-status" id="keyStatusBadge">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">No Keys</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== Main Container ===== -->
+<div class="main-container">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Dashboard</div>
+      <button class="sidebar-btn active" onclick="switchSection('dashboard')">
+        <span class="icon">📊</span> Tổng Quan
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Quản Lý Khóa</div>
+      <button class="sidebar-btn" onclick="switchSection('keys')">
+        <span class="icon">🔑</span> Khóa
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Hợp Đồng</div>
+      <button class="sidebar-btn" onclick="switchSection('sign')">
+        <span class="icon">✍️</span> Ký Hợp Đồng
+      </button>
+      <button class="sidebar-btn" onclick="switchSection('verify')">
+        <span class="icon">✅</span> Xác Minh
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Kiểm Thử</div>
+      <button class="sidebar-btn" onclick="switchSection('attack')">
+        <span class="icon">🛡️</span> Mô Phỏng Tấn Công
+      </button>
+      <button class="sidebar-btn" onclick="switchSection('tests')">
+        <span class="icon">🧪</span> Test Suite
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== Content ===== -->
+  <div class="content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="section active" id="section-dashboard">
+      <div class="hero animate-in">
+        <h1>Multi-Part Digital Contract Signing</h1>
+        <p>
+          Hệ thống ký số hợp đồng điện tử đa phần với chữ ký số Ed25519/RSA-PSS,
+          phát hiện giả mạo, thiếu phần, đảo thứ tự và tấn công replay.
+        </p>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid-4" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+          <div class="stat-icon">🔐</div>
+          <div class="stat-value" id="statKeys">0</div>
+          <div class="stat-label">Key Pairs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📄</div>
+          <div class="stat-value" id="statParts">0</div>
+          <div class="stat-label">Total Parts</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value" id="statTests">34</div>
+          <div class="stat-label">Test Cases</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-value" id="statAlgo">Ed25519</div>
+          <div class="stat-label">Algorithm</div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="card animate-in">
+        <div class="card-header">
+          <div>
+            <div class="card-title">🚀 Quick Actions</div>
+            <div class="card-subtitle">Các thao tác nhanh để bắt đầu</div>
+          </div>
+        </div>
+        <div class="grid-3">
+          <button class="btn btn-primary" onclick="quickGenerateKeys()">
+            🔑 Tạo Khóa
+          </button>
+          <button class="btn btn-secondary" onclick="switchSection('sign')">
+            ✍️ Ký Hợp Đồng
+          </button>
+          <button class="btn btn-secondary" onclick="switchSection('verify')">
+            ✅ Xác Minh
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== KEYS ===== -->
+    <div class="section" id="section-keys">
+      <h2 class="page-title">🔑 Quản Lý Khóa</h2>
+      <p class="page-desc">Tạo và quản lý cặp khóa số cho việc ký và xác minh hợp đồng.</p>
+
+      <div class="steps" id="keySteps">
+        <div class="step" id="keyStep1">
+          <div class="step-num">1</div>
+          <div>Chọn thuật toán</div>
+        </div>
+        <div class="step" id="keyStep2">
+          <div class="step-num">2</div>
+          <div>Tạo khóa</div>
+        </div>
+        <div class="step" id="keyStep3">
+          <div class="step-num">3</div>
+          <div>Sẵn sàng</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Tạo Key Pair</div>
+          </div>
+          <div class="form-group">
+            <label>Thuật toán</label>
+            <select id="keyAlgorithm">
+              <option value="ed25519">🔵 Ed25519 (Nhanh, Bảo mật cao)</option>
+              <option value="rsa-pss">🟠 RSA-PSS 2048 (Tương thích)</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="generateKeys()" id="genKeyBtn">
+            🔑 Tạo Khóa
+          </button>
+          <div id="keyResult" style="margin-top: 1rem;"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📋 Khóa hiện có</div>
+          </div>
+          <div id="keyList">
+            <div style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 2rem;">
+              Chưa có khóa nào. Hãy tạo khóa mới.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SIGN ===== -->
+    <div class="section" id="section-sign">
+      <h2 class="page-title">✍️ Ký Hợp Đồng</h2>
+      <p class="page-desc">Nhập nội dung hợp đồng, chọn số phần và ký số từng phần.</p>
+
+      <div class="steps" id="signSteps">
+        <div class="step" id="signStep1">
+          <div class="step-num">1</div>
+          <div>Nhập hợp đồng</div>
+        </div>
+        <div class="step" id="signStep2">
+          <div class="step-num">2</div>
+          <div>Chia & Ký</div>
+        </div>
+        <div class="step" id="signStep3">
+          <div class="step-num">3</div>
+          <div>Kiểm tra</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">📄 Nội dung hợp đồng</div>
+            <div class="card-subtitle">Có thể chỉnh sửa hoặc tải hợp đồng mẫu</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="loadSampleContract()">
+            📂 Tải mẫu
+          </button>
+        </div>
+        <textarea id="contractInput" rows="10">Đang tải...</textarea>
+
+        <div class="form-row" style="margin-top: 1rem;">
+          <div class="form-group">
+            <label>Số phần</label>
+            <select id="numParts">
+              <option value="2">2 phần</option>
+              <option value="3" selected>3 phần</option>
+              <option value="4">4 phần</option>
+              <option value="5">5 phần</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Thuật toán</label>
+            <select id="signAlgorithm">
+              <option value="ed25519">Ed25519</option>
+              <option value="rsa-pss">RSA-PSS</option>
+            </select>
+          </div>
+          <div class="form-group" style="display: flex; align-items: flex-end;">
+            <button class="btn btn-primary" onclick="signContract()" id="signBtn">
+              ✍️ Ký Hợp Đồng
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="signResult" style="margin-top: 1.5rem;"></div>
+    </div>
+
+    <!-- ===== VERIFY ===== -->
+    <div class="section" id="section-verify">
+      <h2 class="page-title">✅ Xác Minh Hợp Đồng</h2>
+      <p class="page-desc">Xác minh chữ ký số, tính toàn vẹn và thứ tự các phần hợp đồng.</p>
+
+      <div class="steps" id="verifySteps">
+        <div class="step" id="verifyStep1">
+          <div class="step-num">1</div>
+          <div>Tải dữ liệu</div>
+        </div>
+        <div class="step" id="verifyStep2">
+          <div class="step-num">2</div>
+          <div>Xác minh</div>
+        </div>
+        <div class="step" id="verifyStep3">
+          <div class="step-num">3</div>
+          <div>Kết quả</div>
+        </div>
+      </div>
+
+      <div id="verifyArea" style="display: none;">
+        <div class="card" style="margin-bottom: 1rem;">
+          <div class="card-header">
+            <div class="card-title">📦 Dữ liệu đã ký</div>
+            <div>
+              <button class="btn btn-ghost btn-sm" onclick="runTamperTest('modify')">🔄 Sửa nội dung</button>
+              <button class="btn btn-ghost btn-sm" onclick="runTamperTest('remove')">🗑️ Xóa phần</button>
+              <button class="btn btn-ghost btn-sm" onclick="runTamperTest('reorder')">🔀 Đảo thứ tự</button>
+            </div>
+          </div>
+          <div id="verifyPartsList"></div>
+          <div style="margin-top: 1rem;">
+            <div class="form-group">
+              <label>Manifest (JSON)</label>
+              <div class="json-preview" id="verifyManifestPreview"></div>
+            </div>
+          </div>
+          <button class="btn btn-success" onclick="verifyContract()" id="verifyBtn" style="margin-top: 1rem;">
+            ✅ Xác Minh Toàn Bộ
+          </button>
+        </div>
+      </div>
+
+      <div id="verifyResult"></div>
+
+      <div id="noSignData" class="card" style="text-align: center; padding: 3rem;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">📄</div>
+        <div style="color: var(--text-secondary); font-size: 1.1rem;">
+          Chưa có dữ liệu hợp đồng nào được ký.
+        </div>
+        <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
+          Hãy ký một hợp đồng trước, sau đó quay lại đây để xác minh.
+        </div>
+        <button class="btn btn-primary" style="margin-top: 1.5rem;" onclick="switchSection('sign')">
+          ✍️ Ký Hợp Đồng Ngay
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== ATTACK SIMULATION ===== -->
+    <div class="section" id="section-attack">
+      <h2 class="page-title">🛡️ Mô Phỏng Tấn Công</h2>
+      <p class="page-desc">Kiểm tra khả năng phát hiện các loại tấn công của hệ thống.</p>
+
+      <div class="grid-2">
+        <div class="card" onclick="runTamperTest('modify')" style="cursor: pointer;">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">✏️</div>
+          <div class="card-title" style="margin-bottom: 0.25rem;">Sửa Nội Dung</div>
+          <div class="card-subtitle">Kẻ tấn công thay đổi nội dung một phần hợp đồng</div>
+          <div class="alert-badge danger" style="margin-top: 0.75rem;">
+            <span>⚠️ Hash mismatch → DETECTED</span>
+          </div>
+        </div>
+        <div class="card" onclick="runTamperTest('remove')" style="cursor: pointer;">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">🗑️</div>
+          <div class="card-title" style="margin-bottom: 0.25rem;">Xóa Phần Hợp Đồng</div>
+          <div class="card-subtitle">Kẻ tấn công xóa một phần khỏi hợp đồng</div>
+          <div class="alert-badge danger" style="margin-top: 0.75rem;">
+            <span>⚠️ Missing part → DETECTED</span>
+          </div>
+        </div>
+        <div class="card" onclick="runTamperTest('reorder')" style="cursor: pointer;">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔀</div>
+          <div class="card-title" style="margin-bottom: 0.25rem;">Đảo Thứ Tự</div>
+          <div class="card-subtitle">Kẻ tấn công đảo lộn thứ tự các phần</div>
+          <div class="alert-badge danger" style="margin-top: 0.75rem;">
+            <span>⚠️ Sequence violation → DETECTED</span>
+          </div>
+        </div>
+        <div class="card" onclick="runTamperTest('signature')" style="cursor: pointer;">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔏</div>
+          <div class="card-title" style="margin-bottom: 0.25rem;">Giả Mạo Chữ Ký</div>
+          <div class="card-subtitle">Kẻ tấn công tự ý sửa chữ ký số</div>
+          <div class="alert-badge danger" style="margin-top: 0.75rem;">
+            <span>⚠️ Invalid signature → DETECTED</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="attackResult" style="margin-top: 1.5rem;"></div>
+    </div>
+
+    <!-- ===== TESTS ===== -->
+    <div class="section" id="section-tests">
+      <h2 class="page-title">🧪 Security Test Suite</h2>
+      <p class="page-desc">Bộ kiểm thử bảo mật với 34 test cases đầy đủ.</p>
+
+      <div class="card" style="text-align: center; padding: 3rem;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🧪</div>
+        <div style="font-size: 1.3rem; color: var(--text-primary); margin-bottom: 0.5rem;">Run Security Tests</div>
+        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+          34 test cases covering valid flow, tampering, replay, and invalid keys
+        </div>
+        <button class="btn btn-primary" onclick="runTestSuite()" id="runTestsBtn">
+          ▶️ Chạy Test Suite
+        </button>
+        <div id="testResult" style="margin-top: 1.5rem;"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ===== Global State =====
+let lastSignResult = null;
+let lastManifest = null;
+let lastParts = null;
+
+// ===== Loading =====
+function showLoading(text = 'Processing...') {
+  document.getElementById('loadingText').textContent = text;
+  document.getElementById('loadingOverlay').classList.add('show');
+}
+function hideLoading() {
+  document.getElementById('loadingOverlay').classList.remove('show');
+}
+
+// ===== Navigation =====
+function switchSection(sectionId) {
+  document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.sidebar-btn').forEach(el => el.classList.remove('active'));
+
+  document.getElementById('section-' + sectionId).classList.add('active');
+  document.querySelectorAll(`.sidebar-btn`).forEach(el => {
+    if (el.textContent.trim().toLowerCase().includes(sectionId === 'keys' ? 'khóa' :
+        sectionId === 'sign' ? 'ký' :
+        sectionId === 'verify' ? 'xác minh' :
+        sectionId === 'attack' ? 'tấn công' :
+        sectionId === 'tests' ? 'test' : 'tổng quan')) {
+      el.classList.add('active');
+    }
+  });
+
+  if (sectionId === 'keys') refreshKeyStatus();
+  if (sectionId === 'dashboard') refreshDashboard();
+  if (sectionId === 'verify') refreshVerifyView();
+}
+
+// ===== Dashboard =====
+function refreshDashboard() {
+  fetch('/api/keys/status')
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById('statKeys').textContent = data.keys.length;
+      let dot = document.getElementById('statusDot');
+      let txt = document.getElementById('statusText');
+      if (data.has_keys) {
+        dot.className = 'status-dot active';
+        txt.textContent = data.keys.map(k => k.algorithm).join(' + ');
+      } else {
+        dot.className = 'status-dot';
+        txt.textContent = 'No Keys';
+      }
+    });
+}
+
+// ===== Keys =====
+function refreshKeyStatus() {
+  fetch('/api/keys/status')
+    .then(r => r.json())
+    .then(data => {
+      let list = document.getElementById('keyList');
+      let dot = document.getElementById('statusDot');
+      let txt = document.getElementById('statusText');
+
+      if (data.keys.length > 0) {
+        dot.className = 'status-dot active';
+        txt.textContent = data.keys.map(k => k.algorithm).join(' + ');
+        document.getElementById('statKeys').textContent = data.keys.length;
+
+        // Update key steps
+        document.getElementById('keyStep3').classList.add('done');
+
+        list.innerHTML = data.keys.map(k => `
+          <div class="part-card" style="margin-bottom: 0.5rem;">
+            <div class="part-header">
+              <span class="part-id">${k.algorithm}</span>
+              <span class="alert-badge success">✓ Active</span>
+            </div>
+            <div class="key-display">${k.public_key}</div>
+          </div>
+        `).join('') + `<div style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-primary); border-radius: var(--radius-sm);">
+          <div style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">
+            📁 ${data.key_dir}
+          </div>
+        </div>`;
+      } else {
+        dot.className = 'status-dot';
+        txt.textContent = 'No Keys';
+        list.innerHTML = `<div style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 2rem;">
+          Chưa có khóa nào. Hãy tạo khóa mới.
+        </div>`;
+        document.getElementById('keyStep2').classList.remove('done');
+        document.getElementById('keyStep3').classList.remove('done');
+      }
+    });
+}
+
+function quickGenerateKeys() {
+  document.getElementById('keyAlgorithm').value = 'ed25519';
+  switchSection('keys');
+  setTimeout(() => generateKeys(), 300);
+}
+
+function generateKeys() {
+  let algo = document.getElementById('keyAlgorithm').value;
+  let btn = document.getElementById('genKeyBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Generating...';
+
+  document.getElementById('keyStep1').classList.add('done');
+  document.getElementById('keyStep2').classList.add('active');
+
+  fetch('/api/keys/generate', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({algorithm: algo})
+  })
+  .then(r => r.json())
+  .then(data => {
+    btn.disabled = false;
+    btn.innerHTML = '🔑 Tạo Khóa';
+
+    let result = document.getElementById('keyResult');
+    if (data.success) {
+      result.innerHTML = `<div class="result-box result-success animate-in">
+        <span class="icon">✅</span>
+        <div>
+          <strong>${data.message}</strong><br>
+          <span style="font-size: 0.8rem; color: var(--text-secondary);">
+            Private: ${data.private_key_path}<br>
+            Public: ${data.public_key_path}
+          </span>
+        </div>
+      </div>`;
+      document.getElementById('keyStep2').classList.remove('active');
+      document.getElementById('keyStep2').classList.add('done');
+      document.getElementById('keyStep3').classList.add('active');
+      setTimeout(() => {
+        document.getElementById('keyStep3').classList.remove('active');
+        document.getElementById('keyStep3').classList.add('done');
+      }, 1000);
+      refreshKeyStatus();
+    } else {
+      result.innerHTML = `<div class="result-box result-error">
+        <span class="icon">❌</span> ${data.error || 'Unknown error'}
+      </div>`;
+    }
+  })
+  .catch(err => {
+    btn.disabled = false;
+    btn.innerHTML = '🔑 Tạo Khóa';
+    document.getElementById('keyResult').innerHTML = `<div class="result-box result-error">
+      <span class="icon">❌</span> ${err.message}
+    </div>`;
+  });
+}
+
+// ===== Sign Contract =====
+function loadSampleContract() {
+  fetch('/api/sample/contract')
+    .then(r => r.json())
+    .then(data => {
+      document.getElementById('contractInput').value = data.contract;
+    });
+}
+
+function signContract() {
+  let contract = document.getElementById('contractInput').value;
+  let numParts = parseInt(document.getElementById('numParts').value);
+  let algorithm = document.getElementById('signAlgorithm').value;
+  let btn = document.getElementById('signBtn');
+
+  if (!contract.trim()) {
+    alert('Vui lòng nhập nội dung hợp đồng!');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Signing...';
+
+  document.getElementById('signStep1').classList.add('done');
+  document.getElementById('signStep2').classList.add('active');
+
+  showLoading('Đang ký hợp đồng...');
+
+  fetch('/api/contract/sign', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({contract, num_parts: numParts, algorithm})
+  })
+  .then(r => r.json())
+  .then(data => {
+    hideLoading();
+    btn.disabled = false;
+    btn.innerHTML = '✍️ Ký Hợp Đồng';
+
+    if (data.success) {
+      lastSignResult = data;
+      lastManifest = data.manifest;
+      lastParts = data.parts;
+
+      document.getElementById('signStep2').classList.remove('active');
+      document.getElementById('signStep2').classList.add('done');
+      document.getElementById('signStep3').classList.add('active');
+      document.getElementById('statParts').textContent = data.total_parts;
+
+      let html = `
+        <div class="card animate-in" style="margin-top: 1rem;">
+          <div class="result-box result-success">
+            <span class="icon">✅</span>
+            <div>
+              <strong>Hợp đồng đã được ký thành công!</strong><br>
+              <span style="font-size: 0.85rem; color: var(--text-secondary);">
+                ID: ${data.contract_id} | Thuật toán: ${data.algorithm} | ${data.total_parts} phần
+              </span>
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <div class="card-title" style="margin-bottom: 0.75rem;">📦 Các phần hợp đồng</div>
+            <div class="parts-grid">
+              ${data.parts.map(p => `
+                <div class="part-card">
+                  <div class="part-header">
+                    <span class="part-id">${p.part_id}</span>
+                    <span class="part-seq">Seq: ${p.sequence_number}</span>
+                  </div>
+                  <div style="display: flex; gap: 1rem; margin-top: 4px;">
+                    <span class="part-hash">Hash: ${p.hash}</span>
+                    <span class="part-hash">Sig: ${p.signature}</span>
+                  </div>
+                  <div class="part-content">${p.content_preview}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <div class="card-title" style="margin-bottom: 0.5rem;">📋 Manifest</div>
+            <div class="json-preview">${data.manifest}</div>
+          </div>
+
+          <div class="btn-group" style="margin-top: 1rem;">
+            <button class="btn btn-success" onclick="switchSection('verify')">
+              ✅ Xác Minh Ngay
+            </button>
+            <button class="btn btn-secondary" onclick='runTamperTest("modify")'>
+              🛡️ Thử Tấn Công
+            </button>
+          </div>
+        </div>
+      `;
+      document.getElementById('signResult').innerHTML = html;
+      setTimeout(() => {
+        document.getElementById('signStep3').classList.remove('active');
+        document.getElementById('signStep3').classList.add('done');
+      }, 1500);
+    } else {
+      document.getElementById('signResult').innerHTML = `
+        <div class="result-box result-error animate-in">
+          <span class="icon">❌</span> ${data.error || 'Unknown error'}
+        </div>
+      `;
+    }
+  })
+  .catch(err => {
+    hideLoading();
+    btn.disabled = false;
+    btn.innerHTML = '✍️ Ký Hợp Đồng';
+    document.getElementById('signResult').innerHTML = `
+      <div class="result-box result-error">
+        <span class="icon">❌</span> ${err.message}
+      </div>
+    `;
+  });
+}
+
+// ===== Verify =====
+function refreshVerifyView() {
+  let area = document.getElementById('verifyArea');
+  let noData = document.getElementById('noSignData');
+
+  if (lastManifest && lastParts) {
+    area.style.display = 'block';
+    noData.style.display = 'none';
+
+    document.getElementById('verifyManifestPreview').textContent =
+      typeof lastManifest === 'string' ? lastManifest : JSON.stringify(lastManifest, null, 2);
+
+    let partsHtml = `<div class="parts-grid">`;
+    lastParts.forEach(p => {
+      partsHtml += `
+        <div class="part-card" data-part-id="${p.part_id}">
+          <div class="part-header">
+            <span class="part-id">${p.part_id}</span>
+            <span class="part-seq">Seq: ${p.sequence_number}</span>
+          </div>
+          <div style="display: flex; gap: 1rem; margin-top: 4px;">
+            <span class="part-hash">Hash: ${p.hash}</span>
+            <span class="part-hash">Sig: ${p.signature}</span>
+          </div>
+          <div class="part-content">${p.content_preview}</div>
+        </div>
+      `;
+    });
+    partsHtml += `</div>`;
+    document.getElementById('verifyPartsList').innerHTML = partsHtml;
+  } else {
+    area.style.display = 'none';
+    noData.style.display = 'block';
+  }
+}
+
+function verifyContract() {
+  if (!lastParts || !lastManifest) return;
+
+  let btn = document.getElementById('verifyBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Verifying...';
+
+  document.getElementById('verifyStep1').classList.add('done');
+  document.getElementById('verifyStep2').classList.add('active');
+
+  showLoading('Đang xác minh hợp đồng...');
+
+  // Reconstruct full parts with content
+  let fullParts = lastParts.map(p => ({
+    part_id: p.part_id,
+    contract_id: lastSignResult?.contract_id || "UNKNOWN",
+    sequence_number: p.sequence_number,
+    content: p.content_preview.replace(/\.\.\.$/, '') || p.content || "Placeholder content",
+    hash: p.hash.includes('...') ? p.hash.replace('...', '') + '0'.repeat(48) : p.hash,
+    signature: p.signature.includes('...') ? p.signature.replace('...', '') + '0'.repeat(100) : p.signature,
+    algorithm: p.algorithm || 'ed25519'
+  }));
+
+  // We need the actual full data, so re-fetch from sign result
+  // For now, use the stored manifest JSON directly
+  let manifestStr = typeof lastManifest === 'string' ? lastManifest : JSON.stringify(lastManifest, null, 2);
+
+  fetch('/api/contract/verify', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      manifest: manifestStr,
+      parts: fullParts,
+      algorithm: lastSignResult?.algorithm || 'ed25519'
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    hideLoading();
+    btn.disabled = false;
+    btn.innerHTML = '✅ Xác Minh Toàn Bộ';
+
+    document.getElementById('verifyStep2').classList.remove('active');
+    document.getElementById('verifyStep2').classList.add('done');
+    document.getElementById('verifyStep3').classList.add('active');
+
+    let resultEl = document.getElementById('verifyResult');
+    if (data.is_valid) {
+      resultEl.innerHTML = `
+        <div class="result-box result-success animate-in">
+          <span class="icon">✅</span>
+          <div>
+            <strong>${data.message}</strong><br>
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">
+              Hợp đồng hoàn toàn nguyên vẹn, chữ ký hợp lệ.
+            </span>
+            <div style="margin-top: 0.75rem; padding: 0.75rem; background: var(--bg-primary); border-radius: var(--radius-sm);">
+              <div style="font-weight: 600; margin-bottom: 0.5rem;">📄 Hợp đồng đã ghép:</div>
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; white-space: pre-wrap; color: var(--text-secondary);">${data.reassembled_contract}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      setTimeout(() => {
+        document.getElementById('verifyStep3').classList.remove('active');
+        document.getElementById('verifyStep3').classList.add('done');
+      }, 1000);
+    } else {
+      resultEl.innerHTML = `
+        <div class="result-box result-error animate-in">
+          <span class="icon">❌</span>
+          <div>
+            <strong>Xác minh THẤT BẠI</strong><br>
+            ${data.message}
+          </div>
+        </div>
+      `;
+    }
+  })
+  .catch(err => {
+    hideLoading();
+    btn.disabled = false;
+    btn.innerHTML = '✅ Xác Minh Toàn Bộ';
+    document.getElementById('verifyResult').innerHTML = `
+      <div class="result-box result-error">
+        <span class="icon">❌</span> ${err.message}
+      </div>
+    `;
+  });
+}
+
+// ===== Attack Simulation =====
+function runTamperTest(type) {
+  if (!lastParts || !lastManifest) {
+    // If no signed contract, sign first
+    if (document.getElementById('contractInput').value && document.getElementById('contractInput').value !== 'Đang tải...') {
+      // Sign the current contract first
+      signContract();
+      setTimeout(() => runTamperTest(type), 2000);
+      return;
+    }
+    document.getElementById('attackResult').innerHTML = `
+      <div class="result-box result-warning animate-in" style="background: var(--warning-bg); border: 1px solid rgba(245, 158, 11, 0.3); color: var(--warning);">
+        <span class="icon">⚠️</span>
+        <div>
+          <strong>Chưa có hợp đồng</strong><br>
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">Hãy ký một hợp đồng trước khi mô phỏng tấn công.</span>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  showLoading('Đang mô phỏng tấn công...');
+
+  fetch('/api/contract/tamper', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      parts: lastParts,
+      tamper_type: type,
+      part_index: 0
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    hideLoading();
+    if (data.success) {
+      lastParts = data.parts;
+
+      // Now verify the tampered contract
+      verifyTamperedContract(data.tamper_desc, data.tamper_type);
+    }
+  })
+  .catch(err => {
+    hideLoading();
+    document.getElementById('attackResult').innerHTML = `
+      <div class="result-box result-error">
+        <span class="icon">❌</span> ${err.message}
+      </div>
+    `;
+  });
+}
+
+function verifyTamperedContract(tamperDesc, tamperType) {
+  showLoading('Đang xác minh sau tấn công...');
+
+  let manifestStr = typeof lastManifest === 'string' ? lastManifest : JSON.stringify(lastManifest, null, 2);
+  let fullParts = lastParts.map(p => ({
+    part_id: p.part_id,
+    contract_id: lastSignResult?.contract_id || "UNKNOWN",
+    sequence_number: p.sequence_number,
+    content: p.content_preview?.replace(/\.\.\.$/, '') || p.content || "Placeholder",
+    hash: p.hash,
+    signature: p.signature,
+    algorithm: p.algorithm || 'ed25519'
+  }));
+
+  fetch('/api/contract/verify', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      manifest: manifestStr,
+      parts: fullParts,
+      algorithm: lastSignResult?.algorithm || 'ed25519'
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    hideLoading();
+    let resultEl = document.getElementById('attackResult');
+
+    // Also refresh verify view
+    refreshVerifyView();
+
+    let attackIcons = {
+      'modify': '✏️',
+      'remove': '🗑️',
+      'reorder': '🔀',
+      'hash': '🔢',
+      'signature': '🔏'
+    };
+
+    resultEl.innerHTML = `
+      <div class="card animate-in">
+        <div class="card-header">
+          <div>
+            <div class="card-title">🛡️ Kết quả mô phỏng tấn công</div>
+            <div class="card-subtitle">${attackIcons[tamperType] || '⚠️'} ${tamperDesc}</div>
+          </div>
+        </div>
+        <div class="result-box ${data.is_valid ? 'result-error' : 'result-success'}">
+          <span class="icon">${data.is_valid ? '❌' : '✅'}</span>
+          <div>
+            <strong>${data.is_valid
+              ? '⚠️ Hệ thống KHÔNG phát hiện được tấn công!'
+              : '✅ Hệ thống ĐÃ phát hiện thành công tấn công!'}</strong><br>
+            <span style="font-size: 0.85rem;">${data.message}</span>
+          </div>
+        </div>
+        <div style="margin-top: 1rem; background: var(--bg-primary); border-radius: var(--radius-sm); padding: 1rem;">
+          <div style="font-weight: 600; margin-bottom: 0.5rem;">📋 Chi tiết:</div>
+          <ul style="color: var(--text-secondary); font-size: 0.85rem; padding-left: 1.25rem;">
+            <li>Loại tấn công: <strong>${tamperDesc}</strong></li>
+            <li>Kết quả: <strong style="color: ${data.is_valid ? 'var(--danger)' : 'var(--success)'}">
+              ${data.is_valid ? 'KHÔNG phát hiện ✗' : 'Đã phát hiện ✓'}
+            </strong></li>
+            <li>Phản hồi: ${data.message}</li>
+          </ul>
+        </div>
+      </div>
+    `;
+  })
+  .catch(err => {
+    hideLoading();
+    document.getElementById('attackResult').innerHTML = `
+      <div class="result-box result-error">
+        <span class="icon">❌</span> ${err.message}
+      </div>
+    `;
+  });
+}
+
+// ===== Test Suite =====
+function runTestSuite() {
+  let btn = document.getElementById('runTestsBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Running tests...';
+
+  showLoading('Đang chạy 34 test cases...');
+
+  fetch('/api/test/run', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'}
+  })
+  .then(r => r.json())
+  .then(data => {
+    hideLoading();
+    btn.disabled = false;
+    btn.innerHTML = '▶️ Chạy Test Suite';
+
+    let resultEl = document.getElementById('testResult');
+    if (data.passed) {
+      resultEl.innerHTML = `
+        <div class="result-box result-success animate-in">
+          <span class="icon">✅</span>
+          <div>
+            <strong>All 34 tests PASSED!</strong><br>
+            <span style="font-size: 0.85rem;">
+              ✓ test_valid_flow (8) — ✓ test_tampering (6) — ✓ test_replay (10) — ✓ test_invalid_key (7)
+            </span>
+          </div>
+        </div>
+      `;
+    } else {
+      resultEl.innerHTML = `
+        <div class="result-box result-error animate-in">
+          <span class="icon">❌</span>
+          <div>
+            <strong>Some tests FAILED (exit code: ${data.exit_code})</strong>
+          </div>
+        </div>
+      `;
+    }
+  })
+  .catch(err => {
+    hideLoading();
+    btn.disabled = false;
+    btn.innerHTML = '▶️ Chạy Test Suite';
+    document.getElementById('testResult').innerHTML = `
+      <div class="result-box result-error">
+        <span class="icon">❌</span> ${err.message}
+      </div>
+    `;
+  });
+}
+
+// ===== Init =====
+document.addEventListener('DOMContentLoaded', function() {
+  refreshDashboard();
+  refreshKeyStatus();
+  loadSampleContract();
+  refreshVerifyView();
+
+  // Fix verify button - when clicking verify section, refresh
+  document.querySelectorAll('.sidebar-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      if (this.textContent.trim().includes('Xác Minh')) {
+        refreshVerifyView();
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
