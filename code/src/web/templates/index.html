@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="dark">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,37 +8,41 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+    /* ===== LIGHT PROFESSIONAL THEME ===== */
     :root {
-      --bg-primary: #0a0b0f;
-      --bg-secondary: #121317;
-      --bg-card: #1a1b23;
-      --bg-card-hover: #22232d;
-      --bg-input: #12141e;
-      --bg-input-focus: #1a1d2e;
-      --border: #2a2d3a;
+      --bg-primary: #f4f5f9;
+      --bg-secondary: #eaecef;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f8f9fc;
+      --bg-input: #f0f1f5;
+      --bg-input-focus: #e8eaff;
+      --border: #d1d5db;
       --border-focus: #4a6cf7;
-      --text-primary: #e4e6ef;
-      --text-secondary: #9294a8;
-      --text-muted: #5c5e72;
+      --text-primary: #1e2235;
+      --text-secondary: #5a6072;
+      --text-muted: #8b90a0;
       --accent: #4a6cf7;
       --accent-hover: #5b7aff;
-      --accent-glow: rgba(74, 108, 247, 0.25);
-      --success: #22c55e;
-      --success-bg: rgba(34, 197, 94, 0.1);
-      --success-border: rgba(34, 197, 94, 0.3);
-      --danger: #ef4444;
-      --danger-bg: rgba(239, 68, 68, 0.1);
-      --danger-border: rgba(239, 68, 68, 0.3);
-      --warning: #f59e0b;
+      --accent-glow: rgba(74, 108, 247, 0.12);
+      --success: #16a34a;
+      --success-bg: rgba(22, 163, 74, 0.08);
+      --success-border: rgba(22, 163, 74, 0.25);
+      --danger: #dc2626;
+      --danger-bg: rgba(220, 38, 38, 0.08);
+      --danger-border: rgba(220, 38, 38, 0.25);
+      --warning: #d97706;
       --gradient-accent: linear-gradient(135deg, #4a6cf7, #6366f1);
-      --gradient-success: linear-gradient(135deg, #22c55e, #16a34a);
-      --shadow-glow: 0 0 40px rgba(74, 108, 247, 0.1);
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --font-sans: 'Inter', -apple-system, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --gradient-success: linear-gradient(135deg, #16a34a, #15803d);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
     }
+
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
@@ -53,33 +57,31 @@
     ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
     ::selection{background:var(--accent);color:#fff}
 
-    /* ===== AUTH PAGE ===== */
+    /* ===== AUTH ===== */
     .auth-page{
       display:flex;min-height:100vh;align-items:center;justify-content:center;
-      background: radial-gradient(ellipse at top, rgba(74,108,247,0.08), transparent 60%),
-                  var(--bg-primary);
+      background: var(--bg-primary);
       padding:2rem;
     }
-    .auth-container{
-      width:100%;max-width:440px;
-    }
-    .auth-brand{
-      text-align:center;margin-bottom:2rem;
-    }
+    .auth-container{width:100%;max-width:440px}
+    .auth-brand{text-align:center;margin-bottom:2rem}
     .auth-brand .logo{
       width:56px;height:56px;background:var(--gradient-accent);border-radius:var(--radius-md);
       display:inline-flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;font-weight:800;margin-bottom:1rem;
+      box-shadow:var(--shadow-md);
     }
-    .auth-brand h1{font-size:1.5rem;font-weight:700}
+    .auth-brand h1{font-size:1.5rem;font-weight:700;color:var(--text-primary)}
     .auth-brand p{color:var(--text-secondary);font-size:0.9rem;margin-top:4px}
     .auth-box{
-      background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;
+      background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);
+      padding:2rem;box-shadow:var(--shadow-md);
     }
-    .auth-tabs{display:flex;gap:0;margin-bottom:1.5rem;background:var(--bg-primary);border-radius:var(--radius-sm);padding:4px}
+    .auth-tabs{display:flex;gap:0;margin-bottom:1.5rem;background:var(--bg-secondary);border-radius:var(--radius-sm);padding:4px}
     .auth-tab{
-      flex:1;padding:10px;text-align:center;border-radius:6px;font-size:0.85rem;font-weight:500;cursor:pointer;transition:all .2s;color:var(--text-muted);background:transparent;border:none;
+      flex:1;padding:10px;text-align:center;border-radius:6px;font-size:0.85rem;font-weight:500;cursor:pointer;
+      transition:all .2s;color:var(--text-muted);background:transparent;border:none;
     }
-    .auth-tab.active{background:var(--bg-card);color:var(--text-primary)}
+    .auth-tab.active{background:var(--bg-card);color:var(--accent);box-shadow:var(--shadow-sm)}
     .auth-form{display:none}
     .auth-form.active{display:block}
     .auth-form .form-group{margin-bottom:1rem}
@@ -94,7 +96,6 @@
       padding:10px 14px;background:var(--danger-bg);border:1px solid var(--danger-border);border-radius:var(--radius-sm);
       color:var(--danger);font-size:0.85rem;margin-bottom:1rem;display:none;
     }
-    .auth-footer{text-align:center;margin-top:1.5rem;color:var(--text-muted);font-size:0.85rem}
     .auth-sample{border-top:1px solid var(--border);margin-top:1.5rem;padding-top:1.25rem;text-align:center}
     .auth-sample-title{font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);margin-bottom:0.75rem}
     .sample-users{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.78rem}
@@ -102,14 +103,12 @@
       padding:8px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:6px;
       cursor:pointer;transition:all .2s;text-align:left;color:var(--text-secondary);
     }
-    .sample-user:hover{border-color:var(--accent);color:var(--text-primary);background:var(--accent-glow)}
+    .sample-user:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
     .sample-user strong{color:var(--accent)}
     .sample-user span{display:block;font-size:0.7rem;color:var(--text-muted)}
-    .user-type-badge{
-      display:inline-block;font-size:0.65rem;padding:2px 8px;border-radius:10px;font-weight:500;
-    }
-    .user-type-badge.individual{background:rgba(74,108,247,0.15);color:var(--accent)}
-    .user-type-badge.business{background:rgba(34,197,94,0.15);color:var(--success)}
+    .user-type-badge{display:inline-block;font-size:0.65rem;padding:2px 8px;border-radius:10px;font-weight:500}
+    .user-type-badge.individual{background:var(--accent-glow);color:var(--accent)}
+    .user-type-badge.business{background:var(--success-bg);color:var(--success)}
     .account-type-selector{display:flex;gap:8px;margin-bottom:0}
     .account-type-btn{
       flex:1;padding:10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-input);
@@ -118,18 +117,19 @@
     .account-type-btn.active{border-color:var(--accent);background:var(--accent-glow);color:var(--accent)}
     .account-type-btn .icon{display:block;font-size:1.2rem;margin-bottom:4px}
 
-    /* ===== MAIN APP (Authenticated) ===== */
+    /* ===== APP ===== */
     .app{display:none;min-height:100vh}
     .navbar{
       position:fixed;top:0;left:0;right:0;z-index:1000;
-      background:rgba(10,11,15,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);
+      background:rgba(255,255,255,0.92);backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
       padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;
     }
     .nav-brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:1.05rem;color:var(--text-primary);cursor:pointer}
     .nav-brand-icon{width:34px;height:34px;background:var(--gradient-accent);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
     .nav-user{display:flex;align-items:center;gap:12px}
     .nav-user-info{text-align:right}
-    .nav-user-name{font-size:0.85rem;font-weight:600}
+    .nav-user-name{font-size:0.85rem;font-weight:600;color:var(--text-primary)}
     .nav-user-type{font-size:0.7rem;color:var(--text-muted)}
     .nav-avatar{width:38px;height:38px;border-radius:50%;background:var(--gradient-accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.9rem;cursor:pointer}
     .nav-btn{
@@ -140,7 +140,7 @@
 
     .main-layout{padding-top:64px;display:flex;min-height:100vh}
     .sidebar{
-      width:240px;flex-shrink:0;background:var(--bg-secondary);border-right:1px solid var(--border);
+      width:240px;flex-shrink:0;background:var(--bg-card);border-right:1px solid var(--border);
       padding:1.25rem 0.75rem;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;
     }
     .sidebar-section{margin-bottom:0.5rem}
@@ -150,23 +150,24 @@
       color:var(--text-secondary);font-size:0.83rem;font-weight:500;cursor:pointer;transition:all .2s;
       background:transparent;border:none;width:100%;text-align:left;
     }
-    .sidebar-btn:hover{background:var(--bg-card);color:var(--text-primary)}
+    .sidebar-btn:hover{background:var(--bg-secondary);color:var(--text-primary)}
     .sidebar-btn.active{background:var(--accent-glow);color:var(--accent);border-left:3px solid var(--accent)}
-    .sidebar-btn .icon{width:20px;text-align:center;font-size:0.95rem}
 
     .content{flex:1;padding:1.5rem 2rem;max-width:1100px;margin:0 auto;width:100%}
     .section{display:none}
     .section.active{display:block}
-    .page-title{font-size:1.5rem;font-weight:700;margin-bottom:0.25rem;background:var(--gradient-accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-title{font-size:1.5rem;font-weight:700;margin-bottom:0.25rem;color:var(--text-primary)}
     .page-desc{color:var(--text-secondary);font-size:0.9rem;margin-bottom:1.5rem}
 
     .card{
-      background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;transition:all .3s;
+      background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);
+      padding:1.5rem;box-shadow:var(--shadow-sm);transition:all .2s;
     }
-    .card:hover{border-color:var(--border-focus);box-shadow:var(--shadow-glow)}
+    .card:hover{box-shadow:var(--shadow-md);border-color:var(--border-focus)}
     .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
     .card-title{font-size:1.05rem;font-weight:600}
     .card-subtitle{font-size:0.82rem;color:var(--text-secondary);margin-top:2px}
+
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
     .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem}
     .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
@@ -175,28 +176,28 @@
 
     .stat-card{
       background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);
-      padding:1.25rem;text-align:center;transition:all .3s;
+      padding:1.25rem;text-align:center;box-shadow:var(--shadow-sm);transition:all .2s;
     }
-    .stat-card:hover{border-color:var(--border-focus);transform:translateY(-2px)}
-    .stat-value{font-size:1.6rem;font-weight:700;background:var(--gradient-accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .stat-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+    .stat-value{font-size:1.6rem;font-weight:700;color:var(--accent)}
     .stat-label{font-size:0.78rem;color:var(--text-muted);margin-top:4px}
     .stat-icon{font-size:1.4rem;margin-bottom:8px}
 
     .btn{
       display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:var(--radius-sm);
-      font-family:var(--font-sans);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all .2s;border:none;white-space:nowrap;
+      font-family:var(--font-sans);font-size:0.85rem;font-weight:600;cursor:pointer;
+      transition:all .2s;border:none;white-space:nowrap;
     }
     .btn-primary{background:var(--gradient-accent);color:#fff}
-    .btn-primary:hover{box-shadow:0 4px 20px var(--accent-glow);transform:translateY(-1px)}
+    .btn-primary:hover{box-shadow:0 4px 14px var(--accent-glow);transform:translateY(-1px)}
     .btn-secondary{background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border)}
-    .btn-secondary:hover{background:var(--bg-card-hover)}
+    .btn-secondary:hover{background:var(--bg-secondary)}
     .btn-success{background:var(--gradient-success);color:#fff}
-    .btn-danger{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
+    .btn-danger{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff}
     .btn-ghost{background:transparent;color:var(--text-secondary)}
-    .btn-ghost:hover{color:var(--text-primary);background:var(--bg-card)}
+    .btn-ghost:hover{color:var(--text-primary);background:var(--bg-secondary)}
     .btn-sm{padding:6px 12px;font-size:0.78rem}
-    .btn-xs{padding:4px 10px;font-size:0.72rem}
-    .btn:disabled{opacity:0.5;cursor:not-allows;transform:none!important}
+    .btn:disabled{opacity:0.5;cursor:not-allowed;transform:none!important}
     .btn-group{display:flex;gap:8px;flex-wrap:wrap}
 
     label{display:block;font-size:0.82rem;font-weight:500;color:var(--text-secondary);margin-bottom:6px}
@@ -216,30 +217,30 @@
     }
     .badge-success{background:var(--success-bg);color:var(--success);border:1px solid var(--success-border)}
     .badge-danger{background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger-border)}
-    .badge-warning{background:var(--warning-bg);color:var(--warning);border:1px solid rgba(245,158,11,0.3)}
-    .badge-info{background:rgba(74,108,247,0.1);color:var(--accent);border:1px solid rgba(74,108,247,0.3)}
+    .badge-warning{background:rgba(217,119,6,0.08);color:var(--warning);border:1px solid rgba(217,119,6,0.25)}
+    .badge-info{background:var(--accent-glow);color:var(--accent);border:1px solid rgba(74,108,247,0.2)}
 
     .result-box{
-      border-radius:var(--radius-md);padding:1rem 1.25rem;margin-top:1rem;font-size:0.88rem;display:flex;
-      align-items:flex-start;gap:12px;
+      border-radius:var(--radius-md);padding:1rem 1.25rem;margin-top:1rem;font-size:0.88rem;
+      display:flex;align-items:flex-start;gap:12px;
     }
     .result-success{background:var(--success-bg);border:1px solid var(--success-border);color:var(--success)}
     .result-error{background:var(--danger-bg);border:1px solid var(--danger-border);color:var(--danger)}
-    .result-info{background:rgba(74,108,247,0.08);border:1px solid rgba(74,108,247,0.2);color:var(--accent)}
+    .result-info{background:var(--accent-glow);border:1px solid rgba(74,108,247,0.2);color:var(--accent)}
 
-    .spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--text-muted);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+    .spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    .loading-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,11,15,0.7);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center}
+    .loading-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center}
     .loading-overlay.show{display:flex}
-    .loading-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;text-align:center}
+    .loading-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;text-align:center;box-shadow:var(--shadow-lg)}
     .loading-box .spinner{width:32px;height:32px;border-width:3px;margin-bottom:1rem}
 
     .contract-card{
-      background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);
-      padding:1rem 1.25rem;transition:all .2s;cursor:pointer;
+      background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);
+      padding:1rem 1.25rem;transition:all .2s;cursor:pointer;box-shadow:var(--shadow-sm);margin-bottom:0.5rem;
     }
-    .contract-card:hover{border-color:var(--border-focus)}
+    .contract-card:hover{border-color:var(--border-focus);box-shadow:var(--shadow-md)}
     .contract-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
     .contract-title{font-weight:600;font-size:0.92rem}
     .contract-meta{display:flex;gap:1rem;font-size:0.75rem;color:var(--text-muted);margin-top:4px}
@@ -250,10 +251,8 @@
       border:1px solid var(--border);border-radius:20px;font-size:0.78rem;cursor:pointer;transition:all .2s;
     }
     .recipient-tag.selected{border-color:var(--accent);background:var(--accent-glow);color:var(--accent)}
-    .recipient-tag .remove{cursor:pointer;color:var(--text-muted);font-size:0.7rem}
-    .recipient-tag .remove:hover{color:var(--danger)}
     .json-preview{
-      background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius-sm);
+      background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);
       padding:1rem;font-family:var(--font-mono);font-size:0.72rem;color:var(--text-secondary);
       max-height:250px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;
     }
@@ -274,7 +273,6 @@
 </head>
 <body>
 
-<!-- ===== LOADING OVERLAY ===== -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="loading-box">
     <div class="spinner"></div>
@@ -282,7 +280,7 @@
   </div>
 </div>
 
-<!-- ===== AUTH PAGE ===== -->
+<!-- ===== AUTH ===== -->
 <div class="auth-page" id="authPage">
   <div class="auth-container">
     <div class="auth-brand">
@@ -292,81 +290,42 @@
     </div>
     <div class="auth-box">
       <div class="auth-tabs">
-        <button class="auth-tab active" onclick="switchAuthTab('login')">Đăng nhập</button>
-        <button class="auth-tab" onclick="switchAuthTab('register')">Đăng ký</button>
+        <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+        <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
       </div>
-
       <div id="authError" class="auth-error"></div>
-
-      <!-- LOGIN FORM -->
       <div class="auth-form active" id="loginForm">
-        <div class="form-group">
-          <label>Tên đăng nhập</label>
-          <input type="text" id="loginUsername" placeholder="Nhập username..." autocomplete="username">
-        </div>
-        <div class="form-group">
-          <label>Mật khẩu</label>
-          <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
-        </div>
-        <button class="btn btn-primary" onclick="doLogin()" id="loginBtn">
-          <i class="fas fa-sign-in-alt"></i> Đăng nhập
-        </button>
-
+        <div class="form-group"><label>Username</label><input type="text" id="loginUsername" placeholder="Enter username..." autocomplete="username"></div>
+        <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"></div>
+        <button class="btn btn-primary" onclick="doLogin()" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
         <div class="auth-sample">
-          <div class="auth-sample-title">Tài khoản mẫu (click để đăng nhập nhanh)</div>
+          <div class="auth-sample-title">Sample accounts (click to quick login)</div>
           <div class="sample-users" id="sampleUsers"></div>
         </div>
       </div>
-
-      <!-- REGISTER FORM -->
       <div class="auth-form" id="registerForm">
+        <div class="form-group"><label>Username</label><input type="text" id="regUsername" placeholder="Min 3 characters"></div>
+        <div class="form-group"><label>Full Name</label><input type="text" id="regFullname" placeholder="Nguyen Van A"></div>
         <div class="form-group">
-          <label>Tên đăng nhập</label>
-          <input type="text" id="regUsername" placeholder="Tối thiểu 3 ký tự">
-        </div>
-        <div class="form-group">
-          <label>Họ và tên</label>
-          <input type="text" id="regFullname" placeholder="Nguyễn Văn A">
-        </div>
-        <div class="form-group">
-          <label>Loại tài khoản</label>
+          <label>Account Type</label>
           <div class="account-type-selector">
-            <div class="account-type-btn active" onclick="selectAccountType('individual')">
-              <span class="icon">👤</span> Cá nhân
-            </div>
-            <div class="account-type-btn" onclick="selectAccountType('business')">
-              <span class="icon">🏢</span> Doanh nghiệp
-            </div>
+            <div class="account-type-btn active" onclick="selectAccountType('individual')"><span class="icon">👤</span> Individual</div>
+            <div class="account-type-btn" onclick="selectAccountType('business')"><span class="icon">🏢</span> Business</div>
           </div>
           <input type="hidden" id="regAccountType" value="individual">
         </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="regEmail" placeholder="email@example.com">
-        </div>
-        <div class="form-group">
-          <label>Số điện thoại</label>
-          <input type="text" id="regPhone" placeholder="090xxxxxxx">
-        </div>
-        <div class="form-group">
-          <label>Mật khẩu</label>
-          <input type="password" id="regPassword" placeholder="Tối thiểu 4 ký tự">
-        </div>
-        <div class="form-group">
-          <label>Nhập lại mật khẩu</label>
-          <input type="password" id="regPassword2" placeholder="Nhập lại mật khẩu">
-        </div>
-        <button class="btn btn-primary" onclick="doRegister()" id="regBtn">
-          <i class="fas fa-user-plus"></i> Đăng ký
-        </button>
+        <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="email@example.com"></div>
+        <div class="form-group"><label>Phone</label><input type="text" id="regPhone" placeholder="090xxxxxxx"></div>
+        <div class="form-group"><label>Password</label><input type="password" id="regPassword" placeholder="Min 4 characters"></div>
+        <div class="form-group"><label>Confirm Password</label><input type="password" id="regPassword2" placeholder="Re-enter password"></div>
+        <button class="btn btn-primary" onclick="doRegister()" id="regBtn"><i class="fas fa-user-plus"></i> Register</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ===== MAIN APP ===== -->
+<!-- ===== APP ===== -->
 <div class="app" id="app">
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="nav-brand" onclick="switchSection('dashboard')">
       <div class="nav-brand-icon">✍</div>
@@ -375,228 +334,157 @@
     <div class="nav-user">
       <div class="nav-user-info">
         <div class="nav-user-name" id="navUserName">User</div>
-        <div class="nav-user-type" id="navUserType">Cá nhân</div>
+        <div class="nav-user-type" id="navUserType">Individual</div>
       </div>
-      <div class="nav-avatar" id="navAvatar" onclick="switchSection('profile')">U</div>
+      <div class="nav-avatar" id="navAvatar">U</div>
       <button class="nav-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i></button>
     </div>
   </nav>
 
-  <!-- Layout -->
   <div class="main-layout">
-    <!-- Sidebar -->
     <aside class="sidebar">
+      <div class="sidebar-section"><div class="sidebar-label">Overview</div><button class="sidebar-btn active" onclick="switchSection('dashboard')"><span class="icon">📊</span> Dashboard</button></div>
+      <div class="sidebar-section"><div class="sidebar-label">Keys</div><button class="sidebar-btn" onclick="switchSection('keys')"><span class="icon">🔑</span> Key Management</button></div>
       <div class="sidebar-section">
-        <div class="sidebar-label">Tổng quan</div>
-        <button class="sidebar-btn active" onclick="switchSection('dashboard')"><span class="icon">📊</span> Dashboard</button>
+        <div class="sidebar-label">Contracts</div>
+        <button class="sidebar-btn" onclick="switchSection('create')"><span class="icon">📄</span> Create Contract</button>
+        <button class="sidebar-btn" onclick="{switchSection('sent');loadSentContracts()}"><span class="icon">📤</span> Sent</button>
+        <button class="sidebar-btn" onclick="{switchSection('received');loadReceivedContracts()}"><span class="icon">📥</span> Received</button>
       </div>
       <div class="sidebar-section">
-        <div class="sidebar-label">Quản lý khóa</div>
-        <button class="sidebar-btn" onclick="switchSection('keys')"><span class="icon">🔑</span> Khóa số</button>
+        <div class="sidebar-label">Security</div>
+        <button class="sidebar-btn" onclick="switchSection('tests')"><span class="icon">🧪</span> Test Suite</button>
       </div>
-      <div class="sidebar-section">
-        <div class="sidebar-label">Hợp đồng</div>
-        <button class="sidebar-btn" onclick="switchSection('create')"><span class="icon">📄</span> Tạo hợp đồng</button>
-        <button class="sidebar-btn" onclick="{switchSection('sent');loadSentContracts()}"><span class="icon">📤</span> Đã gửi</button>
-        <button class="sidebar-btn" onclick="{switchSection('received');loadReceivedContracts()}"><span class="icon">📥</span> Đã nhận</button>
-      </div>
-      <div class="sidebar-section">
-        <div class="sidebar-label">Bảo mật</div>
-        <button class="sidebar-btn" onclick="switchSection('attack')"><span class="icon">🛡️</span> Mô phỏng tấn công</button>
-        <button class="sidebar-btn" onclick="switchSection('tests')"><span class="icon">🧪</span> Test suite</button>
-      </div>
-      <div class="sidebar-section">
-        <button class="sidebar-btn" onclick="switchSection('profile')"><span class="icon">👤</span> Hồ sơ</button>
-      </div>
+      <div class="sidebar-section"><button class="sidebar-btn" onclick="switchSection('profile')"><span class="icon">👤</span> Profile</button></div>
     </aside>
 
     <div class="content">
-
-      <!-- ===== DASHBOARD ===== -->
+      <!-- DASHBOARD -->
       <div class="section active" id="section-dashboard">
         <div style="text-align:center;padding:2rem 1rem 1rem">
-          <h1 style="font-size:2rem;font-weight:800;background:linear-gradient(135deg,#e4e6ef,#4a6cf7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem">Multi-Part Digital Contract Signing</h1>
-          <p style="color:var(--text-secondary);font-size:.95rem;max-width:600px;margin:0 auto">Ký số hợp đồng điện tử đa phần với Ed25519/RSA-PSS, phát hiện giả mạo, thiếu phần và replay.</p>
+          <h1 style="font-size:2rem;font-weight:800;color:var(--text-primary);margin-bottom:.5rem">Multi-Part Digital Contract Signing</h1>
+          <p style="color:var(--text-secondary);font-size:.95rem;max-width:600px;margin:0 auto">Secure digital contract signing with Ed25519, ECDSA P-256, and RSA-PSS. Split contracts into signed parts with tamper detection.</p>
         </div>
         <div class="grid-4" style="margin-bottom:1.5rem">
-          <div class="stat-card"><div class="stat-icon">📄</div><div class="stat-value" id="dashSent">0</div><div class="stat-label">Hợp đồng đã gửi</div></div>
-          <div class="stat-card"><div class="stat-icon">📥</div><div class="stat-value" id="dashReceived">0</div><div class="stat-label">Hợp đồng đã nhận</div></div>
-          <div class="stat-card"><div class="stat-icon">🔐</div><div class="stat-value" id="dashKeys">0</div><div class="stat-label">Key pairs</div></div>
-          <div class="stat-card"><div class="stat-icon">🧪</div><div class="stat-value">34</div><div class="stat-label">Test cases</div></div>
+          <div class="stat-card"><div class="stat-icon">📄</div><div class="stat-value" id="dashSent">0</div><div class="stat-label">Sent Contracts</div></div>
+          <div class="stat-card"><div class="stat-icon">📥</div><div class="stat-value" id="dashReceived">0</div><div class="stat-label">Received Contracts</div></div>
+          <div class="stat-card"><div class="stat-icon">🔐</div><div class="stat-value" id="dashKeys">0</div><div class="stat-label">Key Pairs</div></div>
+          <div class="stat-card"><div class="stat-icon">🧪</div><div class="stat-value">34</div><div class="stat-label">Test Cases</div></div>
         </div>
         <div class="card">
-          <div class="card-header"><div><div class="card-title">🚀 Quick actions</div><div class="card-subtitle">Thao tác nhanh</div></div></div>
+          <div class="card-header"><div><div class="card-title">🚀 Quick Actions</div><div class="card-subtitle">Get started fast</div></div></div>
           <div class="grid-3">
-            <button class="btn btn-primary" onclick="switchSection('create')"><i class="fas fa-file-signature"></i> Tạo hợp đồng</button>
-            <button class="btn btn-secondary" onclick="switchSection('keys')"><i class="fas fa-key"></i> Quản lý khóa</button>
-            <button class="btn btn-secondary" onclick="switchSection('attack')"><i class="fas fa-shield-alt"></i> Mô phỏng tấn công</button>
+            <button class="btn btn-primary" onclick="switchSection('create')"><i class="fas fa-file-signature"></i> Create Contract</button>
+            <button class="btn btn-secondary" onclick="switchSection('keys')"><i class="fas fa-key"></i> Manage Keys</button>
+            <button class="btn btn-secondary" onclick="switchSection('tests')"><i class="fas fa-flask"></i> Run Tests</button>
           </div>
         </div>
       </div>
 
-      <!-- ===== KEYS ===== -->
+      <!-- KEYS -->
       <div class="section" id="section-keys">
-        <h2 class="page-title">🔑 Quản lý khóa số</h2>
-        <p class="page-desc">Tạo cặp khóa Ed25519 hoặc RSA-PSS để ký hợp đồng.</p>
+        <h2 class="page-title">🔑 Key Management</h2>
+        <p class="page-desc">Generate Ed25519, ECDSA P-256, or RSA-PSS key pairs for signing contracts.</p>
         <div class="grid-2">
           <div class="card">
-            <div class="card-title" style="margin-bottom:1rem">Tạo key pair mới</div>
+            <div class="card-title" style="margin-bottom:1rem">Generate New Key Pair</div>
             <div class="form-group">
-              <label>Thuật toán</label>
+              <label>Algorithm</label>
               <select id="keyAlgorithm">
-                <option value="ed25519">🔵 Ed25519 (Nhanh, bảo mật cao)</option>
-                <option value="ecdsa">🟢 ECDSA P-256 (Chuẩn quốc tế)</option>
-                <option value="rsa-pss">🟠 RSA-PSS 2048 (Tương thích)</option>
+                <option value="ed25519">🔵 Ed25519 (Fast, High Security)</option>
+                <option value="ecdsa">🟢 ECDSA P-256 (International Standard)</option>
+                <option value="rsa-pss">🟠 RSA-PSS 2048 (Legacy Compatible)</option>
               </select>
             </div>
-            <button class="btn btn-primary" onclick="generateKeys()" id="genKeyBtn"><i class="fas fa-key"></i> Tạo khóa</button>
+            <button class="btn btn-primary" onclick="generateKeys()" id="genKeyBtn"><i class="fas fa-key"></i> Generate Keys</button>
             <div id="keyResult" style="margin-top:1rem"></div>
           </div>
           <div class="card">
-            <div class="card-title" style="margin-bottom:1rem">📋 Khóa hiện có</div>
-            <div id="keyList"><div style="color:var(--text-muted);padding:2rem;text-align:center">Chưa có khóa</div></div>
+            <div class="card-title" style="margin-bottom:1rem">📋 Active Keys</div>
+            <div id="keyList"><div style="color:var(--text-muted);padding:2rem;text-align:center">No keys generated yet</div></div>
           </div>
         </div>
       </div>
 
-      <!-- ===== CREATE CONTRACT ===== -->
+      <!-- CREATE CONTRACT -->
       <div class="section" id="section-create">
-        <h2 class="page-title">📄 Tạo hợp đồng mới</h2>
-        <p class="page-desc">Tạo hợp đồng, chọn người nhận và ký số.</p>
-
+        <h2 class="page-title">📄 Create Contract</h2>
+        <p class="page-desc">Create a contract, select recipients, and sign with digital signature.</p>
         <div class="card">
           <div class="card-header">
-            <div><div class="card-title">Thông tin hợp đồng</div></div>
-            <button class="btn btn-ghost btn-sm" onclick="loadSampleContract()"><i class="fas fa-file-import"></i> Mẫu</button>
+            <div><div class="card-title">Contract Information</div></div>
+            <button class="btn btn-ghost btn-sm" onclick="loadSampleContract()"><i class="fas fa-file-import"></i> Sample</button>
           </div>
-
+          <div class="form-group"><label>Contract Title</label><input type="text" id="contractTitle" placeholder="Enter contract title..."></div>
           <div class="form-group">
-            <label>Tiêu đề hợp đồng</label>
-            <input type="text" id="contractTitle" placeholder="Nhập tiêu đề hợp đồng...">
-          </div>
-          <div class="form-group">
-            <label>Nội dung hợp đồng <span style="color:var(--text-muted);font-weight:400;font-size:.75rem">(hoặc tải file .txt lên)</span></label>
-            <textarea id="contractContent" rows="8">Nhập nội dung hợp đồng tại đây...</textarea>
+            <label>Content <span style="color:var(--text-muted);font-weight:400;font-size:.75rem">(or upload .txt file)</span></label>
+            <textarea id="contractContent" rows="8">Enter contract content here...</textarea>
             <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
               <input type="file" id="fileUpload" accept=".txt,.md,.csv,.json" style="flex:1;padding:8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:.82rem">
-              <button class="btn btn-secondary btn-sm" onclick="uploadFile()"><i class="fas fa-upload"></i> Tải lên</button>
+              <button class="btn btn-secondary btn-sm" onclick="uploadFile()"><i class="fas fa-upload"></i> Upload</button>
             </div>
           </div>
-
-          <div class="card" style="margin:1rem 0;background:var(--bg-primary)">
-            <div class="card-title" style="margin-bottom:0.75rem;font-size:0.92rem">👥 Chọn người nhận</div>
+          <div class="card" style="margin:1rem 0;background:var(--bg-secondary)">
+            <div class="card-title" style="margin-bottom:0.75rem;font-size:0.92rem">👥 Select Recipients</div>
             <div id="recipientList" style="display:flex;gap:6px;flex-wrap:wrap;min-height:40px;align-items:center">
-              <span style="color:var(--text-muted);font-size:0.85rem">Đang tải danh sách người dùng...</span>
+              <span style="color:var(--text-muted);font-size:0.85rem">Loading users...</span>
             </div>
             <div style="margin-top:0.75rem">
               <div class="form-group">
-                <label>Số phần chia hợp đồng</label>
+                <label>Number of Parts</label>
                 <select id="createNumParts">
-                  <option value="2">2 phần</option>
-                  <option value="3" selected>3 phần</option>
-                  <option value="4">4 phần</option>
-                  <option value="5">5 phần</option>
+                  <option value="2">2 parts</option><option value="3" selected>3 parts</option><option value="4">4 parts</option><option value="5">5 parts</option>
                 </select>
               </div>
             </div>
           </div>
-
-          <button class="btn btn-primary" onclick="createContract()" id="createBtn" style="width:100%">
-            <i class="fas fa-file-signature"></i> Tạo & Ký hợp đồng
-          </button>
+          <button class="btn btn-primary" onclick="createContract()" id="createBtn" style="width:100%"><i class="fas fa-file-signature"></i> Create & Sign Contract</button>
           <div id="createResult" style="margin-top:1rem"></div>
         </div>
       </div>
 
-      <!-- ===== SENT CONTRACTS ===== -->
-      <div class="section" id="section-sent">
-        <h2 class="page-title">📤 Hợp đồng đã gửi</h2>
-        <p class="page-desc">Danh sách hợp đồng bạn đã tạo và gửi.</p>
-        <div id="sentContractsList"></div>
-      </div>
+      <!-- SENT -->
+      <div class="section" id="section-sent"><h2 class="page-title">📤 Sent Contracts</h2><p class="page-desc">Contracts you have created and sent.</p><div id="sentContractsList"></div></div>
+      <!-- RECEIVED -->
+      <div class="section" id="section-received"><h2 class="page-title">📥 Received Contracts</h2><p class="page-desc">Contracts shared with you.</p><div id="receivedContractsList"></div></div>
 
-      <!-- ===== RECEIVED CONTRACTS ===== -->
-      <div class="section" id="section-received">
-        <h2 class="page-title">📥 Hợp đồng đã nhận</h2>
-        <p class="page-desc">Danh sách hợp đồng bạn được mời tham gia.</p>
-        <div id="receivedContractsList"></div>
-      </div>
-
-      <!-- ===== CONTRACT DETAIL ===== -->
+      <!-- DETAIL -->
       <div class="section" id="section-detail">
-        <button class="btn btn-ghost btn-sm" onclick="backToContracts()" style="margin-bottom:1rem"><i class="fas fa-arrow-left"></i> Quay lại</button>
+        <button class="btn btn-ghost btn-sm" onclick="backToContracts()" style="margin-bottom:1rem"><i class="fas fa-arrow-left"></i> Back</button>
         <div id="contractDetail"></div>
       </div>
 
-      <!-- ===== ATTACK SIMULATION ===== -->
-      <div class="section" id="section-attack">
-        <h2 class="page-title">🛡️ Mô phỏng tấn công</h2>
-        <p class="page-desc">Kiểm tra khả năng phát hiện các loại tấn công bảo mật.</p>
-        <div class="grid-2">
-          <div class="card" onclick='runAttack("modify")' style="cursor:pointer">
-            <div style="font-size:2rem;margin-bottom:.5rem">✏️</div>
-            <div class="card-title" style="margin-bottom:.25rem">Sửa nội dung</div>
-            <div class="card-subtitle">Thay đổi nội dung phần hợp đồng</div>
-            <div class="badge badge-danger" style="margin-top:.75rem">Hash mismatch → DETECTED</div>
-          </div>
-          <div class="card" onclick='runAttack("remove")' style="cursor:pointer">
-            <div style="font-size:2rem;margin-bottom:.5rem">🗑️</div>
-            <div class="card-title" style="margin-bottom:.25rem">Xóa phần</div>
-            <div class="card-subtitle">Xóa một phần khỏi hợp đồng</div>
-            <div class="badge badge-danger" style="margin-top:.75rem">Missing part → DETECTED</div>
-          </div>
-          <div class="card" onclick='runAttack("reorder")' style="cursor:pointer">
-            <div style="font-size:2rem;margin-bottom:.5rem">🔀</div>
-            <div class="card-title" style="margin-bottom:.25rem">Đảo thứ tự</div>
-            <div class="card-subtitle">Đảo lộn thứ tự các phần</div>
-            <div class="badge badge-danger" style="margin-top:.75rem">Sequence violation → DETECTED</div>
-          </div>
-          <div class="card" onclick='runAttack("signature")' style="cursor:pointer">
-            <div style="font-size:2rem;margin-bottom:.5rem">🔏</div>
-            <div class="card-title" style="margin-bottom:.25rem">Giả mạo chữ ký</div>
-            <div class="card-subtitle">Sửa chữ ký số</div>
-            <div class="badge badge-danger" style="margin-top:.75rem">Invalid signature → DETECTED</div>
-          </div>
-        </div>
-        <div id="attackResult" style="margin-top:1.5rem"></div>
-      </div>
-
-      <!-- ===== TEST SUITE ===== -->
+      <!-- TESTS -->
       <div class="section" id="section-tests">
         <h2 class="page-title">🧪 Security Test Suite</h2>
-        <p class="page-desc">34 test cases bao gồm valid flow, tampering, replay, invalid keys.</p>
-        <div class="card" style="text-align:center;padding:3rem">
-          <div style="font-size:4rem;margin-bottom:1rem">🧪</div>
-          <div style="font-size:1.2rem;margin-bottom:.5rem">Run security tests</div>
-          <div style="color:var(--text-secondary);font-size:.88rem;margin-bottom:1.5rem">34 tests: valid flow, tampering, replay, invalid key</div>
-          <button class="btn btn-primary" onclick="runTests()" id="runTestsBtn"><i class="fas fa-play"></i> Chạy test suite</button>
+        <p class="page-desc">34 test cases covering valid flows, tampering detection, replay protection, and invalid key handling.</p>
+        <div class="grid-3" style="margin-bottom:1.5rem">
+          <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value">8</div><div class="stat-label">Valid Flow Tests</div></div>
+          <div class="stat-card"><div class="stat-icon">🛡️</div><div class="stat-value">6</div><div class="stat-label">Tampering Tests</div></div>
+          <div class="stat-card"><div class="stat-icon">🔄</div><div class="stat-value">10</div><div class="stat-label">Replay Tests</div></div>
+          <div class="stat-card"><div class="stat-icon">🔑</div><div class="stat-value">7</div><div class="stat-label">Invalid Key Tests</div></div>
+          <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-value">3</div><div class="stat-label">Benchmark Tests</div></div>
+        </div>
+        <div class="card" style="text-align:center;padding:2.5rem">
+          <div style="font-size:3rem;margin-bottom:1rem">🧪</div>
+          <div style="font-size:1.2rem;margin-bottom:.5rem;font-weight:600">Run All Security Tests</div>
+          <div style="color:var(--text-secondary);font-size:.88rem;margin-bottom:1.5rem">Tests: key generation, signing, verification, tampering (modify/missing/reorder), replay (nonce/timestamp/sequence), invalid keys (wrong key/algo/empty)</div>
+          <button class="btn btn-primary" onclick="runTests()" id="runTestsBtn"><i class="fas fa-play"></i> Execute Test Suite</button>
           <div id="testResult" style="margin-top:1.5rem"></div>
         </div>
       </div>
 
-      <!-- ===== PROFILE ===== -->
-      <div class="section" id="section-profile">
-        <h2 class="page-title">👤 Hồ sơ</h2>
-        <p class="page-desc">Thông tin tài khoản của bạn.</p>
-        <div class="card">
-          <div id="profileContent">Đang tải...</div>
-        </div>
-      </div>
-
+      <!-- PROFILE -->
+      <div class="section" id="section-profile"><h2 class="page-title">👤 Profile</h2><p class="page-desc">Your account information.</p><div class="card"><div id="profileContent">Loading...</div></div></div>
     </div>
   </div>
 </div>
 
 <script>
-// ============================================================
-// STATE
-// ============================================================
 let currentUser = null;
 let selectedRecipients = new Set();
 
-// ============================================================
-// AUTH
-// ============================================================
+// ===== AUTH =====
 function switchAuthTab(tab) {
   document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
@@ -604,570 +492,253 @@ function switchAuthTab(tab) {
   document.querySelector(`.auth-tab[onclick*="${tab}"]`).classList.add('active');
   document.getElementById('authError').style.display = 'none';
 }
-
 function showAuthError(msg) {
   const el = document.getElementById('authError');
-  el.textContent = msg;
-  el.style.display = 'block';
+  el.textContent = msg; el.style.display = 'block';
 }
-
 function selectAccountType(type) {
   document.querySelectorAll('.account-type-btn').forEach(b => b.classList.remove('active'));
   event.currentTarget.classList.add('active');
   document.getElementById('regAccountType').value = type;
 }
-
 function doLogin() {
-  const username = document.getElementById('loginUsername').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  if (!username || !password) { showAuthError('Vui lòng nhập username và password'); return; }
+  const u = document.getElementById('loginUsername').value.trim();
+  const p = document.getElementById('loginPassword').value;
+  if (!u||!p) { showAuthError('Enter username and password'); return; }
   const btn = document.getElementById('loginBtn');
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Đang đăng nhập...';
-  fetch('/api/auth/login', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})})
-  .then(r=>r.json()).then(data=>{
-    if(data.success){ currentUser=data.user; enterApp(data.user); }
-    else showAuthError(data.error||'Sai username hoặc password');
-  }).catch(e=>showAuthError(e.message))
-  .finally(()=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> Đăng nhập'});
+  btn.disabled=true; btn.innerHTML = '<span class="spinner"></span> Logging in...';
+  fetch('/api/auth/login', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})})
+  .then(r=>r.json()).then(d=>{if(d.success){currentUser=d.user;enterApp(d.user)}else showAuthError(d.error||'Login failed')})
+  .catch(e=>showAuthError(e.message)).finally(()=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> Login'});
 }
-
-function quickLogin(username, password) {
-  document.getElementById('loginUsername').value = username;
-  document.getElementById('loginPassword').value = password;
-  doLogin();
+function quickLogin(u,p) {
+  document.getElementById('loginUsername').value=u; document.getElementById('loginPassword').value=p; doLogin();
 }
-
 function doRegister() {
-  const username = document.getElementById('regUsername').value.trim();
-  const password = document.getElementById('regPassword').value;
-  const password2 = document.getElementById('regPassword2').value;
-  const full_name = document.getElementById('regFullname').value.trim();
-  const account_type = document.getElementById('regAccountType').value;
-  const email = document.getElementById('regEmail').value.trim();
-  const phone = document.getElementById('regPhone').value.trim();
-  if(!username||!password||!full_name){showAuthError('Vui lòng điền đủ thông tin');return}
-  if(password!==password2){showAuthError('Mật khẩu không khớp');return}
-  if(password.length<4){showAuthError('Mật khẩu tối thiểu 4 ký tự');return}
-  const btn = document.getElementById('regBtn');
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Đang đăng ký...';
-  fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password,full_name,account_type,email,phone})})
-  .then(r=>r.json()).then(data=>{
-    if(data.success){currentUser=data.user;enterApp(data.user)}
-    else showAuthError(data.error||'Đăng ký thất bại');
-  }).catch(e=>showAuthError(e.message))
-  .finally(()=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-user-plus"></i> Đăng ký'});
+  const u=document.getElementById('regUsername').value.trim(), p=document.getElementById('regPassword').value, p2=document.getElementById('regPassword2').value;
+  const fn=document.getElementById('regFullname').value.trim(), at=document.getElementById('regAccountType').value;
+  const em=document.getElementById('regEmail').value.trim(), ph=document.getElementById('regPhone').value.trim();
+  if(!u||!p||!fn){showAuthError('Fill required fields');return}
+  if(p!==p2){showAuthError('Passwords mismatch');return}
+  if(p.length<4){showAuthError('Password min 4 chars');return}
+  const btn=document.getElementById('regBtn'); btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Registering...';
+  fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p,full_name:fn,account_type:at,email:em,phone:ph})})
+  .then(r=>r.json()).then(d=>{if(d.success){currentUser=d.user;enterApp(d.user)}else showAuthError(d.error||'Register failed')})
+  .catch(e=>showAuthError(e.message)).finally(()=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-user-plus"></i> Register'});
 }
-
 function doLogout() {
   fetch('/api/auth/logout',{method:'POST'}).then(()=>{
-    document.getElementById('app').style.display='none';
-    document.getElementById('authPage').style.display='flex';
-    currentUser=null;
+    document.getElementById('app').style.display='none'; document.getElementById('authPage').style.display='flex'; currentUser=null;
   });
 }
-
 function enterApp(user) {
-  document.getElementById('authPage').style.display='none';
-  document.getElementById('app').style.display='block';
-  document.getElementById('navUserName').textContent = user.full_name;
-  document.getElementById('navUserType').textContent = user.account_type==='business'?'Doanh nghiệp':'Cá nhân';
-  document.getElementById('navAvatar').textContent = user.full_name.charAt(0).toUpperCase();
-  switchSection('dashboard');
-  refreshDashboard();
-  loadSampleContract();
+  document.getElementById('authPage').style.display='none'; document.getElementById('app').style.display='block';
+  document.getElementById('navUserName').textContent=user.full_name;
+  document.getElementById('navUserType').textContent=user.account_type==='business'?'Business':'Individual';
+  document.getElementById('navAvatar').textContent=user.full_name.charAt(0).toUpperCase();
+  switchSection('dashboard'); refreshDashboard(); loadSampleContract();
 }
 
-// ============================================================
-// NAVIGATION
-// ============================================================
-function switchSection(section) {
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+// ===== NAV =====
+function switchSection(s) {
+  document.querySelectorAll('.section').forEach(e=>e.classList.remove('active'));
   document.querySelectorAll('.sidebar-btn').forEach(b=>b.classList.remove('active'));
-  const sec = document.getElementById('section-'+section);
-  if(sec) sec.classList.add('active');
-  document.querySelectorAll('.sidebar-btn').forEach(b=>{
-    const txt=b.textContent.toLowerCase().trim();
-    const map={dashboard:'tổng quan',keys:'khóa',create:'tạo',sent:'gửi',received:'nhận',attack:'tấn công',tests:'test',profile:'hồ sơ'};
-    if(txt.includes(map[section]||'')) b.classList.add('active');
-  });
-  if(section==='keys') refreshKeys();
-  if(section==='dashboard') refreshDashboard();
-  if(section==='create') loadRecipients();
+  const sec=document.getElementById('section-'+s); if(sec) sec.classList.add('active');
+  const map={dashboard:'dashboard',keys:'key',create:'create',sent:'sent',received:'received',tests:'test',profile:'profile'};
+  document.querySelectorAll('.sidebar-btn').forEach(b=>{if(b.textContent.toLowerCase().includes(map[s]||''))b.classList.add('active')});
+  if(s==='keys') refreshKeys(); if(s==='dashboard') refreshDashboard(); if(s==='create') loadRecipients();
 }
-
 function backToContracts() {
-  const contract = window._lastContractView;
-  if(contract==='sent') switchSection('sent');
-  else switchSection('received');
+  const v = window._lastContractView; switchSection(v==='sent'?'sent':'received');
 }
 
-// ============================================================
-// DASHBOARD
-// ============================================================
+// ===== DASHBOARD =====
 function refreshDashboard() {
-  fetch('/api/contracts/list').then(r=>r.json()).then(data=>{
-    document.getElementById('dashSent').textContent=data.sent.length;
-    document.getElementById('dashReceived').textContent=data.received.length;
-  });
-  fetch('/api/keys/status').then(r=>r.json()).then(data=>{
-    document.getElementById('dashKeys').textContent=data.keys.length;
-  });
+  fetch('/api/contracts/list').then(r=>r.json()).then(d=>{document.getElementById('dashSent').textContent=d.sent.length;document.getElementById('dashReceived').textContent=d.received.length});
+  fetch('/api/keys/status').then(r=>r.json()).then(d=>{document.getElementById('dashKeys').textContent=d.keys.length});
 }
 
-// ============================================================
-// KEYS
-// ============================================================
+// ===== KEYS =====
 function refreshKeys() {
-  fetch('/api/keys/status').then(r=>r.json()).then(data=>{
+  fetch('/api/keys/status').then(r=>r.json()).then(d=>{
     const list=document.getElementById('keyList');
-    if(data.keys.length>0){
-      list.innerHTML=data.keys.map(k=>`
-        <div class="part-card" style="margin-bottom:.5rem">
-          <div class="part-header"><span class="part-id">${k.algorithm}</span><span class="badge badge-success">✓ Active</span></div>
-          <div style="font-family:var(--font-mono);font-size:.68rem;color:var(--text-muted);margin-top:6px;word-break:break-all">${k.public_key}</div>
-        </div>`
-      ).join('')+`<div style="margin-top:.75rem;padding:.75rem;background:var(--bg-primary);border-radius:var(--radius-sm);font-size:.7rem;color:var(--text-muted)">📁 ${data.key_dir}</div>`;
-    } else {
-      list.innerHTML='<div style="color:var(--text-muted);padding:2rem;text-align:center">Chưa có khóa. Tạo key pair mới.</div>';
-    }
+    if(d.keys.length>0) list.innerHTML=d.keys.map(k=>`<div class="part-card" style="margin-bottom:.5rem"><div class="part-header"><span class="part-id">${k.algorithm}</span><span class="badge badge-success">✓ Active</span></div><div style="font-family:var(--font-mono);font-size:.68rem;color:var(--text-muted);margin-top:6px;word-break:break-all">${k.public_key}</div></div>`).join('')+`<div style="margin-top:.75rem;padding:.75rem;background:var(--bg-secondary);border-radius:var(--radius-sm);font-size:.7rem;color:var(--text-muted)">📁 ${d.key_dir}</div>`;
+    else list.innerHTML='<div style="color:var(--text-muted);padding:2rem;text-align:center">No keys. Generate a key pair.</div>';
   });
 }
-
 function generateKeys() {
   const algo=document.getElementById('keyAlgorithm').value;
-  const btn=document.getElementById('genKeyBtn');
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Generating...';
+  const btn=document.getElementById('genKeyBtn'); btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Generating...';
   fetch('/api/keys/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({algorithm:algo})})
-  .then(r=>r.json()).then(data=>{
-    btn.disabled=false;btn.innerHTML='<i class="fas fa-key"></i> Tạo khóa';
+  .then(r=>r.json()).then(d=>{
+    btn.disabled=false; btn.innerHTML='<i class="fas fa-key"></i> Generate Keys';
     const el=document.getElementById('keyResult');
-    if(data.success) el.innerHTML=`<div class="result-box result-success animate-in"><span>✅</span><div><strong>${data.message}</strong></div></div>`;
-    else el.innerHTML=`<div class="result-box result-error"><span>❌</span> ${data.error}</div>`;
+    if(d.success) el.innerHTML=`<div class="result-box result-success animate-in"><span>✅</span><div><strong>${d.message}</strong></div></div>`;
+    else el.innerHTML=`<div class="result-box result-error"><span>❌</span> ${d.error}</div>`;
     refreshKeys();
-  }).catch(e=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-key"></i> Tạo khóa'});
+  }).catch(e=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-key"></i> Generate Keys'});
 }
 
-// ============================================================
-// RECIPIENTS
-// ============================================================
+// ===== UPLOAD =====
+function uploadFile() {
+  const fi = document.getElementById('fileUpload');
+  if(!fi.files||!fi.files[0]){alert('Select a file');return}
+  const fd = new FormData(); fd.append('file', fi.files[0]);
+  showLoading('Uploading...');
+  fetch('/api/upload',{method:'POST',body:fd})
+  .then(r=>r.json()).then(d=>{
+    hideLoading();
+    if(d.success){document.getElementById('contractContent').value=d.content;if(!document.getElementById('contractTitle').value)document.getElementById('contractTitle').value=d.filename.replace(/\.[^/.]+$/,'')}
+    else alert('Error: '+d.error);
+  }).catch(e=>{hideLoading();alert('Error: '+e.message)});
+}
+
+// ===== RECIPIENTS =====
 function loadRecipients() {
-  fetch('/api/users/list').then(r=>r.json()).then(data=>{
-    if(!data.success) return;
-    const container=document.getElementById('recipientList');
-    if(data.users.length===0){
-      container.innerHTML='<span style="color:var(--text-muted)">Không có người dùng khác</span>';
-      return;
-    }
+  fetch('/api/users/list').then(r=>r.json()).then(d=>{
+    if(!d.success) return;
+    document.getElementById('recipientList').innerHTML = d.users.length===0 ? '<span style="color:var(--text-muted)">No other users</span>'
+      : d.users.map(u => `<div class="recipient-tag" data-username="${u.username}" onclick="toggleRecipient('${u.username}')">${u.account_type==='business'?'🏢':'👤'} ${u.full_name}<span style="font-size:.65rem;color:var(--text-muted)">@${u.username}</span></div>`).join('');
     selectedRecipients.clear();
-    container.innerHTML = data.users.map(u => `
-      <div class="recipient-tag" data-username="${u.username}" onclick="toggleRecipient('${u.username}')">
-        ${u.account_type==='business'?'🏢':'👤'} ${u.full_name}
-        <span style="font-size:.65rem;color:var(--text-muted)">@${u.username}</span>
-      </div>
-    `).join('');
   });
 }
-
-function toggleRecipient(username) {
-  const el = document.querySelector(`.recipient-tag[data-username="${username}"]`);
-  if(selectedRecipients.has(username)){
-    selectedRecipients.delete(username);
-    el.classList.remove('selected');
-  } else {
-    selectedRecipients.add(username);
-    el.classList.add('selected');
-  }
+function toggleRecipient(u) {
+  const el = document.querySelector(`.recipient-tag[data-username="${u}"]`);
+  if(selectedRecipients.has(u)){selectedRecipients.delete(u);el.classList.remove('selected')}
+  else {selectedRecipients.add(u);el.classList.add('selected')}
 }
 
-// ============================================================
-// CONTRACTS
-// ============================================================
+// ===== CONTRACTS =====
 function loadSampleContract() {
-  fetch('/api/sample/contract').then(r=>r.json()).then(data=>{
-    if(data.success){
-      document.getElementById('contractTitle').value = 'Hợp đồng hợp tác kinh doanh';
-      document.getElementById('contractContent').value = data.contract;
-    }
-  });
+  fetch('/api/sample/contract').then(r=>r.json()).then(d=>{if(d.success){document.getElementById('contractTitle').value='Business Cooperation Contract';document.getElementById('contractContent').value=d.contract}});
 }
-
 function createContract() {
-  const title=document.getElementById('contractTitle').value.trim();
-  const content=document.getElementById('contractContent').value.trim();
-  const num_parts=parseInt(document.getElementById('createNumParts').value);
-  const recipients=Array.from(selectedRecipients);
-  if(!title){alert('Vui lòng nhập tiêu đề');return}
-  if(!content||content==='Nhập nội dung hợp đồng tại đây...'){alert('Vui lòng nhập nội dung');return}
-  if(recipients.length===0){alert('Vui lòng chọn ít nhất 1 người nhận');return}
-  const btn=document.getElementById('createBtn');
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Đang tạo & ký...';
-  showLoading('Đang tạo hợp đồng...');
-  fetch('/api/contracts/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title,content,recipients,num_parts})})
-  .then(r=>r.json()).then(data=>{
-    if(!data.success){hideLoading();btn.disabled=false;btn.innerHTML='<i class="fas fa-file-signature"></i> Tạo & Ký hợp đồng';document.getElementById('createResult').innerHTML=`<div class="result-box result-error"><span>❌</span>${data.error}</div>`;return}
-    // Auto sign
-    return fetch(`/api/contracts/${data.contract.id}/sign`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({algorithm:'ed25519'})})
-    .then(r=>r.json()).then(signData=>{
-      hideLoading();btn.disabled=false;btn.innerHTML='<i class="fas fa-file-signature"></i> Tạo & Ký hợp đồng';
+  const t=document.getElementById('contractTitle').value.trim(), c=document.getElementById('contractContent').value.trim(), n=parseInt(document.getElementById('createNumParts').value), r=Array.from(selectedRecipients);
+  if(!t){alert('Enter title');return} if(!c||c==='Enter contract content here...'){alert('Enter content');return} if(!r.length){alert('Select at least 1 recipient');return}
+  const btn=document.getElementById('createBtn'); btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Creating & signing...';
+  showLoading('Creating contract...');
+  fetch('/api/contracts/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:t,content:c,recipients:r,num_parts:n})})
+  .then(res=>res.json()).then(d=>{
+    if(!d.success){hideLoading();btn.disabled=false;btn.innerHTML='<i class="fas fa-file-signature"></i> Create & Sign Contract';document.getElementById('createResult').innerHTML=`<div class="result-box result-error"><span>❌</span>${d.error}</div>`;return}
+    return fetch(`/api/contracts/${d.contract.id}/sign`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({algorithm:'ed25519'})})
+    .then(res=>res.json()).then(sd=>{
+      hideLoading();btn.disabled=false;btn.innerHTML='<i class="fas fa-file-signature"></i> Create & Sign Contract';
       const el=document.getElementById('createResult');
-      if(signData.success){
-        el.innerHTML=`
-          <div class="result-box result-success animate-in">
-            <span>✅</span>
-            <div>
-              <strong>Hợp đồng đã được tạo và ký thành công!</strong><br>
-              <span style="font-size:.82rem;color:var(--text-secondary)">
-                ID: ${signData.contract_id} | ${signData.total_parts} phần | Gửi đến: ${recipients.join(', ')}
-              </span>
-            </div>
-          </div>
-          <div style="margin-top:1rem;padding:.75rem;background:var(--bg-primary);border-radius:var(--radius-sm)">
-            <div style="font-weight:600;margin-bottom:.5rem">📦 Các phần đã ký</div>
-            <div class="parts-grid">${signData.parts.map(p=>`
-              <div class="part-card">
-                <div class="part-header"><span class="part-id">${p.part_id}</span><span class="part-seq">Seq: ${p.sequence_number}</span></div>
-                <div style="display:flex;gap:1rem;font-size:.68rem;color:var(--text-muted)"><span>Hash: ${p.hash}</span><span>Sig: ${p.signature}</span></div>
-                <div style="font-size:.75rem;color:var(--text-secondary);margin-top:4px;padding:6px;background:var(--bg-primary);border-radius:4px;font-family:var(--font-mono)">${p.content_preview}</div>
-              </div>
-            `).join('')}</div>
-          </div>
-          <div style="margin-top:.75rem">
-            <div style="font-weight:600;margin-bottom:.5rem">📋 Manifest</div>
-            <div class="json-preview">${signData.manifest}</div>
-          </div>
-          <div class="btn-group" style="margin-top:1rem">
-            <button class="btn btn-success btn-sm" onclick="showContractDetail('${data.contract.id}','sent')">📋 Xem chi tiết</button>
-            <button class="btn btn-secondary btn-sm" onclick="switchSection('sent')">📤 Xem hợp đồng đã gửi</button>
-          </div>
-        `;
+      if(sd.success){
+        el.innerHTML=`<div class="result-box result-success animate-in"><span>✅</span><div><strong>Contract created and signed!</strong><br><span style="font-size:.82rem;color:var(--text-secondary)">ID: ${sd.contract_id} | ${sd.total_parts} parts | Sent to: ${r.join(', ')}</span></div></div>
+          <div style="margin-top:1rem;padding:.75rem;background:var(--bg-secondary);border-radius:var(--radius-sm)"><div style="font-weight:600;margin-bottom:.5rem">📦 Signed Parts</div><div class="parts-grid">${sd.parts.map(p=>`<div class="part-card"><div class="part-header"><span class="part-id">${p.part_id}</span><span class="part-seq">Seq: ${p.sequence_number}</span></div><div style="font-size:.68rem;color:var(--text-muted)">Hash: ${p.hash} | Sig: ${p.signature}</div><div style="font-size:.75rem;color:var(--text-secondary);margin-top:4px;padding:6px;background:var(--bg-primary);border-radius:4px;font-family:var(--font-mono)">${p.content_preview}</div></div>`).join('')}</div></div>
+          <div style="margin-top:.75rem"><div style="font-weight:600;margin-bottom:.5rem">📋 Manifest</div><div class="json-preview">${sd.manifest}</div></div>
+          <div class="btn-group" style="margin-top:1rem"><button class="btn btn-success btn-sm" onclick="showContractDetail('${d.contract.id}','sent')">📋 View Details</button><button class="btn btn-secondary btn-sm" onclick="switchSection('sent')">📤 View Sent</button></div>`;
         refreshDashboard();
-      } else {
-        el.innerHTML=`<div class="result-box result-error"><span>❌</span> Ký thất bại: ${signData.error}</div>`;
-      }
+      } else el.innerHTML=`<div class="result-box result-error"><span>❌</span> Sign failed: ${sd.error}</div>`;
     });
-  }).catch(e=>{hideLoading();btn.disabled=false;btn.innerHTML='<i class="fas fa-file-signature"></i> Tạo & Ký hợp đồng'});
+  }).catch(e=>{hideLoading();btn.disabled=false;btn.innerHTML='<i class="fas fa-file-signature"></i> Create & Sign Contract'});
 }
 
-// ============================================================
-// CONTRACT LISTS
-// ============================================================
+// ===== LISTS =====
 function loadSentContracts() {
   const el=document.getElementById('sentContractsList');
-  el.innerHTML='<div style="text-align:center;padding:2rem"><span class="spinner"></span> Đang tải...</div>';
-  fetch('/api/contracts/list').then(r=>r.json()).then(data=>{
-    if(data.sent.length===0){
-      el.innerHTML=`<div class="empty-state"><div class="icon">📄</div><h3>Chưa có hợp đồng nào</h3><p>Tạo hợp đồng mới để bắt đầu</p><button class="btn btn-primary" style="margin-top:1rem" onclick="switchSection('create')"><i class="fas fa-plus"></i> Tạo hợp đồng</button></div>`;
-      return;
-    }
-    el.innerHTML=data.sent.map(c=>`
-      <div class="contract-card animate-in" onclick="showContractDetail('${c.id}','sent')">
-        <div class="contract-card-header">
-          <span class="contract-title">${c.title}</span>
-          <span class="badge ${c.status==='verified'?'badge-success':c.status==='signed'?'badge-info':'badge-warning'}">${c.status==='verified'?'✓ Đã xác minh':c.status==='signed'?'Đã ký':'Chờ ký'}</span>
-        </div>
-        <div class="contract-meta">
-          <span><i class="far fa-paper-plane"></i> ${c.recipients.join(', ')}</span>
-          <span><i class="far fa-clock"></i> ${new Date(c.created_at).toLocaleDateString('vi-VN')}</span>
-          <span><i class="fas fa-layer-group"></i> ${c.num_parts} phần</span>
-        </div>
-      </div>
-    `).join('');
+  el.innerHTML='<div style="text-align:center;padding:2rem"><span class="spinner"></span> Loading...</div>';
+  fetch('/api/contracts/list').then(r=>r.json()).then(d=>{
+    if(!d.sent.length) el.innerHTML=`<div class="empty-state"><div class="icon">📄</div><h3>No contracts yet</h3><p>Create a new contract to start</p><button class="btn btn-primary" style="margin-top:1rem" onclick="switchSection('create')"><i class="fas fa-plus"></i> Create</button></div>`;
+    else el.innerHTML=d.sent.map(c=>`<div class="contract-card animate-in" onclick="showContractDetail('${c.id}','sent')"><div class="contract-card-header"><span class="contract-title">${c.title}</span><span class="badge ${c.status==='verified'?'badge-success':c.status==='signed'?'badge-info':'badge-warning'}">${c.status==='verified'?'✓ Verified':c.status==='signed'?'Signed':'Pending'}</span></div><div class="contract-meta"><span><i class="far fa-paper-plane"></i> ${c.recipients.join(', ')}</span><span><i class="far fa-clock"></i> ${new Date(c.created_at).toLocaleDateString()}</span><span><i class="fas fa-layer-group"></i> ${c.num_parts} parts</span></div></div>`).join('');
   });
 }
-
 function loadReceivedContracts() {
   const el=document.getElementById('receivedContractsList');
-  el.innerHTML='<div style="text-align:center;padding:2rem"><span class="spinner"></span> Đang tải...</div>';
-  fetch('/api/contracts/list').then(r=>r.json()).then(data=>{
-    if(data.received.length===0){
-      el.innerHTML=`<div class="empty-state"><div class="icon">📥</div><h3>Chưa có hợp đồng nào</h3><p>Bạn chưa được mời tham gia hợp đồng nào</p></div>`;
-      return;
-    }
-    el.innerHTML=data.received.map(c=>{
-      const senderMatch = c.sender===currentUser?.username ? 'Tôi' : c.sender;
-      return `<div class="contract-card animate-in" onclick="showContractDetail('${c.id}','received')">
-        <div class="contract-card-header">
-          <span class="contract-title">${c.title}</span>
-          <span class="badge ${c.status==='verified'?'badge-success':c.status==='signed'?'badge-info':'badge-warning'}">${c.status==='verified'?'✓ Đã xác minh':c.status==='signed'?'Đã ký':'Chờ ký'}</span>
-        </div>
-        <div class="contract-meta">
-          <span><i class="fas fa-user"></i> Gửi bởi: ${c.sender}</span>
-          <span><i class="far fa-clock"></i> ${new Date(c.created_at).toLocaleDateString('vi-VN')}</span>
-          <span><i class="fas fa-layer-group"></i> ${c.num_parts} phần</span>
-        </div>
-      </div>`;
-    }).join('');
+  el.innerHTML='<div style="text-align:center;padding:2rem"><span class="spinner"></span> Loading...</div>';
+  fetch('/api/contracts/list').then(r=>r.json()).then(d=>{
+    if(!d.received.length) el.innerHTML=`<div class="empty-state"><div class="icon">📥</div><h3>No contracts received</h3><p>You haven't been invited to any contracts yet</p></div>`;
+    else el.innerHTML=d.received.map(c=>`<div class="contract-card animate-in" onclick="showContractDetail('${c.id}','received')"><div class="contract-card-header"><span class="contract-title">${c.title}</span><span class="badge ${c.status==='verified'?'badge-success':c.status==='signed'?'badge-info':'badge-warning'}">${c.status==='verified'?'✓ Verified':c.status==='signed'?'Signed':'Pending'}</span></div><div class="contract-meta"><span><i class="fas fa-user"></i> From: ${c.sender}</span><span><i class="far fa-clock"></i> ${new Date(c.created_at).toLocaleDateString()}</span><span><i class="fas fa-layer-group"></i> ${c.num_parts} parts</span></div></div>`).join('');
   });
 }
 
-// ============================================================
-// CONTRACT DETAIL
-// ============================================================
-function showContractDetail(contractId, view) {
-  window._lastContractView = view;
-  switchSection('detail');
-  const el=document.getElementById('contractDetail');
-  el.innerHTML='<div style="text-align:center;padding:2rem"><span class="spinner"></span> Đang tải...</div>';
-  fetch(`/api/contracts/${contractId}`).then(r=>r.json()).then(data=>{
-    if(!data.success){el.innerHTML=`<div class="result-box result-error">❌ ${data.error}</div>`;return}
-    const c=data.contract;
-    const isSender = c.sender===currentUser?.username;
-    el.innerHTML=`
-      <div class="card animate-in">
-        <div class="card-header">
-          <div>
-            <div class="card-title" style="font-size:1.15rem">${c.title}</div>
-            <div class="card-subtitle">ID: ${c.id}</div>
-          </div>
-          <span class="badge ${c.status==='verified'?'badge-success':c.status==='signed'?'badge-info':'badge-warning'}">${c.status==='verified'?'✓ Đã xác minh':c.status==='signed'?'Đã ký':'Chờ ký'}</span>
-        </div>
-        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.25rem;padding:0.75rem;background:var(--bg-primary);border-radius:var(--radius-sm)">
-          <div><span style="color:var(--text-muted);font-size:.78rem">Người gửi</span><div style="font-weight:600">${c.sender}</div></div>
-          <div><span style="color:var(--text-muted);font-size:.78rem">Người nhận</span><div style="font-weight:600">${c.recipients.join(', ')}</div></div>
-          <div><span style="color:var(--text-muted);font-size:.78rem">Ngày tạo</span><div style="font-weight:600">${new Date(c.created_at).toLocaleDateString('vi-VN')}</div></div>
-          <div><span style="color:var(--text-muted);font-size:.78rem">Số phần</span><div style="font-weight:600">${c.num_parts}</div></div>
-        </div>
-        <div style="margin-bottom:1rem">
-          <div style="font-weight:600;margin-bottom:.5rem">📄 Nội dung</div>
-          <div style="background:var(--bg-primary);border-radius:var(--radius-sm);padding:.75rem;font-family:var(--font-mono);font-size:.78rem;white-space:pre-wrap;max-height:200px;overflow-y:auto">${c.content}</div>
-        </div>
-        ${c.manifest ? `
-        <div style="margin-bottom:1rem">
-          <div style="font-weight:600;margin-bottom:.5rem">📋 Manifest (đã ký)</div>
-          <div class="json-preview">${typeof c.manifest==='string'?c.manifest:JSON.stringify(c.manifest,null,2)}</div>
-        </div>` : ''}
-        ${c.parts && c.parts.length>0 ? `
-        <div style="margin-bottom:1rem">
-          <div style="font-weight:600;margin-bottom:.5rem">📦 Các phần hợp đồng (${c.parts.length})</div>
-          <div class="parts-grid">${c.parts.map(p=>`
-            <div class="part-card">
-              <div class="part-header"><span class="part-id">${p.part_id||'N/A'}</span><span class="part-seq">Seq: ${p.sequence_number||'N/A'}</span></div>
-              <div style="font-size:.68rem;color:var(--text-muted);word-break:break-all">Hash: ${p.hash?.substring(0,32)||'N/A'}...</div>
-            </div>
-          `).join('')}</div>
-        </div>` : ''}
-        <div class="btn-group" style="margin-top:1rem">
-          ${isSender && c.status==='signed' ? `
-            <button class="btn btn-success btn-sm" onclick="doVerify('${c.id}')"><i class="fas fa-check-circle"></i> Xác minh</button>
-          ` : ''}
-          ${!isSender && c.status==='signed' && !(c.accepted_by||[]).includes(currentUser?.username) ? `
-            <button class="btn btn-primary btn-sm" onclick="acceptContract('${c.id}')"><i class="fas fa-check-double"></i> Xác nhận nhận hợp đồng</button>
-          ` : ''}
-          ${!isSender && (c.accepted_by||[]).includes(currentUser?.username) ? `
-            <span class="badge badge-success" style="font-size:.82rem;padding:6px 14px">✅ Đã xác nhận nhận hợp đồng</span>
-          ` : ''}
-          ${isSender ? `
-            <button class="btn btn-secondary btn-sm" onclick='runAttackOnContract("${c.id}","modify")'><i class="fas fa-skull"></i> Thử tấn công</button>
-            <button class="btn btn-danger btn-sm" onclick='deleteContract("${c.id}")'><i class="fas fa-trash"></i> Xóa</button>
-          ` : ''}
-        </div>
-        <div id="detailAction" style="margin-top:1rem"></div>
+// ===== DETAIL =====
+function showContractDetail(id, view) {
+  window._lastContractView = view; switchSection('detail');
+  const el=document.getElementById('contractDetail'); el.innerHTML='<div style="text-align:center;padding:2rem"><span class="spinner"></span> Loading...</div>';
+  fetch(`/api/contracts/${id}`).then(r=>r.json()).then(d=>{
+    if(!d.success){el.innerHTML=`<div class="result-box result-error">❌ ${d.error}</div>`;return}
+    const c=d.contract, isSender=c.sender===currentUser?.username;
+    el.innerHTML=`<div class="card animate-in"><div class="card-header"><div><div class="card-title" style="font-size:1.15rem">${c.title}</div><div class="card-subtitle">ID: ${c.id}</div></div><span class="badge ${c.status==='verified'?'badge-success':c.status==='signed'?'badge-info':'badge-warning'}">${c.status==='verified'?'✓ Verified':c.status==='signed'?'Signed':'Pending'}</span></div>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.25rem;padding:.75rem;background:var(--bg-secondary);border-radius:var(--radius-sm)">
+        <div><span style="color:var(--text-muted);font-size:.78rem">Sender</span><div style="font-weight:600">${c.sender}</div></div>
+        <div><span style="color:var(--text-muted);font-size:.78rem">Recipients</span><div style="font-weight:600">${c.recipients.join(', ')}</div></div>
+        <div><span style="color:var(--text-muted);font-size:.78rem">Created</span><div style="font-weight:600">${new Date(c.created_at).toLocaleDateString()}</div></div>
+        <div><span style="color:var(--text-muted);font-size:.78rem">Parts</span><div style="font-weight:600">${c.num_parts}</div></div>
+        ${(c.accepted_by||[]).length>0?`<div><span style="color:var(--text-muted);font-size:.78rem">Accepted by</span><div style="font-weight:600">${c.accepted_by.join(', ')}</div></div>`:''}
       </div>
-    `;
+      <div style="margin-bottom:1rem"><div style="font-weight:600;margin-bottom:.5rem">📄 Content</div><div style="background:var(--bg-secondary);border-radius:var(--radius-sm);padding:.75rem;font-family:var(--font-mono);font-size:.78rem;white-space:pre-wrap;max-height:200px;overflow-y:auto">${c.content}</div></div>
+      ${c.manifest?`<div style="margin-bottom:1rem"><div style="font-weight:600;margin-bottom:.5rem">📋 Manifest (Signed)</div><div class="json-preview">${typeof c.manifest==='string'?c.manifest:JSON.stringify(c.manifest,null,2)}</div></div>`:''}
+      ${c.parts&&c.parts.length>0?`<div style="margin-bottom:1rem"><div style="font-weight:600;margin-bottom:.5rem">📦 Contract Parts (${c.parts.length})</div><div class="parts-grid">${c.parts.map(p=>`<div class="part-card"><div class="part-header"><span class="part-id">${p.part_id||'N/A'}</span><span class="part-seq">Seq: ${p.sequence_number||'N/A'}</span></div><div style="font-size:.68rem;color:var(--text-muted);word-break:break-all">Hash: ${p.hash?.substring(0,32)||'N/A'}...</div></div>`).join('')}</div></div>`:''}
+      <div class="btn-group" style="margin-top:1rem">
+        ${isSender&&c.status==='signed'?`<button class="btn btn-success btn-sm" onclick="doVerify('${c.id}')"><i class="fas fa-check-circle"></i> Verify</button>`:''}
+        ${!isSender&&c.status==='signed'&&!(c.accepted_by||[]).includes(currentUser?.username)?`<button class="btn btn-primary btn-sm" onclick="acceptContract('${c.id}')"><i class="fas fa-check-double"></i> Accept Contract</button>`:''}
+        ${!isSender&&(c.accepted_by||[]).includes(currentUser?.username)?`<span class="badge badge-success" style="font-size:.82rem;padding:6px 14px">✅ Accepted</span>`:''}
+        ${isSender?`<button class="btn btn-danger btn-sm" onclick="deleteContract('${c.id}')"><i class="fas fa-trash"></i> Delete</button>`:''}
+      </div>
+      <div id="detailAction" style="margin-top:1rem"></div>
+    </div>`;
   });
 }
-
-function doVerify(contractId) {
-  const el=document.getElementById('detailAction');
-  el.innerHTML='<div style="text-align:center;padding:1rem"><span class="spinner"></span> Đang xác minh...</div>';
-  fetch(`/api/contracts/${contractId}/verify`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({algorithm:'ed25519'})})
-  .then(r=>r.json()).then(data=>{
-    if(data.success && data.is_valid){
-      el.innerHTML=`<div class="result-box result-success"><span>✅</span><div><strong>Xác minh THÀNH CÔNG</strong><br><span style="font-size:.82rem">${data.message}</span></div></div>`;
-    } else {
-      el.innerHTML=`<div class="result-box result-error"><span>❌</span><div><strong>Xác minh THẤT BẠI</strong><br><span style="font-size:.82rem">${data.message||data.error}</span></div></div>`;
-    }
-  }).catch(e=>{el.innerHTML=`<div class="result-box result-error">❌ ${e.message}</div>`});
+function doVerify(id) {
+  const el=document.getElementById('detailAction'); el.innerHTML='<div style="text-align:center;padding:1rem"><span class="spinner"></span> Verifying...</div>';
+  fetch(`/api/contracts/${id}/verify`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({algorithm:'ed25519'})})
+  .then(r=>r.json()).then(d=>{el.innerHTML=d.success&&d.is_valid?`<div class="result-box result-success"><span>✅</span><div><strong>Verification PASSED</strong><br><span style="font-size:.82rem">${d.message}</span></div></div>`:`<div class="result-box result-error"><span>❌</span><div><strong>Verification FAILED</strong><br><span style="font-size:.82rem">${d.message||d.error}</span></div></div>`});
+}
+function deleteContract(id) {
+  if(!confirm('Delete this contract?')) return;
+  fetch(`/api/contracts/${id}/delete`,{method:'DELETE'}).then(r=>r.json()).then(d=>{if(d.success){backToContracts();refreshDashboard()}});
+}
+function acceptContract(id) {
+  if(!confirm('Accept this contract?')) return;
+  const el=document.getElementById('detailAction'); el.innerHTML='<div style="text-align:center;padding:1rem"><span class="spinner"></span> Accepting...</div>';
+  fetch(`/api/contracts/${id}/accept`,{method:'POST',headers:{'Content-Type':'application/json'}})
+  .then(r=>r.json()).then(d=>{if(d.success){el.innerHTML='<div class="result-box result-success"><span>✅</span><div><strong>'+d.message+'</strong></div></div>';setTimeout(()=>showContractDetail(id,window._lastContractView),1500)}else el.innerHTML='<div class="result-box result-error"><span>❌</span> '+(d.error||'Failed')+'</div>'});
 }
 
-function deleteContract(contractId) {
-  if(!confirm('Xóa hợp đồng này?')) return;
-  fetch(`/api/contracts/${contractId}/delete`,{method:'DELETE'}).then(r=>r.json()).then(data=>{
-    if(data.success){backToContracts();refreshDashboard()}
-  });
-}
-
-// ============================================================
-// ATTACK SIMULATION
-// ============================================================
-function runAttack(type) {
-  // Get latest signed contract
-  fetch('/api/contracts/list').then(r=>r.json()).then(data=>{
-    const signedContracts = data.sent.filter(c=>c.status==='signed');
-    if(signedContracts.length===0){
-      document.getElementById('attackResult').innerHTML=`<div class="result-box result-info"><span>⚠️</span> Chưa có hợp đồng nào đã ký. Hãy tạo và ký hợp đồng trước.</div>`;
-      return;
-    }
-    runAttackOnContract(signedContracts[0].id, type);
-  });
-}
-
-function runAttackOnContract(contractId, type) {
-  const el=document.getElementById('attackResult');
-  if(!el) return;
-  el.innerHTML='<div style="text-align:center;padding:1rem"><span class="spinner"></span> Đang mô phỏng tấn công...</div>';
-  fetch(`/api/contracts/${contractId}/tamper`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tamper_type:type,part_index:0})})
-  .then(r=>r.json()).then(data=>{
-    if(!data.success){el.innerHTML=`<div class="result-box result-error">❌ ${data.error}</div>`;return}
-    // Now verify
-    fetch(`/api/contracts/${contractId}/verify`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({algorithm:data.algorithm||'ed25519',parts:data.parts,manifest:data.manifest})})
-    .then(r=>r.json()).then(verifyData=>{
-      const icons={'modify':'✏️','remove':'🗑️','reorder':'🔀','hash':'🔢','signature':'🔏'};
-      el.innerHTML=`
-        <div class="card animate-in">
-          <div class="card-header">
-            <div><div class="card-title">🛡️ Kết quả mô phỏng</div>
-            <div class="card-subtitle">${icons[type]||'⚠️'} ${data.tamper_desc}</div></div>
-          </div>
-          <div class="result-box ${verifyData.is_valid?'result-error':'result-success'}">
-            <span>${verifyData.is_valid?'❌':'✅'}</span>
-            <div><strong>${verifyData.is_valid?'⚠️ Hệ thống KHÔNG phát hiện được!':'✅ Hệ thống ĐÃ phát hiện tấn công!'}</strong><br>${verifyData.message}</div>
-          </div>
-        </div>
-      `;
-    });
-  }).catch(e=>{el.innerHTML=`<div class="result-box result-error">❌ ${e.message}</div>`});
-}
-
-// ============================================================
-// TEST SUITE
-// ============================================================
+// ===== TESTS =====
 function runTests() {
-  const btn=document.getElementById('runTestsBtn');
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Running...';
-  showLoading('Đang chạy 34 test cases...');
+  const btn=document.getElementById('runTestsBtn'); btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Running...';
+  showLoading('Executing 34 test cases...');
   fetch('/api/test/run',{method:'POST',headers:{'Content-Type':'application/json'}})
-  .then(r=>r.json()).then(data=>{
-    hideLoading();btn.disabled=false;btn.innerHTML='<i class="fas fa-play"></i> Chạy test suite';
+  .then(r=>r.json()).then(d=>{
+    hideLoading(); btn.disabled=false; btn.innerHTML='<i class="fas fa-play"></i> Execute Test Suite';
     const el=document.getElementById('testResult');
-    el.innerHTML=data.passed
-      ? `<div class="result-box result-success"><span>✅</span><div><strong>All 34 tests PASSED!</strong><br><span style="font-size:.82rem">✓ valid_flow (8) — ✓ tampering (6) — ✓ replay (10) — ✓ invalid_key (7)</span></div></div>`
-      : `<div class="result-box result-error"><span>❌</span> Some tests FAILED</div>`;
-  }).catch(e=>{hideLoading();btn.disabled=false;btn.innerHTML='<i class="fas fa-play"></i> Chạy test suite'});
+    el.innerHTML=d.passed
+      ? `<div class="result-box result-success"><span>✅</span><div><strong>All 34 tests PASSED!</strong><br><span style="font-size:.82rem">✓ valid_flow (8) — ✓ tampering (6) — ✓ replay (10) — ✓ invalid_key (7) — ✓ benchmark (3)</span></div></div>`
+      : `<div class="result-box result-error"><span>❌</span> Some tests FAILED (exit: ${d.exit_code})</div>`;
+  }).catch(e=>{hideLoading();btn.disabled=false;btn.innerHTML='<i class="fas fa-play"></i> Execute Test Suite'});
 }
 
-// ============================================================
-// PROFILE
-// ============================================================
+// ===== PROFILE =====
 function loadProfile() {
-  fetch('/api/users/profile').then(r=>r.json()).then(data=>{
-    if(!data.success) return;
-    const u=data.user;
-    document.getElementById('profileContent').innerHTML=`
-      <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem">
-        <div style="width:72px;height:72px;border-radius:50%;background:var(--gradient-accent);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;font-weight:700">${u.full_name.charAt(0)}</div>
-        <div>
-          <div style="font-size:1.2rem;font-weight:600">${u.full_name}</div>
-          <div class="badge ${u.account_type==='business'?'badge-success':'badge-info'}">${u.account_type==='business'?'🏢 Doanh nghiệp':'👤 Cá nhân'}</div>
-          <div style="font-size:.82rem;color:var(--text-secondary);margin-top:4px">@${u.username}</div>
-        </div>
-      </div>
-      <div class="grid-2">
-        <div><label>Email</label><div style="padding:10px;background:var(--bg-input);border-radius:var(--radius-sm)">${u.email||'Chưa cập nhật'}</div></div>
-        <div><label>Số điện thoại</label><div style="padding:10px;background:var(--bg-input);border-radius:var(--radius-sm)">${u.phone||'Chưa cập nhật'}</div></div>
-        <div><label>ID tài khoản</label><div style="padding:10px;background:var(--bg-input);border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:.78rem">${u.id}</div></div>
-        <div><label>Ngày tạo</label><div style="padding:10px;background:var(--bg-input);border-radius:var(--radius-sm)">${u.created_at ? new Date(u.created_at).toLocaleString('vi-VN') : 'N/A'}</div></div>
-      </div>
-      ${u.public_key_path ? `<div style="margin-top:1rem"><label>Public key path</label><div style="padding:10px;background:var(--bg-input);border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:.78rem">${u.public_key_path}</div></div>` : ''}
-    `;
+  fetch('/api/users/profile').then(r=>r.json()).then(d=>{
+    if(!d.success) return;
+    const u=d.user;
+    document.getElementById('profileContent').innerHTML=`<div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem"><div style="width:72px;height:72px;border-radius:50%;background:var(--gradient-accent);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;font-weight:700">${u.full_name.charAt(0)}</div><div><div style="font-size:1.2rem;font-weight:600">${u.full_name}</div><div class="badge ${u.account_type==='business'?'badge-success':'badge-info'}">${u.account_type==='business'?'🏢 Business':'👤 Individual'}</div><div style="font-size:.82rem;color:var(--text-secondary);margin-top:4px">@${u.username}</div></div></div>
+      <div class="grid-2"><div><label>Email</label><div style="padding:10px;background:var(--bg-secondary);border-radius:var(--radius-sm)">${u.email||'Not set'}</div></div><div><label>Phone</label><div style="padding:10px;background:var(--bg-secondary);border-radius:var(--radius-sm)">${u.phone||'Not set'}</div></div><div><label>ID</label><div style="padding:10px;background:var(--bg-secondary);border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:.78rem">${u.id}</div></div><div><label>Created</label><div style="padding:10px;background:var(--bg-secondary);border-radius:var(--radius-sm)">${u.created_at?new Date(u.created_at).toLocaleString():'N/A'}</div></div></div>
+      ${u.public_key_path?`<div style="margin-top:1rem"><label>Public Key</label><div style="padding:10px;background:var(--bg-secondary);border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:.78rem">${u.public_key_path}</div></div>`:''}`;
   });
 }
 
-// ============================================================
-// FILE UPLOAD
-// ============================================================
-function uploadFile() {
-  const fileInput = document.getElementById('fileUpload');
-  if (!fileInput.files || fileInput.files.length === 0) {
-    alert('Vui lòng chọn file');
-    return;
-  }
-  const file = fileInput.files[0];
-  const formData = new FormData();
-  formData.append('file', file);
-  showLoading('Đang tải file...');
-  fetch('/api/upload', {method:'POST', body: formData})
-  .then(r=>r.json()).then(data=>{
-    hideLoading();
-    if (data.success) {
-      document.getElementById('contractContent').value = data.content;
-      const titleInput = document.getElementById('contractTitle');
-      if (!titleInput.value) {
-        titleInput.value = data.filename.replace(/\.[^/.]+$/, '');
-      }
-    } else {
-      alert('Lỗi: ' + data.error);
-    }
-  }).catch(e=>{hideLoading(); alert('Lỗi: ' + e.message);});
-}
+function showLoading(t){document.getElementById('loadingText').textContent=t;document.getElementById('loadingOverlay').classList.add('show')}
+function hideLoading(){document.getElementById('loadingOverlay').classList.remove('show')}
 
-// ============================================================
-// ACCEPT CONTRACT (for recipients)
-// ============================================================
-function acceptContract(contractId) {
-  if (!confirm('Xác nhận nhận hợp đồng này?')) return;
-  const el = document.getElementById('detailAction');
-  el.innerHTML = '<div style="text-align:center;padding:1rem"><span class="spinner"></span> Đang xác nhận...</div>';
-  fetch(`/api/contracts/${contractId}/accept`, {method:'POST', headers:{'Content-Type':'application/json'}})
-  .then(r=>r.json()).then(data=>{
-    if (data.success) {
-      el.innerHTML = '<div class="result-box result-success"><span>✅</span><div><strong>' + data.message + '</strong></div></div>';
-      // Refresh contract detail
-      setTimeout(() => showContractDetail(contractId, window._lastContractView), 1500);
-    } else {
-      el.innerHTML = '<div class="result-box result-error"><span>❌</span> ' + (data.error||'Failed') + '</div>';
-    }
-  }).catch(e => {el.innerHTML = '<div class="result-box result-error">❌ ' + e.message + '</div>';});
-}
-
-// ============================================================
-// UI HELPERS
-// ============================================================
-function showLoading(text) {
-  document.getElementById('loadingText').textContent=text;
-  document.getElementById('loadingOverlay').classList.add('show');
-}
-function hideLoading() {
-  document.getElementById('loadingOverlay').classList.remove('show');
-}
-
-// ============================================================
-// INIT - Check session on load
-// ============================================================
-fetch('/api/auth/session').then(r=>r.json()).then(data=>{
-  if(data.authenticated && data.user){
-    currentUser=data.user;
-    enterApp(data.user);
-    loadSentContracts();
-    loadReceivedContracts();
-  }
-  // Load sample users
-  fetch('/api/users/list').then(r=>r.json()).then(uData=>{
-    const container=document.getElementById('sampleUsers');
-    if(uData.success && uData.users.length>0){
-      // Add admin + some samples for login
-      const samples = [
-        {user:'admin',pass:'admin123',name:'Admin',type:'individual'},
-        ...uData.users.slice(0,8).map(u=>({user:u.username,pass:'abc123',name:u.full_name,type:u.account_type}))
-      ];
-      container.innerHTML=samples.map(s=>`
-        <div class="sample-user" onclick="quickLogin('${s.user}','${s.pass}')">
-          <strong>@${s.user}</strong>
-          <span>${s.name} <span class="user-type-badge ${s.type}">${s.type==='business'?'DN':'CN'}</span></span>
-        </div>
-      `).join('');
+// ===== INIT =====
+fetch('/api/auth/session').then(r=>r.json()).then(d=>{
+  if(d.authenticated&&d.user){currentUser=d.user;enterApp(d.user);loadSentContracts();loadReceivedContracts()}
+  fetch('/api/users/list').then(r=>r.json()).then(u=>{
+    if(u.success&&u.users.length>0){
+      const samples=[{user:'admin',pass:'admin123',name:'Admin',type:'individual'}];
+      u.users.slice(0,7).forEach(u2=>samples.push({user:u2.username,pass:'abc123',name:u2.full_name,type:u2.account_type}));
+      document.getElementById('sampleUsers').innerHTML=samples.map(s=>`<div class="sample-user" onclick="quickLogin('${s.user}','${s.pass}')"><strong>@${s.user}</strong><span>${s.name} <span class="user-type-badge ${s.type}">${s.type==='business'?'Biz':'Ind'}</span></span></div>`).join('');
     }
   });
 });
 
-// Fix - profile section loading
-const origSwitch = switchSection;
-switchSection = function(section) {
-  origSwitch(section);
-  if(section==='profile') loadProfile();
-  if(section==='sent') loadSentContracts();
-  if(section==='received') loadReceivedContracts();
-};
+const _origSwitch=switchSection;
+switchSection=function(s){_origSwitch(s);if(s==='profile')loadProfile();if(s==='sent')loadSentContracts();if(s==='received')loadReceivedContracts()};
 </script>
 </body>
 </html>

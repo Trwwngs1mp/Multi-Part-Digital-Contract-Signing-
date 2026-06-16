@@ -21,7 +21,7 @@
     "email": "abc@company.com",
     "phone": "0902222222",
     "created_at": "2026-06-16T13:54:23.855430",
-    "public_key_path": ""
+    "public_key_path": "C:\\Users\\Admin\\.contract_signing_keys\\rsa-pss_public.pem"
   },
   "nguyen_van_a": {
     "id": "61D8CED3E18D",

@@ -60,5 +60,53 @@
         "algorithm": "ed25519"
       }
     ]
+  },
+  "CTR-826508AA95F9": {
+    "id": "CTR-826508AA95F9",
+    "title": "Hợp đồng hợp tác kinh doanh",
+    "content": "HOP DONG HOP TAC KINH DOANH SO 2024/HD-HT\n\nPHAN 1: THONG TIN CAC BEN\nBen A: CONG TY TNHH GIAI PHAP SO ABC\nBen B: CONG TY CO PHAN CONG NGHE XYZ\n\nPHAN 2: MUC DICH VA PHAM VI HOP TAC\nHai ben cung hop tac phat trien du an \"Chuyen doi so toan dien\".\n\nPHAN 3: GIA TRI HOP DONG\nTong gia tri hop dong: 15.000.000.000 VND\n\nPHAN 4: HIEU LUC\nHop dong co hieu luc tu ngay 01/01/2025 den 31/12/2027.\n\nPHAN 5: DIEU KHOAN CHUNG\nCac ben cam ket bao mat thong tin.",
+    "sender": "trwwngs1mp",
+    "recipients": [
+      "congty_abc"
+    ],
+    "num_parts": 3,
+    "filename": "",
+    "status": "verified",
+    "signed_parts": {},
+    "accepted_by": [
+      "congty_abc"
+    ],
+    "verified_by": [],
+    "created_at": "2026-06-16T14:07:42.880603",
+    "manifest": "{\n  \"contract_id\": \"CTR-826508AA95F9\",\n  \"total_parts\": 3,\n  \"parts\": [\n    {\n      \"part_id\": \"PART-001\",\n      \"sequence_number\": 1,\n      \"hash\": \"4fdadd15f060654ea6dc3aafaf402935ef4e6a96154aab6b0eba0bde2ea6abbd\"\n    },\n    {\n      \"part_id\": \"PART-002\",\n      \"sequence_number\": 2,\n      \"hash\": \"efaa03b3a6c1e2e03db137fa0ab17b5aa7503a082b59b5f1a680e7a44bdc7d39\"\n    },\n    {\n      \"part_id\": \"PART-003\",\n      \"sequence_number\": 3,\n      \"hash\": \"55d7e7a1438dee47f533188a59a70f02e7a4b56c8fef63b86880f4b9e92fb629\"\n    }\n  ],\n  \"manifest_signature\": \"a7dafd0d2a2f999bd53e87d9b97365524232860200b5ddcd48f12f32aed34460cdae73b4f7f25accb428f54ce5c88228bf0e6274f228b5bbbdb1f3ca5393d40e\",\n  \"signature_algorithm\": \"ed25519\"\n}",
+    "parts": [
+      {
+        "part_id": "PART-001",
+        "contract_id": "CTR-826508AA95F9",
+        "sequence_number": 1,
+        "content": "HOP DONG HOP TAC KINH DOANH SO 2024/HD-HT\n\nPHAN 1: THONG TIN CAC BEN\nBen A: CONG TY TNHH GIAI PHAP SO ABC\nBen B: CONG TY CO PHAN CONG NGHE XYZ",
+        "hash": "4fdadd15f060654ea6dc3aafaf402935ef4e6a96154aab6b0eba0bde2ea6abbd",
+        "signature": "11e49e829c88a6c0c079fc51bc5309b5f809faf2f517e3895d9c2ab63d985be84a93a4716efdbac31478c5ea9c04a489a973eafbde3af8476cbfe22ac34bde0a",
+        "algorithm": "ed25519"
+      },
+      {
+        "part_id": "PART-002",
+        "contract_id": "CTR-826508AA95F9",
+        "sequence_number": 2,
+        "content": "\nPHAN 2: MUC DICH VA PHAM VI HOP TAC\nHai ben cung hop tac phat trien du an \"Chuyen doi so toan dien\".\n\nPHAN 3: GIA TRI HOP DONG",
+        "hash": "efaa03b3a6c1e2e03db137fa0ab17b5aa7503a082b59b5f1a680e7a44bdc7d39",
+        "signature": "ac055ae3fa8a4291e78ccc0eac0cae015fbd91ed2950b7108f9fabc236caac73f172bf9996aa7de937637b0583d78f4454d72991f7fa4daad30f8ba58b7b6a03",
+        "algorithm": "ed25519"
+      },
+      {
+        "part_id": "PART-003",
+        "contract_id": "CTR-826508AA95F9",
+        "sequence_number": 3,
+        "content": "Tong gia tri hop dong: 15.000.000.000 VND\n\nPHAN 4: HIEU LUC\nHop dong co hieu luc tu ngay 01/01/2025 den 31/12/2027.\n\nPHAN 5: DIEU KHOAN CHUNG\nCac ben cam ket bao mat thong tin.",
+        "hash": "55d7e7a1438dee47f533188a59a70f02e7a4b56c8fef63b86880f4b9e92fb629",
+        "signature": "c8f0d00815b3fe15f9c388fec5571a6a31919da6926f5b04e1cfc7f62f023fc8cb8c405f5663bb4a35267d35b2af63da4f96f9a9b8a8e4d4bad58b5c814a6204",
+        "algorithm": "ed25519"
+      }
+    ]
   }
 }
