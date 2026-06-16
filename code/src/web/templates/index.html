@@ -475,8 +475,12 @@
             <input type="text" id="contractTitle" placeholder="Nhập tiêu đề hợp đồng...">
           </div>
           <div class="form-group">
-            <label>Nội dung hợp đồng</label>
+            <label>Nội dung hợp đồng <span style="color:var(--text-muted);font-weight:400;font-size:.75rem">(hoặc tải file .txt lên)</span></label>
             <textarea id="contractContent" rows="8">Nhập nội dung hợp đồng tại đây...</textarea>
+            <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+              <input type="file" id="fileUpload" accept=".txt,.md,.csv,.json" style="flex:1;padding:8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:.82rem">
+              <button class="btn btn-secondary btn-sm" onclick="uploadFile()"><i class="fas fa-upload"></i> Tải lên</button>
+            </div>
           </div>
 
           <div class="card" style="margin:1rem 0;background:var(--bg-primary)">
@@ -946,6 +950,12 @@ function showContractDetail(contractId, view) {
           ${isSender && c.status==='signed' ? `
             <button class="btn btn-success btn-sm" onclick="doVerify('${c.id}')"><i class="fas fa-check-circle"></i> Xác minh</button>
           ` : ''}
+          ${!isSender && c.status==='signed' && !(c.accepted_by||[]).includes(currentUser?.username) ? `
+            <button class="btn btn-primary btn-sm" onclick="acceptContract('${c.id}')"><i class="fas fa-check-double"></i> Xác nhận nhận hợp đồng</button>
+          ` : ''}
+          ${!isSender && (c.accepted_by||[]).includes(currentUser?.username) ? `
+            <span class="badge badge-success" style="font-size:.82rem;padding:6px 14px">✅ Đã xác nhận nhận hợp đồng</span>
+          ` : ''}
           ${isSender ? `
             <button class="btn btn-secondary btn-sm" onclick='runAttackOnContract("${c.id}","modify")'><i class="fas fa-skull"></i> Thử tấn công</button>
             <button class="btn btn-danger btn-sm" onclick='deleteContract("${c.id}")'><i class="fas fa-trash"></i> Xóa</button>
@@ -1061,6 +1071,53 @@ function loadProfile() {
       ${u.public_key_path ? `<div style="margin-top:1rem"><label>Public key path</label><div style="padding:10px;background:var(--bg-input);border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:.78rem">${u.public_key_path}</div></div>` : ''}
     `;
   });
+}
+
+// ============================================================
+// FILE UPLOAD
+// ============================================================
+function uploadFile() {
+  const fileInput = document.getElementById('fileUpload');
+  if (!fileInput.files || fileInput.files.length === 0) {
+    alert('Vui lòng chọn file');
+    return;
+  }
+  const file = fileInput.files[0];
+  const formData = new FormData();
+  formData.append('file', file);
+  showLoading('Đang tải file...');
+  fetch('/api/upload', {method:'POST', body: formData})
+  .then(r=>r.json()).then(data=>{
+    hideLoading();
+    if (data.success) {
+      document.getElementById('contractContent').value = data.content;
+      const titleInput = document.getElementById('contractTitle');
+      if (!titleInput.value) {
+        titleInput.value = data.filename.replace(/\.[^/.]+$/, '');
+      }
+    } else {
+      alert('Lỗi: ' + data.error);
+    }
+  }).catch(e=>{hideLoading(); alert('Lỗi: ' + e.message);});
+}
+
+// ============================================================
+// ACCEPT CONTRACT (for recipients)
+// ============================================================
+function acceptContract(contractId) {
+  if (!confirm('Xác nhận nhận hợp đồng này?')) return;
+  const el = document.getElementById('detailAction');
+  el.innerHTML = '<div style="text-align:center;padding:1rem"><span class="spinner"></span> Đang xác nhận...</div>';
+  fetch(`/api/contracts/${contractId}/accept`, {method:'POST', headers:{'Content-Type':'application/json'}})
+  .then(r=>r.json()).then(data=>{
+    if (data.success) {
+      el.innerHTML = '<div class="result-box result-success"><span>✅</span><div><strong>' + data.message + '</strong></div></div>';
+      // Refresh contract detail
+      setTimeout(() => showContractDetail(contractId, window._lastContractView), 1500);
+    } else {
+      el.innerHTML = '<div class="result-box result-error"><span>❌</span> ' + (data.error||'Failed') + '</div>';
+    }
+  }).catch(e => {el.innerHTML = '<div class="result-box result-error">❌ ' + e.message + '</div>';});
 }
 
 // ============================================================

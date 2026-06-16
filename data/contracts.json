@@ -1,0 +1,64 @@
+{
+  "CTR-0DE5D4EEEBA6": {
+    "id": "CTR-0DE5D4EEEBA6",
+    "title": "Hợp đồng hợp tác kinh doanh",
+    "content": "HỢP ĐỒNG HỢP TÁC KINH DOANH SỐ 2024/HD-HT\n\nPHẦN 1: THÔNG TIN CÁC BÊN\nBên A: CÔNG TY TNHH GIẢI PHÁP SỐ ABC - Địa chỉ: 123 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh\nBên B: CÔNG TY CỔ PHẦN CÔNG NGHỆ XYZ - Địa chỉ: 456 Lê Lợi, Quận 3, TP. Hồ Chí Minh\n\nPHẦN 2: MỤC ĐÍCH VÀ PHẠM VI HỢP TÁC\nHai bên cùng hợp tác phát triển dự an \"Chuyển đổi số toàn diện\" cho các doanh nghiệp vừa và nhỏ.\n\nPHẦN 3: GIÁ TRỊ HỢP ĐỒNG\nTổng giá trị hợp đồng: 15.000.000.000 VND (Muoi lam ty dong)\n\nPHẦN 4: HIEU LUC\nHop dong co hieu luc tu ngay 01/01/2025 den ngay 31/12/2027 (03 nam).\n\nPHẦN 5: DIEU KHOAN CHUNG\nCac ben cam ket bao mat moi thong tin. Moi tranh chap duoc giai quyet tai Toa an Nhan dan TP. Ho Chi Minh.",
+    "sender": "congty_abc",
+    "recipients": [
+      "trwwngs1mp"
+    ],
+    "num_parts": 5,
+    "status": "verified",
+    "signed_parts": {},
+    "verified_by": [],
+    "created_at": "2026-06-16T13:58:32.781617",
+    "manifest": "{\n  \"contract_id\": \"CTR-0DE5D4EEEBA6\",\n  \"total_parts\": 5,\n  \"parts\": [\n    {\n      \"part_id\": \"PART-001\",\n      \"sequence_number\": 1,\n      \"hash\": \"08ac3db3f5e24a0a2da530950d39bf91ee99ee8b96942cc75e5b7b15be6bd26a\"\n    },\n    {\n      \"part_id\": \"PART-002\",\n      \"sequence_number\": 2,\n      \"hash\": \"374e1ecff5aadfebc078b04f2f61b283ca1d8d14dbc2eee4aec85556260eb42d\"\n    },\n    {\n      \"part_id\": \"PART-003\",\n      \"sequence_number\": 3,\n      \"hash\": \"d5385dee819c86d84f1bdf28c50355349426c08349720c75aff3499e6a611ba4\"\n    },\n    {\n      \"part_id\": \"PART-004\",\n      \"sequence_number\": 4,\n      \"hash\": \"1917bddf444e39738d2c2172f6c3ceedcd98513c622766f40ca8c4778a233cd3\"\n    },\n    {\n      \"part_id\": \"PART-005\",\n      \"sequence_number\": 5,\n      \"hash\": \"8998f9698c3ff587d94ac2ebfd29969d06f9759cf9df7fc11303099361a6d1da\"\n    }\n  ],\n  \"manifest_signature\": \"dd645b67de4154a50aa874dfe79b811b6b03e3ba55435de753157953f07f831c89441e853a5dee6099fd88c1c53936a0558918ff62171b24901aafb11f8bde06\",\n  \"signature_algorithm\": \"ed25519\"\n}",
+    "parts": [
+      {
+        "part_id": "PART-001",
+        "contract_id": "CTR-0DE5D4EEEBA6",
+        "sequence_number": 1,
+        "content": "HỢP ĐỒNG HỢP TÁC KINH DOANH SỐ 2024/HD-HT\n\nPHẦN 1: THÔNG TIN CÁC BÊN",
+        "hash": "08ac3db3f5e24a0a2da530950d39bf91ee99ee8b96942cc75e5b7b15be6bd26a",
+        "signature": "c998fbc193ccd5b3245f132a57935ad66e031d530eb55532f09d220314b1e082e978603770229e4c93c5e553f6a3aa3aacfaea9f528e38f2e2a508bae864af06",
+        "algorithm": "ed25519"
+      },
+      {
+        "part_id": "PART-002",
+        "contract_id": "CTR-0DE5D4EEEBA6",
+        "sequence_number": 2,
+        "content": "Bên A: CÔNG TY TNHH GIẢI PHÁP SỐ ABC - Địa chỉ: 123 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh\nBên B: CÔNG TY CỔ PHẦN CÔNG NGHỆ XYZ - Địa chỉ: 456 Lê Lợi, Quận 3, TP. Hồ Chí Minh\n",
+        "hash": "374e1ecff5aadfebc078b04f2f61b283ca1d8d14dbc2eee4aec85556260eb42d",
+        "signature": "4ecc11b597c07119cd045e06035ce343278f3ee6beb1456ea91eb2e38a52aea9133974576565b4c6fc0dc60aa551ab4fe8c7925954bf899daf24f6ee52de7b0f",
+        "algorithm": "ed25519"
+      },
+      {
+        "part_id": "PART-003",
+        "contract_id": "CTR-0DE5D4EEEBA6",
+        "sequence_number": 3,
+        "content": "PHẦN 2: MỤC ĐÍCH VÀ PHẠM VI HỢP TÁC\nHai bên cùng hợp tác phát triển dự an \"Chuyển đổi số toàn diện\" cho các doanh nghiệp vừa và nhỏ.\n",
+        "hash": "d5385dee819c86d84f1bdf28c50355349426c08349720c75aff3499e6a611ba4",
+        "signature": "729f15f730a03dd430babad607b1a6fa82a9d9d45bba45b6bf5c5b7edf400d14eb343017b544b456a786f5f3f409c77eb9b43306b54d97ae2e0af8c23a608f06",
+        "algorithm": "ed25519"
+      },
+      {
+        "part_id": "PART-004",
+        "contract_id": "CTR-0DE5D4EEEBA6",
+        "sequence_number": 4,
+        "content": "PHẦN 3: GIÁ TRỊ HỢP ĐỒNG\nTổng giá trị hợp đồng: 15.000.000.000 VND (Muoi lam ty dong)\n",
+        "hash": "1917bddf444e39738d2c2172f6c3ceedcd98513c622766f40ca8c4778a233cd3",
+        "signature": "8b5a255f66fa80fccc514384803c9136f897096085d9e1d784ccff56a9e20d6fe91d2da6c37c7149f67ad1cacb9978a25d73695633e9a1dd7d971a158184ff05",
+        "algorithm": "ed25519"
+      },
+      {
+        "part_id": "PART-005",
+        "contract_id": "CTR-0DE5D4EEEBA6",
+        "sequence_number": 5,
+        "content": "PHẦN 4: HIEU LUC\nHop dong co hieu luc tu ngay 01/01/2025 den ngay 31/12/2027 (03 nam).\n\nPHẦN 5: DIEU KHOAN CHUNG\nCac ben cam ket bao mat moi thong tin. Moi tranh chap duoc giai quyet tai Toa an Nhan dan TP. Ho Chi Minh.",
+        "hash": "8998f9698c3ff587d94ac2ebfd29969d06f9759cf9df7fc11303099361a6d1da",
+        "signature": "45c9bf1556fc894e8dca1bf2619920945f1ea5977206d4232d1a091157a294365b3ecd5c8b961c0534fa5bdcd23c18e30b4e6805daeb5fe13cd321e9df8ad903",
+        "algorithm": "ed25519"
+      }
+    ]
+  }
+}

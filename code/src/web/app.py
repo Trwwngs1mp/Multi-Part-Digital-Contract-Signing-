@@ -18,10 +18,13 @@ from src.web import user_manager as um
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32).hex()
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024  # 32MB max upload
 
 TEMP_DIR = Path(tempfile.gettempdir()) / "contract_signing_web"
 TEMP_DIR.mkdir(parents=True, exist_ok=True)
+
+UPLOAD_DIR = TEMP_DIR / "uploads"
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def login_required(f):
@@ -57,29 +60,19 @@ def register():
         account_type = data.get('account_type', 'individual')
         email = data.get('email', '').strip()
         phone = data.get('phone', '').strip()
-
         if not username or not password or not full_name:
             return jsonify({"success": False, "error": "Missing required fields"}), 400
         if len(username) < 3:
             return jsonify({"success": False, "error": "Username must be at least 3 characters"}), 400
         if len(password) < 4:
             return jsonify({"success": False, "error": "Password must be at least 4 characters"}), 400
-
         success, result = um.register_user(username, password, full_name, account_type, email, phone)
         if success:
             session['username'] = username
             user_data = um.get_user(username)
             if not user_data:
                 return jsonify({"success": False, "error": "Account created but failed to load profile"}), 500
-            return jsonify({
-                "success": True,
-                "user": {
-                    "username": user_data["username"],
-                    "full_name": user_data["full_name"],
-                    "account_type": user_data["account_type"],
-                    "id": user_data["id"]
-                }
-            })
+            return jsonify({"success": True, "user": {"username": user_data["username"], "full_name": user_data["full_name"], "account_type": user_data["account_type"], "id": user_data["id"]}})
         else:
             return jsonify({"success": False, "error": result}), 400
     except Exception as e:
@@ -93,19 +86,11 @@ def login():
     password = data.get('password', '')
     if not username or not password:
         return jsonify({"success": False, "error": "Missing username or password"}), 400
-
     success, user = um.authenticate(username, password)
     if success:
         session['username'] = username
         session['user_id'] = user['id']
-        return jsonify({
-            "success": True,
-            "user": {
-                "username": user["username"], "full_name": user["full_name"],
-                "account_type": user["account_type"], "email": user.get("email", ""),
-                "phone": user.get("phone", ""), "id": user["id"]
-            }
-        })
+        return jsonify({"success": True, "user": {"username": user["username"], "full_name": user["full_name"], "account_type": user["account_type"], "email": user.get("email", ""), "phone": user.get("phone", ""), "id": user["id"]}})
     return jsonify({"success": False, "error": "Invalid username or password"}), 401
 
 
@@ -120,14 +105,7 @@ def get_session():
     if 'username' in session:
         user = um.get_user(session['username'])
         if user:
-            return jsonify({
-                "authenticated": True,
-                "user": {
-                    "username": user["username"], "full_name": user["full_name"],
-                    "account_type": user["account_type"], "email": user.get("email", ""),
-                    "phone": user.get("phone", ""), "id": user["id"]
-                }
-            })
+            return jsonify({"authenticated": True, "user": {"username": user["username"], "full_name": user["full_name"], "account_type": user["account_type"], "email": user.get("email", ""), "phone": user.get("phone", ""), "id": user["id"]}})
     return jsonify({"authenticated": False})
 
 
@@ -146,16 +124,7 @@ def list_users():
 def get_profile():
     user = um.get_user(session['username'])
     if user:
-        return jsonify({
-            "success": True,
-            "user": {
-                "username": user["username"], "full_name": user["full_name"],
-                "account_type": user["account_type"], "email": user.get("email", ""),
-                "phone": user.get("phone", ""), "id": user["id"],
-                "created_at": user.get("created_at", ""),
-                "public_key_path": user.get("public_key_path", "")
-            }
-        })
+        return jsonify({"success": True, "user": user})
     return jsonify({"success": False, "error": "User not found"}), 404
 
 
@@ -181,7 +150,6 @@ def generate_keys():
     algorithm = data.get('algorithm', 'ed25519')
     if algorithm not in ALGORITHM_MAP:
         return jsonify({"success": False, "error": f"Unsupported algorithm: {algorithm}"}), 400
-
     try:
         key_dir = KeyManager.DEFAULT_KEY_DIR
         key_dir.mkdir(parents=True, exist_ok=True)
@@ -195,10 +163,30 @@ def generate_keys():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
+# ===== File Upload =====
+
+@app.route('/api/upload', methods=['POST'])
+@login_required
+def upload_file():
+    if 'file' not in request.files:
+        return jsonify({"success": False, "error": "No file provided"}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"success": False, "error": "No file selected"}), 400
+
+    try:
+        content = file.read().decode('utf-8')
+        filename = file.filename
+        return jsonify({"success": True, "content": content, "filename": filename})
+    except UnicodeDecodeError:
+        return jsonify({"success": False, "error": "File must be in UTF-8 text format"}), 400
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
 # ===== Contract Routes =====
 
 def get_signer(algorithm):
-    """Get keys and crypto manager for the current user."""
     key_dir = KeyManager.DEFAULT_KEY_DIR
     key_path = key_dir / f"{algorithm}_private.pem"
     pub_path = key_dir / f"{algorithm}_public.pem"
@@ -218,16 +206,14 @@ def create_contract():
     content = data.get('content', '').strip()
     recipients = data.get('recipients', [])
     num_parts = data.get('num_parts', 3)
-    algorithm = data.get('algorithm', 'ed25519')
-
+    filename = data.get('filename', '')
     if not title or not content:
         return jsonify({"success": False, "error": "Missing title or content"}), 400
     if not recipients:
         return jsonify({"success": False, "error": "Select at least one recipient"}), 400
-
     success, contract_id, contract = um.create_contract(
         title=title, content=content, sender_username=session['username'],
-        recipient_usernames=recipients, num_parts=num_parts
+        recipient_usernames=recipients, num_parts=num_parts, filename=filename
     )
     if success:
         return jsonify({"success": True, "contract": contract})
@@ -258,18 +244,14 @@ def sign_contract(contract_id):
         return jsonify({"success": False, "error": "Contract not found"}), 404
     if contract['sender'] != session['username']:
         return jsonify({"success": False, "error": "Only the sender can sign this contract"}), 403
-
     data = request.get_json()
     algorithm = data.get('algorithm', 'ed25519')
-
     try:
         crypto, handler, pub_path = get_signer(algorithm)
         manifest_json, parts = handler.split_contract(
-            contract_text=contract['content'], contract_id=contract['id'],
-            num_parts=contract['num_parts']
+            contract_text=contract['content'], contract_id=contract['id'], num_parts=contract['num_parts']
         )
         um.update_contract_status(contract_id, "signed", manifest_json, parts)
-
         manifest = json.loads(manifest_json)
         parts_output = []
         for p in parts:
@@ -279,15 +261,21 @@ def sign_contract(contract_id):
                 "content_preview": p["content"][:80] + ("..." if len(p["content"]) > 80 else ""),
                 "algorithm": p["algorithm"]
             })
-        return jsonify({
-            "success": True, "contract_id": contract['id'],
-            "total_parts": len(parts), "parts": parts_output,
-            "manifest": manifest_json, "algorithm": algorithm
-        })
+        return jsonify({"success": True, "contract_id": contract['id'], "total_parts": len(parts), "parts": parts_output, "manifest": manifest_json, "algorithm": algorithm})
     except FileNotFoundError as e:
         return jsonify({"success": False, "error": str(e)}), 400
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/contracts/<contract_id>/accept', methods=['POST'])
+@login_required
+def accept_contract(contract_id):
+    """Recipient accepts/receives the contract."""
+    success, message = um.accept_contract(contract_id, session['username'])
+    if success:
+        return jsonify({"success": True, "message": message})
+    return jsonify({"success": False, "error": message}), 400
 
 
 @app.route('/api/contracts/<contract_id>/verify', methods=['POST'])
@@ -298,34 +286,22 @@ def verify_contract(contract_id):
         return jsonify({"success": False, "error": "Contract not found"}), 404
     if not contract.get('manifest') or not contract.get('parts'):
         return jsonify({"success": False, "error": "Contract not signed yet"}), 400
-
     data = request.get_json()
     algorithm = data.get('algorithm', 'ed25519')
-
     try:
         crypto = CryptoManager(algorithm=algorithm)
         logger = SecurityLogger(log_dir=str(TEMP_DIR / "logs"))
         handler = ContractHandler(crypto_manager=crypto, logger=logger)
-
         parts = contract['parts']
         manifest_json = contract['manifest']
         key_dir = KeyManager.DEFAULT_KEY_DIR
         pub_key_path = key_dir / f"{algorithm}_public.pem"
-
         if not pub_key_path.exists():
             return jsonify({"success": False, "error": f"No {algorithm} public key found"}), 400
-
         is_valid, message, reassembled = handler.verify_contract(
-            manifest_json=manifest_json, parts=parts,
-            public_key_path=str(pub_key_path)
+            manifest_json=manifest_json, parts=parts, public_key_path=str(pub_key_path)
         )
-        if is_valid:
-            um.update_contract_status(contract_id, "verified")
-
-        return jsonify({
-            "success": True, "is_valid": is_valid, "message": message,
-            "reassembled_contract": reassembled
-        })
+        return jsonify({"success": True, "is_valid": is_valid, "message": message, "reassembled_contract": reassembled})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
@@ -348,35 +324,28 @@ def tamper_contract(contract_id):
     contract = um.get_contract(contract_id)
     if not contract or not contract.get('parts'):
         return jsonify({"success": False, "error": "Contract not found or not signed"}), 404
-
     data = request.get_json()
     tamper_type = data.get('tamper_type', 'modify')
     part_index = data.get('part_index', 0)
     parts = list(contract['parts'])
     tamper_desc = ""
-
     if tamper_type == 'modify':
-        parts[part_index]["content"] = "⚠️ NỘI DUNG ĐÃ BỊ THAY ĐỔI BỞI KẺ TẤN CÔNG! ⚠️"
-        tamper_desc = f"Modified content of {parts[part_index]['part_id']}"
+        parts[part_index]["content"] = "MODIFIED BY ATTACKER!"
+        tamper_desc = f"Modified {parts[part_index]['part_id']}"
     elif tamper_type == 'remove':
         removed = parts.pop(part_index)
         tamper_desc = f"Removed {removed['part_id']}"
     elif tamper_type == 'reorder':
         if len(parts) >= 2:
             parts[0], parts[-1] = parts[-1], parts[0]
-            tamper_desc = "Reversed order of parts"
+            tamper_desc = "Reversed order"
     elif tamper_type == 'hash':
         parts[part_index]["hash"] = "0" * 64
         tamper_desc = f"Corrupted hash of {parts[part_index]['part_id']}"
     elif tamper_type == 'signature':
         parts[part_index]["signature"] = "0" * 128
         tamper_desc = f"Corrupted signature of {parts[part_index]['part_id']}"
-
-    return jsonify({
-        "success": True, "parts": parts, "manifest": contract['manifest'],
-        "tamper_desc": tamper_desc, "tamper_type": tamper_type,
-        "algorithm": contract.get('algorithm', 'ed25519')
-    })
+    return jsonify({"success": True, "parts": parts, "manifest": contract['manifest'], "tamper_desc": tamper_desc, "tamper_type": tamper_type, "algorithm": contract.get('algorithm', 'ed25519')})
 
 
 @app.route('/api/test/run', methods=['POST'])
@@ -393,24 +362,23 @@ def run_tests():
 
 @app.route('/api/sample/contract', methods=['GET'])
 def get_sample_contract():
-    sample = """HỢP ĐỒNG HỢP TÁC KINH DOANH SỐ 2024/HD-HT
+    sample = """HOP DONG HOP TAC KINH DOANH SO 2024/HD-HT
 
-PHẦN 1: THÔNG TIN CÁC BÊN
-Bên A: CÔNG TY TNHH GIẢI PHÁP SỐ ABC - Địa chỉ: 123 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh
-Bên B: CÔNG TY CỔ PHẦN CÔNG NGHỆ XYZ - Địa chỉ: 456 Lê Lợi, Quận 3, TP. Hồ Chí Minh
+PHAN 1: THONG TIN CAC BEN
+Ben A: CONG TY TNHH GIAI PHAP SO ABC
+Ben B: CONG TY CO PHAN CONG NGHE XYZ
 
-PHẦN 2: MỤC ĐÍCH VÀ PHẠM VI HỢP TÁC
-Hai bên cùng hợp tác phát triển dự an "Chuyển đổi số toàn diện" cho các doanh nghiệp vừa và nhỏ.
+PHAN 2: MUC DICH VA PHAM VI HOP TAC
+Hai ben cung hop tac phat trien du an "Chuyen doi so toan dien".
 
-PHẦN 3: GIÁ TRỊ HỢP ĐỒNG
-Tổng giá trị hợp đồng: 15.000.000.000 VND (Muoi lam ty dong)
+PHAN 3: GIA TRI HOP DONG
+Tong gia tri hop dong: 15.000.000.000 VND
 
-PHẦN 4: HIEU LUC
-Hop dong co hieu luc tu ngay 01/01/2025 den ngay 31/12/2027 (03 nam).
+PHAN 4: HIEU LUC
+Hop dong co hieu luc tu ngay 01/01/2025 den 31/12/2027.
 
-PHẦN 5: DIEU KHOAN CHUNG
-Cac ben cam ket bao mat moi thong tin. Moi tranh chap duoc giai quyet tai Toa an Nhan dan TP. Ho Chi Minh."""
-
+PHAN 5: DIEU KHOAN CHUNG
+Cac ben cam ket bao mat thong tin."""
     return jsonify({"success": True, "contract": sample})
 
 

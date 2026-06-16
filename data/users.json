@@ -142,5 +142,17 @@
     "phone": "0912222222",
     "created_at": "2026-06-16T13:54:24.226209",
     "public_key_path": ""
+  },
+  "trwwngs1mp": {
+    "id": "3A85347BA00A",
+    "username": "trwwngs1mp",
+    "password_hash": "8544afbbb38351e7b338ac1cf9d72bcb90547d96d1ad139dab5f09b8b6bbc50b",
+    "password_salt": "fd65a3cc19a50b56e94a6f71953c772b",
+    "full_name": "Lê Hồng Trường",
+    "account_type": "individual",
+    "email": "truong25082k6@gmail.com",
+    "phone": "0915100708",
+    "created_at": "2026-06-16T13:56:19.993645",
+    "public_key_path": ""
   }
 }
