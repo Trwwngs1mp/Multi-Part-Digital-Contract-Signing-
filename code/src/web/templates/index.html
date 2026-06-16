@@ -290,35 +290,35 @@
     </div>
     <div class="auth-box">
       <div class="auth-tabs">
-        <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
-        <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+        <button class="auth-tab active" onclick="switchAuthTab('login')">Đăng nhập</button>
+        <button class="auth-tab" onclick="switchAuthTab('register')">Đăng ký</button>
       </div>
       <div id="authError" class="auth-error"></div>
       <div class="auth-form active" id="loginForm">
-        <div class="form-group"><label>Username</label><input type="text" id="loginUsername" placeholder="Enter username..." autocomplete="username"></div>
-        <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"></div>
-        <button class="btn btn-primary" onclick="doLogin()" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <div class="form-group"><label>Tên đăng nhập</label><input type="text" id="loginUsername" placeholder="Nhập username..." autocomplete="username"></div>
+        <div class="form-group"><label>Mật khẩu</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"></div>
+        <button class="btn btn-primary" onclick="doLogin()" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
         <div class="auth-sample">
-          <div class="auth-sample-title">Sample accounts (click to quick login)</div>
+          <div class="auth-sample-title">Tài khoản mẫu (click để đăng nhập nhanh)</div>
           <div class="sample-users" id="sampleUsers"></div>
         </div>
       </div>
       <div class="auth-form" id="registerForm">
-        <div class="form-group"><label>Username</label><input type="text" id="regUsername" placeholder="Min 3 characters"></div>
-        <div class="form-group"><label>Full Name</label><input type="text" id="regFullname" placeholder="Nguyen Van A"></div>
+        <div class="form-group"><label>Tên đăng nhập</label><input type="text" id="regUsername" placeholder="Tối thiểu 3 ký tự"></div>
+        <div class="form-group"><label>Họ và tên</label><input type="text" id="regFullname" placeholder="Nguyễn Văn A"></div>
         <div class="form-group">
-          <label>Account Type</label>
+          <label>Loại tài khoản</label>
           <div class="account-type-selector">
-            <div class="account-type-btn active" onclick="selectAccountType('individual')"><span class="icon">👤</span> Individual</div>
-            <div class="account-type-btn" onclick="selectAccountType('business')"><span class="icon">🏢</span> Business</div>
+            <div class="account-type-btn active" onclick="selectAccountType('individual')"><span class="icon">👤</span> Cá nhân</div>
+            <div class="account-type-btn" onclick="selectAccountType('business')"><span class="icon">🏢</span> Doanh nghiệp</div>
           </div>
           <input type="hidden" id="regAccountType" value="individual">
         </div>
         <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="email@example.com"></div>
-        <div class="form-group"><label>Phone</label><input type="text" id="regPhone" placeholder="090xxxxxxx"></div>
-        <div class="form-group"><label>Password</label><input type="password" id="regPassword" placeholder="Min 4 characters"></div>
-        <div class="form-group"><label>Confirm Password</label><input type="password" id="regPassword2" placeholder="Re-enter password"></div>
-        <button class="btn btn-primary" onclick="doRegister()" id="regBtn"><i class="fas fa-user-plus"></i> Register</button>
+        <div class="form-group"><label>Số điện thoại</label><input type="text" id="regPhone" placeholder="090xxxxxxx"></div>
+        <div class="form-group"><label>Mật khẩu</label><input type="password" id="regPassword" placeholder="Tối thiểu 4 ký tự"></div>
+        <div class="form-group"><label>Nhập lại mật khẩu</label><input type="password" id="regPassword2" placeholder="Nhập lại mật khẩu"></div>
+        <button class="btn btn-primary" onclick="doRegister()" id="regBtn"><i class="fas fa-user-plus"></i> Đăng ký</button>
       </div>
     </div>
   </div>
@@ -343,19 +343,19 @@
 
   <div class="main-layout">
     <aside class="sidebar">
-      <div class="sidebar-section"><div class="sidebar-label">Overview</div><button class="sidebar-btn active" onclick="switchSection('dashboard')"><span class="icon">📊</span> Dashboard</button></div>
-      <div class="sidebar-section"><div class="sidebar-label">Keys</div><button class="sidebar-btn" onclick="switchSection('keys')"><span class="icon">🔑</span> Key Management</button></div>
+      <div class="sidebar-section"><div class="sidebar-label">Tổng quan</div><button class="sidebar-btn active" onclick="switchSection('dashboard')"><span class="icon">📊</span> Dashboard</button></div>
+      <div class="sidebar-section"><div class="sidebar-label">Khóa</div><button class="sidebar-btn" onclick="switchSection('keys')"><span class="icon">🔑</span> Quản lý khóa</button></div>
       <div class="sidebar-section">
-        <div class="sidebar-label">Contracts</div>
-        <button class="sidebar-btn" onclick="switchSection('create')"><span class="icon">📄</span> Create Contract</button>
-        <button class="sidebar-btn" onclick="{switchSection('sent');loadSentContracts()}"><span class="icon">📤</span> Sent</button>
-        <button class="sidebar-btn" onclick="{switchSection('received');loadReceivedContracts()}"><span class="icon">📥</span> Received</button>
+        <div class="sidebar-label">Hợp đồng</div>
+        <button class="sidebar-btn" onclick="switchSection('create')"><span class="icon">📄</span> Tạo hợp đồng</button>
+        <button class="sidebar-btn" onclick="{switchSection('sent');loadSentContracts()}"><span class="icon">📤</span> Đã gửi</button>
+        <button class="sidebar-btn" onclick="{switchSection('received');loadReceivedContracts()}"><span class="icon">📥</span> Đã nhận</button>
       </div>
       <div class="sidebar-section">
-        <div class="sidebar-label">Security</div>
-        <button class="sidebar-btn" onclick="switchSection('tests')"><span class="icon">🧪</span> Test Suite</button>
+        <div class="sidebar-label">Bảo mật</div>
+        <button class="sidebar-btn" onclick="switchSection('tests')"><span class="icon">🧪</span> Bộ kiểm thử</button>
       </div>
-      <div class="sidebar-section"><button class="sidebar-btn" onclick="switchSection('profile')"><span class="icon">👤</span> Profile</button></div>
+      <div class="sidebar-section"><button class="sidebar-btn" onclick="switchSection('profile')"><span class="icon">👤</span> Hồ sơ</button></div>
     </aside>
 
     <div class="content">
@@ -363,119 +363,119 @@
       <div class="section active" id="section-dashboard">
         <div style="text-align:center;padding:2rem 1rem 1rem">
           <h1 style="font-size:2rem;font-weight:800;color:var(--text-primary);margin-bottom:.5rem">Multi-Part Digital Contract Signing</h1>
-          <p style="color:var(--text-secondary);font-size:.95rem;max-width:600px;margin:0 auto">Secure digital contract signing with Ed25519, ECDSA P-256, and RSA-PSS. Split contracts into signed parts with tamper detection.</p>
+          <p style="color:var(--text-secondary);font-size:.95rem;max-width:600px;margin:0 auto">Ký số hợp đồng điện tử đa phần với Ed25519, ECDSA P-256 và RSA-PSS. Phát hiện giả mạo, thiếu phần, đảo thứ tự và tấn công replay.</p>
         </div>
         <div class="grid-4" style="margin-bottom:1.5rem">
-          <div class="stat-card"><div class="stat-icon">📄</div><div class="stat-value" id="dashSent">0</div><div class="stat-label">Sent Contracts</div></div>
-          <div class="stat-card"><div class="stat-icon">📥</div><div class="stat-value" id="dashReceived">0</div><div class="stat-label">Received Contracts</div></div>
+          <div class="stat-card"><div class="stat-icon">📄</div><div class="stat-value" id="dashSent">0</div><div class="stat-label">Hợp đồng đã gửi</div></div>
+          <div class="stat-card"><div class="stat-icon">📥</div><div class="stat-value" id="dashReceived">0</div><div class="stat-label">Hợp đồng đã nhận</div></div>
           <div class="stat-card"><div class="stat-icon">🔐</div><div class="stat-value" id="dashKeys">0</div><div class="stat-label">Key Pairs</div></div>
           <div class="stat-card"><div class="stat-icon">🧪</div><div class="stat-value">34</div><div class="stat-label">Test Cases</div></div>
         </div>
         <div class="card">
-          <div class="card-header"><div><div class="card-title">🚀 Quick Actions</div><div class="card-subtitle">Get started fast</div></div></div>
+          <div class="card-header"><div><div class="card-title">🚀 Thao tác nhanh</div><div class="card-subtitle">Bắt đầu nhanh chóng</div></div></div>
           <div class="grid-3">
-            <button class="btn btn-primary" onclick="switchSection('create')"><i class="fas fa-file-signature"></i> Create Contract</button>
-            <button class="btn btn-secondary" onclick="switchSection('keys')"><i class="fas fa-key"></i> Manage Keys</button>
-            <button class="btn btn-secondary" onclick="switchSection('tests')"><i class="fas fa-flask"></i> Run Tests</button>
+            <button class="btn btn-primary" onclick="switchSection('create')"><i class="fas fa-file-signature"></i> Tạo hợp đồng</button>
+            <button class="btn btn-secondary" onclick="switchSection('keys')"><i class="fas fa-key"></i> Quản lý khóa</button>
+            <button class="btn btn-secondary" onclick="switchSection('tests')"><i class="fas fa-flask"></i> Chạy kiểm thử</button>
           </div>
         </div>
       </div>
 
       <!-- KEYS -->
       <div class="section" id="section-keys">
-        <h2 class="page-title">🔑 Key Management</h2>
-        <p class="page-desc">Generate Ed25519, ECDSA P-256, or RSA-PSS key pairs for signing contracts.</p>
+        <h2 class="page-title">🔑 Quản lý khóa</h2>
+        <p class="page-desc">Tạo cặp khóa Ed25519, ECDSA P-256 hoặc RSA-PSS để ký hợp đồng.</p>
         <div class="grid-2">
           <div class="card">
-            <div class="card-title" style="margin-bottom:1rem">Generate New Key Pair</div>
+            <div class="card-title" style="margin-bottom:1rem">Tạo Key Pair mới</div>
             <div class="form-group">
-              <label>Algorithm</label>
+              <label>Thuật toán</label>
               <select id="keyAlgorithm">
-                <option value="ed25519">🔵 Ed25519 (Fast, High Security)</option>
-                <option value="ecdsa">🟢 ECDSA P-256 (International Standard)</option>
-                <option value="rsa-pss">🟠 RSA-PSS 2048 (Legacy Compatible)</option>
+                <option value="ed25519">🔵 Ed25519 (Nhanh, Bảo mật cao)</option>
+                <option value="ecdsa">🟢 ECDSA P-256 (Chuẩn quốc tế)</option>
+                <option value="rsa-pss">🟠 RSA-PSS 2048 (Tương thích)</option>
               </select>
             </div>
-            <button class="btn btn-primary" onclick="generateKeys()" id="genKeyBtn"><i class="fas fa-key"></i> Generate Keys</button>
+            <button class="btn btn-primary" onclick="generateKeys()" id="genKeyBtn"><i class="fas fa-key"></i> Tạo khóa</button>
             <div id="keyResult" style="margin-top:1rem"></div>
           </div>
           <div class="card">
-            <div class="card-title" style="margin-bottom:1rem">📋 Active Keys</div>
-            <div id="keyList"><div style="color:var(--text-muted);padding:2rem;text-align:center">No keys generated yet</div></div>
+            <div class="card-title" style="margin-bottom:1rem">📋 Khóa đang hoạt động</div>
+            <div id="keyList"><div style="color:var(--text-muted);padding:2rem;text-align:center">Chưa có khóa nào</div></div>
           </div>
         </div>
       </div>
 
       <!-- CREATE CONTRACT -->
       <div class="section" id="section-create">
-        <h2 class="page-title">📄 Create Contract</h2>
-        <p class="page-desc">Create a contract, select recipients, and sign with digital signature.</p>
+        <h2 class="page-title">📄 Tạo hợp đồng</h2>
+        <p class="page-desc">Tạo hợp đồng, chọn người nhận và ký bằng chữ ký số.</p>
         <div class="card">
           <div class="card-header">
-            <div><div class="card-title">Contract Information</div></div>
-            <button class="btn btn-ghost btn-sm" onclick="loadSampleContract()"><i class="fas fa-file-import"></i> Sample</button>
+            <div><div class="card-title">Thông tin hợp đồng</div></div>
+            <button class="btn btn-ghost btn-sm" onclick="loadSampleContract()"><i class="fas fa-file-import"></i> Mẫu</button>
           </div>
-          <div class="form-group"><label>Contract Title</label><input type="text" id="contractTitle" placeholder="Enter contract title..."></div>
+          <div class="form-group"><label>Tiêu đề hợp đồng</label><input type="text" id="contractTitle" placeholder="Nhập tiêu đề hợp đồng..."></div>
           <div class="form-group">
-            <label>Content <span style="color:var(--text-muted);font-weight:400;font-size:.75rem">(or upload .txt file)</span></label>
-            <textarea id="contractContent" rows="8">Enter contract content here...</textarea>
+            <label>Nội dung <span style="color:var(--text-muted);font-weight:400;font-size:.75rem">(hoặc tải file .txt lên)</span></label>
+            <textarea id="contractContent" rows="8">Nhập nội dung hợp đồng tại đây...</textarea>
             <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
               <input type="file" id="fileUpload" accept=".txt,.md,.csv,.json" style="flex:1;padding:8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:.82rem">
-              <button class="btn btn-secondary btn-sm" onclick="uploadFile()"><i class="fas fa-upload"></i> Upload</button>
+              <button class="btn btn-secondary btn-sm" onclick="uploadFile()"><i class="fas fa-upload"></i> Tải lên</button>
             </div>
           </div>
           <div class="card" style="margin:1rem 0;background:var(--bg-secondary)">
-            <div class="card-title" style="margin-bottom:0.75rem;font-size:0.92rem">👥 Select Recipients</div>
+            <div class="card-title" style="margin-bottom:0.75rem;font-size:0.92rem">👥 Chọn người nhận</div>
             <div id="recipientList" style="display:flex;gap:6px;flex-wrap:wrap;min-height:40px;align-items:center">
-              <span style="color:var(--text-muted);font-size:0.85rem">Loading users...</span>
+              <span style="color:var(--text-muted);font-size:0.85rem">Đang tải...</span>
             </div>
             <div style="margin-top:0.75rem">
               <div class="form-group">
-                <label>Number of Parts</label>
+                <label>Số phần</label>
                 <select id="createNumParts">
-                  <option value="2">2 parts</option><option value="3" selected>3 parts</option><option value="4">4 parts</option><option value="5">5 parts</option>
+                  <option value="2">2 phần</option><option value="3" selected>3 phần</option><option value="4">4 phần</option><option value="5">5 phần</option>
                 </select>
               </div>
             </div>
           </div>
-          <button class="btn btn-primary" onclick="createContract()" id="createBtn" style="width:100%"><i class="fas fa-file-signature"></i> Create & Sign Contract</button>
+          <button class="btn btn-primary" onclick="createContract()" id="createBtn" style="width:100%"><i class="fas fa-file-signature"></i> Tạo & Ký hợp đồng</button>
           <div id="createResult" style="margin-top:1rem"></div>
         </div>
       </div>
 
       <!-- SENT -->
-      <div class="section" id="section-sent"><h2 class="page-title">📤 Sent Contracts</h2><p class="page-desc">Contracts you have created and sent.</p><div id="sentContractsList"></div></div>
+      <div class="section" id="section-sent"><h2 class="page-title">📤 Hợp đồng đã gửi</h2><p class="page-desc">Các hợp đồng bạn đã tạo và gửi.</p><div id="sentContractsList"></div></div>
       <!-- RECEIVED -->
-      <div class="section" id="section-received"><h2 class="page-title">📥 Received Contracts</h2><p class="page-desc">Contracts shared with you.</p><div id="receivedContractsList"></div></div>
+      <div class="section" id="section-received"><h2 class="page-title">📥 Hợp đồng đã nhận</h2><p class="page-desc">Các hợp đồng được chia sẻ với bạn.</p><div id="receivedContractsList"></div></div>
 
       <!-- DETAIL -->
       <div class="section" id="section-detail">
-        <button class="btn btn-ghost btn-sm" onclick="backToContracts()" style="margin-bottom:1rem"><i class="fas fa-arrow-left"></i> Back</button>
+        <button class="btn btn-ghost btn-sm" onclick="backToContracts()" style="margin-bottom:1rem"><i class="fas fa-arrow-left"></i> Quay lại</button>
         <div id="contractDetail"></div>
       </div>
 
       <!-- TESTS -->
       <div class="section" id="section-tests">
-        <h2 class="page-title">🧪 Security Test Suite</h2>
-        <p class="page-desc">34 test cases covering valid flows, tampering detection, replay protection, and invalid key handling.</p>
+        <h2 class="page-title">🧪 Bộ kiểm thử bảo mật</h2>
+        <p class="page-desc">34 test cases kiểm tra luồng chạy đúng, phát hiện giả mạo, chống replay và xử lý khóa không hợp lệ.</p>
         <div class="grid-3" style="margin-bottom:1.5rem">
-          <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value">8</div><div class="stat-label">Valid Flow Tests</div></div>
-          <div class="stat-card"><div class="stat-icon">🛡️</div><div class="stat-value">6</div><div class="stat-label">Tampering Tests</div></div>
-          <div class="stat-card"><div class="stat-icon">🔄</div><div class="stat-value">10</div><div class="stat-label">Replay Tests</div></div>
-          <div class="stat-card"><div class="stat-icon">🔑</div><div class="stat-value">7</div><div class="stat-label">Invalid Key Tests</div></div>
-          <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-value">3</div><div class="stat-label">Benchmark Tests</div></div>
+          <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value">8</div><div class="stat-label">Luồng chạy đúng</div></div>
+          <div class="stat-card"><div class="stat-icon">🛡️</div><div class="stat-value">6</div><div class="stat-label">Phát hiện giả mạo</div></div>
+          <div class="stat-card"><div class="stat-icon">🔄</div><div class="stat-value">10</div><div class="stat-label">Chống Replay</div></div>
+          <div class="stat-card"><div class="stat-icon">🔑</div><div class="stat-value">7</div><div class="stat-label">Khóa không hợp lệ</div></div>
+          <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-value">3</div><div class="stat-label">Benchmark</div></div>
         </div>
         <div class="card" style="text-align:center;padding:2.5rem">
           <div style="font-size:3rem;margin-bottom:1rem">🧪</div>
-          <div style="font-size:1.2rem;margin-bottom:.5rem;font-weight:600">Run All Security Tests</div>
-          <div style="color:var(--text-secondary);font-size:.88rem;margin-bottom:1.5rem">Tests: key generation, signing, verification, tampering (modify/missing/reorder), replay (nonce/timestamp/sequence), invalid keys (wrong key/algo/empty)</div>
-          <button class="btn btn-primary" onclick="runTests()" id="runTestsBtn"><i class="fas fa-play"></i> Execute Test Suite</button>
+          <div style="font-size:1.2rem;margin-bottom:.5rem;font-weight:600">Chạy tất cả kiểm thử bảo mật</div>
+          <div style="color:var(--text-secondary);font-size:.88rem;margin-bottom:1.5rem">Bao gồm: tạo khóa, ký và xác minh, phát hiện sửa/xóa/đảo phần, chống gửi lại gói tin, xử lý sai khóa/thuật toán</div>
+          <button class="btn btn-primary" onclick="runTests()" id="runTestsBtn"><i class="fas fa-play"></i> Chạy bộ kiểm thử</button>
           <div id="testResult" style="margin-top:1.5rem"></div>
         </div>
       </div>
 
       <!-- PROFILE -->
-      <div class="section" id="section-profile"><h2 class="page-title">👤 Profile</h2><p class="page-desc">Your account information.</p><div class="card"><div id="profileContent">Loading...</div></div></div>
+      <div class="section" id="section-profile"><h2 class="page-title">👤 Hồ sơ</h2><p class="page-desc">Thông tin tài khoản của bạn.</p><div class="card"><div id="profileContent">Đang tải...</div></div></div>
     </div>
   </div>
 </div>
@@ -504,12 +504,12 @@ function selectAccountType(type) {
 function doLogin() {
   const u = document.getElementById('loginUsername').value.trim();
   const p = document.getElementById('loginPassword').value;
-  if (!u||!p) { showAuthError('Enter username and password'); return; }
+  if (!u||!p) { showAuthError('Nhập username và mật khẩu'); return; }
   const btn = document.getElementById('loginBtn');
-  btn.disabled=true; btn.innerHTML = '<span class="spinner"></span> Logging in...';
+  btn.disabled=true; btn.innerHTML = '<span class="spinner"></span> Đang đăng nhập...';
   fetch('/api/auth/login', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})})
-  .then(r=>r.json()).then(d=>{if(d.success){currentUser=d.user;enterApp(d.user)}else showAuthError(d.error||'Login failed')})
-  .catch(e=>showAuthError(e.message)).finally(()=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> Login'});
+  .then(r=>r.json()).then(d=>{if(d.success){currentUser=d.user;enterApp(d.user)}else showAuthError(d.error||'Đăng nhập thất bại')})
+  .catch(e=>showAuthError(e.message)).finally(()=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> Đăng nhập'});
 }
 function quickLogin(u,p) {
   document.getElementById('loginUsername').value=u; document.getElementById('loginPassword').value=p; doLogin();
@@ -518,13 +518,13 @@ function doRegister() {
   const u=document.getElementById('regUsername').value.trim(), p=document.getElementById('regPassword').value, p2=document.getElementById('regPassword2').value;
   const fn=document.getElementById('regFullname').value.trim(), at=document.getElementById('regAccountType').value;
   const em=document.getElementById('regEmail').value.trim(), ph=document.getElementById('regPhone').value.trim();
-  if(!u||!p||!fn){showAuthError('Fill required fields');return}
-  if(p!==p2){showAuthError('Passwords mismatch');return}
-  if(p.length<4){showAuthError('Password min 4 chars');return}
-  const btn=document.getElementById('regBtn'); btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Registering...';
+  if(!u||!p||!fn){showAuthError('Điền đầy đủ thông tin');return}
+  if(p!==p2){showAuthError('Mật khẩu không khớp');return}
+  if(p.length<4){showAuthError('Mật khẩu tối thiểu 4 ký tự');return}
+  const btn=document.getElementById('regBtn'); btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Đang đăng ký...';
   fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p,full_name:fn,account_type:at,email:em,phone:ph})})
-  .then(r=>r.json()).then(d=>{if(d.success){currentUser=d.user;enterApp(d.user)}else showAuthError(d.error||'Register failed')})
-  .catch(e=>showAuthError(e.message)).finally(()=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-user-plus"></i> Register'});
+  .then(r=>r.json()).then(d=>{if(d.success){currentUser=d.user;enterApp(d.user)}else showAuthError(d.error||'Đăng ký thất bại')})
+  .catch(e=>showAuthError(e.message)).finally(()=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-user-plus"></i> Đăng ký'});
 }
 function doLogout() {
   fetch('/api/auth/logout',{method:'POST'}).then(()=>{
@@ -534,7 +534,7 @@ function doLogout() {
 function enterApp(user) {
   document.getElementById('authPage').style.display='none'; document.getElementById('app').style.display='block';
   document.getElementById('navUserName').textContent=user.full_name;
-  document.getElementById('navUserType').textContent=user.account_type==='business'?'Business':'Individual';
+  document.getElementById('navUserType').textContent=user.account_type==='business'?'Doanh nghiệp':'Cá nhân';
   document.getElementById('navAvatar').textContent=user.full_name.charAt(0).toUpperCase();
   switchSection('dashboard'); refreshDashboard(); loadSampleContract();
 }
