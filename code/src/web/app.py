@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 Web Application - Multi-Part Digital Contract Signing
-Modern dark-themed UI for signing and verifying contracts with user management.
+Modern dark-themed UI with user management, auth, and ECDSA/RSA-PSS/Ed25519 support.
 """
 
-import sys, os, json, tempfile, shutil
+import sys, os, json, tempfile
 from pathlib import Path
 from flask import Flask, render_template, request, jsonify, session
 from functools import wraps
@@ -13,9 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.crypto.crypto_manager import CryptoManager, KeyManager
 from src.server.contract_handler import ContractHandler
-from src.server.manifest import ManifestManager
 from src.utils.logger import SecurityLogger
-from src.utils.replay_protection import ReplayProtection
 from src.web import user_manager as um
 
 app = Flask(__name__)
@@ -26,14 +24,20 @@ TEMP_DIR = Path(tempfile.gettempdir()) / "contract_signing_web"
 TEMP_DIR.mkdir(parents=True, exist_ok=True)
 
 
-# ===== Auth Decorator =====
 def login_required(f):
     @wraps(f)
-    def decorated_function(*args, **kwargs):
+    def decorated(*args, **kwargs):
         if 'username' not in session:
             return jsonify({"error": "Not authenticated"}), 401
         return f(*args, **kwargs)
-    return decorated_function
+    return decorated
+
+
+ALGORITHM_MAP = {
+    "ed25519": ("Ed25519", lambda: KeyManager.generate_ed25519_key_pair()),
+    "rsa-pss": ("RSA-PSS 2048", lambda: KeyManager.generate_rsa_pss_key_pair()),
+    "ecdsa": ("ECDSA P-256", lambda: KeyManager.generate_ecdsa_key_pair()),
+}
 
 
 # ===== Auth Routes =====
@@ -45,40 +49,41 @@ def index():
 
 @app.route('/api/auth/register', methods=['POST'])
 def register():
-    data = request.get_json()
-    username = data.get('username', '').strip()
-    password = data.get('password', '')
-    full_name = data.get('full_name', '').strip()
-    account_type = data.get('account_type', 'individual')
-    email = data.get('email', '').strip()
-    phone = data.get('phone', '').strip()
+    try:
+        data = request.get_json()
+        username = data.get('username', '').strip()
+        password = data.get('password', '')
+        full_name = data.get('full_name', '').strip()
+        account_type = data.get('account_type', 'individual')
+        email = data.get('email', '').strip()
+        phone = data.get('phone', '').strip()
 
-    if not username or not password or not full_name:
-        return jsonify({"success": False, "error": "Missing required fields"}), 400
+        if not username or not password or not full_name:
+            return jsonify({"success": False, "error": "Missing required fields"}), 400
+        if len(username) < 3:
+            return jsonify({"success": False, "error": "Username must be at least 3 characters"}), 400
+        if len(password) < 4:
+            return jsonify({"success": False, "error": "Password must be at least 4 characters"}), 400
 
-    if len(username) < 3:
-        return jsonify({"success": False, "error": "Username must be at least 3 characters"}), 400
-
-    if len(password) < 4:
-        return jsonify({"success": False, "error": "Password must be at least 4 characters"}), 400
-
-    success, result = um.register_user(username, password, full_name, account_type, email, phone)
-    
-    if success:
-        # Auto login after registration
-        session['username'] = username
-        user = um.get_user(username)
-        return jsonify({
-            "success": True,
-            "user": {
-                "username": user["username"],
-                "full_name": user["full_name"],
-                "account_type": user["account_type"],
-                "id": user["id"]
-            }
-        })
-    else:
-        return jsonify({"success": False, "error": result}), 400
+        success, result = um.register_user(username, password, full_name, account_type, email, phone)
+        if success:
+            session['username'] = username
+            user_data = um.get_user(username)
+            if not user_data:
+                return jsonify({"success": False, "error": "Account created but failed to load profile"}), 500
+            return jsonify({
+                "success": True,
+                "user": {
+                    "username": user_data["username"],
+                    "full_name": user_data["full_name"],
+                    "account_type": user_data["account_type"],
+                    "id": user_data["id"]
+                }
+            })
+        else:
+            return jsonify({"success": False, "error": result}), 400
+    except Exception as e:
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
 
 
 @app.route('/api/auth/login', methods=['POST'])
@@ -86,28 +91,22 @@ def login():
     data = request.get_json()
     username = data.get('username', '').strip()
     password = data.get('password', '')
-
     if not username or not password:
         return jsonify({"success": False, "error": "Missing username or password"}), 400
 
     success, user = um.authenticate(username, password)
-    
     if success:
         session['username'] = username
         session['user_id'] = user['id']
         return jsonify({
             "success": True,
             "user": {
-                "username": user["username"],
-                "full_name": user["full_name"],
-                "account_type": user["account_type"],
-                "email": user.get("email", ""),
-                "phone": user.get("phone", ""),
-                "id": user["id"]
+                "username": user["username"], "full_name": user["full_name"],
+                "account_type": user["account_type"], "email": user.get("email", ""),
+                "phone": user.get("phone", ""), "id": user["id"]
             }
         })
-    else:
-        return jsonify({"success": False, "error": "Invalid username or password"}), 401
+    return jsonify({"success": False, "error": "Invalid username or password"}), 401
 
 
 @app.route('/api/auth/logout', methods=['POST'])
@@ -124,27 +123,22 @@ def get_session():
             return jsonify({
                 "authenticated": True,
                 "user": {
-                    "username": user["username"],
-                    "full_name": user["full_name"],
-                    "account_type": user["account_type"],
-                    "email": user.get("email", ""),
-                    "phone": user.get("phone", ""),
-                    "id": user["id"]
+                    "username": user["username"], "full_name": user["full_name"],
+                    "account_type": user["account_type"], "email": user.get("email", ""),
+                    "phone": user.get("phone", ""), "id": user["id"]
                 }
             })
     return jsonify({"authenticated": False})
 
 
-# ===== User Management Routes =====
+# ===== User Routes =====
 
 @app.route('/api/users/list', methods=['GET'])
 @login_required
 def list_users():
     users = um.get_all_users()
     current = session['username']
-    # Filter out current user
-    others = [u for u in users if u['username'] != current]
-    return jsonify({"success": True, "users": others})
+    return jsonify({"success": True, "users": [u for u in users if u['username'] != current]})
 
 
 @app.route('/api/users/profile', methods=['GET'])
@@ -155,12 +149,9 @@ def get_profile():
         return jsonify({
             "success": True,
             "user": {
-                "username": user["username"],
-                "full_name": user["full_name"],
-                "account_type": user["account_type"],
-                "email": user.get("email", ""),
-                "phone": user.get("phone", ""),
-                "id": user["id"],
+                "username": user["username"], "full_name": user["full_name"],
+                "account_type": user["account_type"], "email": user.get("email", ""),
+                "phone": user.get("phone", ""), "id": user["id"],
                 "created_at": user.get("created_at", ""),
                 "public_key_path": user.get("public_key_path", "")
             }
@@ -168,25 +159,19 @@ def get_profile():
     return jsonify({"success": False, "error": "User not found"}), 404
 
 
-# ===== Key Management Routes =====
+# ===== Key Routes =====
 
 @app.route('/api/keys/status', methods=['GET'])
 @login_required
 def key_status():
     key_dir = KeyManager.DEFAULT_KEY_DIR
-    ed25519_exists = (key_dir / "ed25519_private.pem").exists()
-    rsa_exists = (key_dir / "rsa-pss_private.pem").exists()
-    has_keys = ed25519_exists or rsa_exists
-
     keys_info = []
-    if ed25519_exists:
-        pub = (key_dir / "ed25519_public.pem").read_text()
-        keys_info.append({"algorithm": "Ed25519", "status": "active", "public_key": pub[-80:].strip()})
-    if rsa_exists:
-        pub = (key_dir / "rsa-pss_public.pem").read_text()
-        keys_info.append({"algorithm": "RSA-PSS (2048)", "status": "active", "public_key": pub[-80:].strip()})
-
-    return jsonify({"has_keys": has_keys, "keys": keys_info, "key_dir": str(key_dir)})
+    for algo_key, (algo_name, _) in ALGORITHM_MAP.items():
+        key_file = key_dir / f"{algo_key}_public.pem"
+        if key_file.exists():
+            pub = key_file.read_text()
+            keys_info.append({"algorithm": algo_name, "key": algo_key, "status": "active", "public_key": pub[-80:].strip()})
+    return jsonify({"has_keys": len(keys_info) > 0, "keys": keys_info, "key_dir": str(key_dir)})
 
 
 @app.route('/api/keys/generate', methods=['POST'])
@@ -194,32 +179,36 @@ def key_status():
 def generate_keys():
     data = request.get_json()
     algorithm = data.get('algorithm', 'ed25519')
+    if algorithm not in ALGORITHM_MAP:
+        return jsonify({"success": False, "error": f"Unsupported algorithm: {algorithm}"}), 400
 
     try:
         key_dir = KeyManager.DEFAULT_KEY_DIR
         key_dir.mkdir(parents=True, exist_ok=True)
-
-        if algorithm == "ed25519":
-            priv, pub = KeyManager.generate_ed25519_key_pair()
-        else:
-            priv, pub = KeyManager.generate_rsa_pss_key_pair()
-
+        algo_name, gen_func = ALGORITHM_MAP[algorithm]
+        priv, pub = gen_func()
         KeyManager.save_key_to_file(priv, str(key_dir / f"{algorithm}_private.pem"))
         KeyManager.save_key_to_file(pub, str(key_dir / f"{algorithm}_public.pem"))
-
-        # Update user's public key path
         um.update_public_key(session['username'], str(key_dir / f"{algorithm}_public.pem"))
-
-        return jsonify({
-            "success": True,
-            "algorithm": algorithm,
-            "message": f"{'Ed25519' if algorithm == 'ed25519' else 'RSA-PSS'} keys generated successfully"
-        })
+        return jsonify({"success": True, "algorithm": algorithm, "message": f"{algo_name} keys generated successfully"})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-# ===== Contract Management Routes =====
+# ===== Contract Routes =====
+
+def get_signer(algorithm):
+    """Get keys and crypto manager for the current user."""
+    key_dir = KeyManager.DEFAULT_KEY_DIR
+    key_path = key_dir / f"{algorithm}_private.pem"
+    pub_path = key_dir / f"{algorithm}_public.pem"
+    if not key_path.exists():
+        raise FileNotFoundError(f"No {algorithm} keys found. Generate keys first.")
+    crypto = CryptoManager(algorithm=algorithm)
+    logger = SecurityLogger(log_dir=str(TEMP_DIR / "logs"))
+    handler = ContractHandler(crypto_manager=crypto, logger=logger)
+    return crypto, handler, str(pub_path)
+
 
 @app.route('/api/contracts/create', methods=['POST'])
 @login_required
@@ -229,40 +218,32 @@ def create_contract():
     content = data.get('content', '').strip()
     recipients = data.get('recipients', [])
     num_parts = data.get('num_parts', 3)
+    algorithm = data.get('algorithm', 'ed25519')
 
     if not title or not content:
         return jsonify({"success": False, "error": "Missing title or content"}), 400
     if not recipients:
-        return jsonify({"success": False, "error": "Please select at least one recipient"}), 400
+        return jsonify({"success": False, "error": "Select at least one recipient"}), 400
 
     success, contract_id, contract = um.create_contract(
-        title=title,
-        content=content,
-        sender_username=session['username'],
-        recipient_usernames=recipients,
-        num_parts=num_parts
+        title=title, content=content, sender_username=session['username'],
+        recipient_usernames=recipients, num_parts=num_parts
     )
-
     if success:
         return jsonify({"success": True, "contract": contract})
-    else:
-        return jsonify({"success": False, "error": "Failed to create contract"}), 500
+    return jsonify({"success": False, "error": "Failed to create contract"}), 500
 
 
 @app.route('/api/contracts/list', methods=['GET'])
 @login_required
 def list_contracts():
     sent, received = um.get_contracts_for_user(session['username'])
-    return jsonify({
-        "success": True,
-        "sent": sent,
-        "received": received
-    })
+    return jsonify({"success": True, "sent": sent, "received": received})
 
 
 @app.route('/api/contracts/<contract_id>', methods=['GET'])
 @login_required
-def get_contract_detail(contract_id):
+def get_contract(contract_id):
     contract = um.get_contract(contract_id)
     if not contract:
         return jsonify({"success": False, "error": "Contract not found"}), 404
@@ -272,54 +253,39 @@ def get_contract_detail(contract_id):
 @app.route('/api/contracts/<contract_id>/sign', methods=['POST'])
 @login_required
 def sign_contract(contract_id):
-    """Sign a contract and create manifest."""
     contract = um.get_contract(contract_id)
     if not contract:
         return jsonify({"success": False, "error": "Contract not found"}), 404
+    if contract['sender'] != session['username']:
+        return jsonify({"success": False, "error": "Only the sender can sign this contract"}), 403
 
     data = request.get_json()
     algorithm = data.get('algorithm', 'ed25519')
 
     try:
-        # Check keys
-        key_dir = KeyManager.DEFAULT_KEY_DIR
-        key_path = key_dir / f"{algorithm}_private.pem"
-        if not key_path.exists():
-            return jsonify({"success": False, "error": "No keys found. Generate keys first."}), 400
-
-        crypto = CryptoManager(algorithm=algorithm)
-        logger = SecurityLogger(log_dir=str(TEMP_DIR / "logs"))
-        handler = ContractHandler(crypto_manager=crypto, logger=logger)
-
+        crypto, handler, pub_path = get_signer(algorithm)
         manifest_json, parts = handler.split_contract(
-            contract_text=contract['content'],
-            contract_id=contract['id'],
+            contract_text=contract['content'], contract_id=contract['id'],
             num_parts=contract['num_parts']
         )
-
-        # Update contract status
         um.update_contract_status(contract_id, "signed", manifest_json, parts)
 
         manifest = json.loads(manifest_json)
         parts_output = []
         for p in parts:
             parts_output.append({
-                "part_id": p["part_id"],
-                "sequence_number": p["sequence_number"],
-                "hash": p["hash"][:16] + "...",
-                "signature": p["signature"][:24] + "...",
+                "part_id": p["part_id"], "sequence_number": p["sequence_number"],
+                "hash": p["hash"][:16] + "...", "signature": p["signature"][:24] + "...",
                 "content_preview": p["content"][:80] + ("..." if len(p["content"]) > 80 else ""),
                 "algorithm": p["algorithm"]
             })
-
         return jsonify({
-            "success": True,
-            "contract_id": contract['id'],
-            "total_parts": len(parts),
-            "parts": parts_output,
-            "manifest": manifest_json,
-            "algorithm": algorithm
+            "success": True, "contract_id": contract['id'],
+            "total_parts": len(parts), "parts": parts_output,
+            "manifest": manifest_json, "algorithm": algorithm
         })
+    except FileNotFoundError as e:
+        return jsonify({"success": False, "error": str(e)}), 400
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
@@ -327,13 +293,11 @@ def sign_contract(contract_id):
 @app.route('/api/contracts/<contract_id>/verify', methods=['POST'])
 @login_required
 def verify_contract(contract_id):
-    """Verify a signed contract."""
     contract = um.get_contract(contract_id)
     if not contract:
         return jsonify({"success": False, "error": "Contract not found"}), 404
-
     if not contract.get('manifest') or not contract.get('parts'):
-        return jsonify({"success": False, "error": "Contract has not been signed yet"}), 400
+        return jsonify({"success": False, "error": "Contract not signed yet"}), 400
 
     data = request.get_json()
     algorithm = data.get('algorithm', 'ed25519')
@@ -345,26 +309,21 @@ def verify_contract(contract_id):
 
         parts = contract['parts']
         manifest_json = contract['manifest']
-
         key_dir = KeyManager.DEFAULT_KEY_DIR
         pub_key_path = key_dir / f"{algorithm}_public.pem"
 
         if not pub_key_path.exists():
-            return jsonify({"success": False, "error": "No public key found"}), 400
+            return jsonify({"success": False, "error": f"No {algorithm} public key found"}), 400
 
         is_valid, message, reassembled = handler.verify_contract(
-            manifest_json=manifest_json,
-            parts=parts,
+            manifest_json=manifest_json, parts=parts,
             public_key_path=str(pub_key_path)
         )
-
         if is_valid:
             um.update_contract_status(contract_id, "verified")
 
         return jsonify({
-            "success": True,
-            "is_valid": is_valid,
-            "message": message,
+            "success": True, "is_valid": is_valid, "message": message,
             "reassembled_contract": reassembled
         })
     except Exception as e:
@@ -378,8 +337,7 @@ def delete_contract(contract_id):
     if not contract:
         return jsonify({"success": False, "error": "Contract not found"}), 404
     if contract['sender'] != session['username']:
-        return jsonify({"success": False, "error": "You can only delete your own contracts"}), 403
-    
+        return jsonify({"success": False, "error": "Cannot delete others' contracts"}), 403
     um.delete_contract(contract_id)
     return jsonify({"success": True})
 
@@ -387,7 +345,6 @@ def delete_contract(contract_id):
 @app.route('/api/contracts/<contract_id>/tamper', methods=['POST'])
 @login_required
 def tamper_contract(contract_id):
-    """Simulate tampering on a signed contract."""
     contract = um.get_contract(contract_id)
     if not contract or not contract.get('parts'):
         return jsonify({"success": False, "error": "Contract not found or not signed"}), 404
@@ -395,7 +352,6 @@ def tamper_contract(contract_id):
     data = request.get_json()
     tamper_type = data.get('tamper_type', 'modify')
     part_index = data.get('part_index', 0)
-
     parts = list(contract['parts'])
     tamper_desc = ""
 
@@ -408,7 +364,7 @@ def tamper_contract(contract_id):
     elif tamper_type == 'reorder':
         if len(parts) >= 2:
             parts[0], parts[-1] = parts[-1], parts[0]
-            tamper_desc = f"Reversed order of parts"
+            tamper_desc = "Reversed order of parts"
     elif tamper_type == 'hash':
         parts[part_index]["hash"] = "0" * 64
         tamper_desc = f"Corrupted hash of {parts[part_index]['part_id']}"
@@ -417,11 +373,8 @@ def tamper_contract(contract_id):
         tamper_desc = f"Corrupted signature of {parts[part_index]['part_id']}"
 
     return jsonify({
-        "success": True,
-        "parts": parts,
-        "manifest": contract['manifest'],
-        "tamper_desc": tamper_desc,
-        "tamper_type": tamper_type,
+        "success": True, "parts": parts, "manifest": contract['manifest'],
+        "tamper_desc": tamper_desc, "tamper_type": tamper_type,
         "algorithm": contract.get('algorithm', 'ed25519')
     })
 
@@ -433,8 +386,7 @@ def run_tests():
     try:
         test_dir = Path(__file__).resolve().parents[2] / "tests"
         result = pytest.main([str(test_dir), "-v", "--tb=line", "--no-header", "-q"])
-        passed = result == 0
-        return jsonify({"success": True, "passed": passed, "exit_code": result})
+        return jsonify({"success": True, "passed": result == 0, "exit_code": result})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
@@ -444,26 +396,20 @@ def get_sample_contract():
     sample = """HỢP ĐỒNG HỢP TÁC KINH DOANH SỐ 2024/HD-HT
 
 PHẦN 1: THÔNG TIN CÁC BÊN
-
-Bên A: CÔNG TY TNHH GIẢI PHÁP SỐ ABC
-Địa chỉ: 123 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh
-Mã số thuế: 0123456789
-
-Bên B: CÔNG TY CỔ PHẦN CÔNG NGHỆ XYZ
-Địa chỉ: 456 Lê Lợi, Quận 3, TP. Hồ Chí Minh
-Mã số thuế: 0987654321
+Bên A: CÔNG TY TNHH GIẢI PHÁP SỐ ABC - Địa chỉ: 123 Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh
+Bên B: CÔNG TY CỔ PHẦN CÔNG NGHỆ XYZ - Địa chỉ: 456 Lê Lợi, Quận 3, TP. Hồ Chí Minh
 
 PHẦN 2: MỤC ĐÍCH VÀ PHẠM VI HỢP TÁC
-Hai bên cùng hợp tác phát triển dự án "Chuyển đổi số toàn diện" cho các doanh nghiệp vừa và nhỏ tại khu vực Đông Nam Bộ.
+Hai bên cùng hợp tác phát triển dự an "Chuyển đổi số toàn diện" cho các doanh nghiệp vừa và nhỏ.
 
 PHẦN 3: GIÁ TRỊ HỢP ĐỒNG
-Tổng giá trị hợp đồng: 15.000.000.000 VNĐ (Mười lăm tỷ đồng)
+Tổng giá trị hợp đồng: 15.000.000.000 VND (Muoi lam ty dong)
 
-PHẦN 4: HIỆU LỰC
-Hợp đồng có hiệu lực từ ngày 01/01/2025 đến ngày 31/12/2027 (03 năm).
+PHẦN 4: HIEU LUC
+Hop dong co hieu luc tu ngay 01/01/2025 den ngay 31/12/2027 (03 nam).
 
-PHẦN 5: ĐIỀU KHOẢN CHUNG
-Các bên cam kết bảo mật mọi thông tin. Mọi tranh chấp được giải quyết tại Tòa án Nhân dân TP. Hồ Chí Minh."""
+PHẦN 5: DIEU KHOAN CHUNG
+Cac ben cam ket bao mat moi thong tin. Moi tranh chap duoc giai quyet tai Toa an Nhan dan TP. Ho Chi Minh."""
 
     return jsonify({"success": True, "contract": sample})
 
@@ -472,6 +418,6 @@ if __name__ == '__main__':
     print("=" * 60)
     print("  Multi-Part Digital Contract Signing - Web UI")
     print("  Server: http://localhost:5000")
-    print("  Sample accounts initialized!")
+    print("  Supported: Ed25519 / RSA-PSS / ECDSA P-256")
     print("=" * 60)
     app.run(debug=True, host='0.0.0.0', port=5000)

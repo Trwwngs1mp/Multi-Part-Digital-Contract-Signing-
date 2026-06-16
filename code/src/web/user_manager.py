@@ -38,7 +38,7 @@ def _load_json(filepath: Path) -> dict:
     """Load JSON data from a file."""
     if filepath.exists():
         try:
-            return json.loads(filepath.read_text())
+            return json.loads(filepath.read_text(encoding='utf-8'))
         except (json.JSONDecodeError, Exception):
             return {}
     return {}
