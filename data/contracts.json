@@ -108,5 +108,53 @@
         "algorithm": "ed25519"
       }
     ]
+  },
+  "CTR-10E561893948": {
+    "id": "CTR-10E561893948",
+    "title": "Business Cooperation Contract",
+    "content": "HỢP ĐỒNG MUA BÁN\n\nBên A: Nguyễn Thị Hoa\nBên B: Trần Văn Thịnh\nTài sản: Máy tính xách tay Dell XPS 13\nGiá trị: 25.000.000 VNĐ\nNgày ký: 27/06/2025\n\nĐiều khoản:\n- Bên A cam kết cung cấp sản phẩm đúng mô tả.\n- Bên B thanh toán đầy đủ trong vòng 7 ngày.",
+    "sender": "trwwngs1mp",
+    "recipients": [
+      "congty_abc"
+    ],
+    "num_parts": 3,
+    "filename": "",
+    "status": "verified",
+    "signed_parts": {},
+    "accepted_by": [
+      "congty_abc"
+    ],
+    "verified_by": [],
+    "created_at": "2026-06-16T14:25:30.707316",
+    "manifest": "{\n  \"contract_id\": \"CTR-10E561893948\",\n  \"total_parts\": 3,\n  \"parts\": [\n    {\n      \"part_id\": \"PART-001\",\n      \"sequence_number\": 1,\n      \"hash\": \"b318a361cf3d1b9e7b9088eb9cc65a2dab05f00529d13e324e5423664836943d\"\n    },\n    {\n      \"part_id\": \"PART-002\",\n      \"sequence_number\": 2,\n      \"hash\": \"00cbb70fa028ba3a83bb611ee1b7fd54ef5526840e5071243d8f18f0c88d65d7\"\n    },\n    {\n      \"part_id\": \"PART-003\",\n      \"sequence_number\": 3,\n      \"hash\": \"d1f3274bf85949e40ed7808aaeea7f4451968a8f22d3f82dfb022dc348f474d9\"\n    }\n  ],\n  \"manifest_signature\": \"7932ee9f140a07548a665c2a100b7a73f41a78c8912098c93b155f0e4d3842df50e08e45c663e5fd805985cc1f433243b772f8669f14787c4a7a3b679c209409\",\n  \"signature_algorithm\": \"ed25519\"\n}",
+    "parts": [
+      {
+        "part_id": "PART-001",
+        "contract_id": "CTR-10E561893948",
+        "sequence_number": 1,
+        "content": "HỢP ĐỒNG MUA BÁN\n\nBên A: Nguyễn Thị Hoa",
+        "hash": "b318a361cf3d1b9e7b9088eb9cc65a2dab05f00529d13e324e5423664836943d",
+        "signature": "bfb9c18ebbe41e96eed475809033bb6f85b25fe9150db4f358943f4aa7345266adc12cc950a2e69398579c0e7d370daf137ce622dcfda850a04565999fe93006",
+        "algorithm": "ed25519"
+      },
+      {
+        "part_id": "PART-002",
+        "contract_id": "CTR-10E561893948",
+        "sequence_number": 2,
+        "content": "Bên B: Trần Văn Thịnh\nTài sản: Máy tính xách tay Dell XPS 13\nGiá trị: 25.000.000 VNĐ",
+        "hash": "00cbb70fa028ba3a83bb611ee1b7fd54ef5526840e5071243d8f18f0c88d65d7",
+        "signature": "c2314bf348747cabb487ec441fdcb4676e28de903d4413dd2297ad7b3924697839c380a1a825464e8c77aeeb4bf256a003947adf078c55eea38177ee04646206",
+        "algorithm": "ed25519"
+      },
+      {
+        "part_id": "PART-003",
+        "contract_id": "CTR-10E561893948",
+        "sequence_number": 3,
+        "content": "Ngày ký: 27/06/2025\n\nĐiều khoản:\n- Bên A cam kết cung cấp sản phẩm đúng mô tả.\n- Bên B thanh toán đầy đủ trong vòng 7 ngày.",
+        "hash": "d1f3274bf85949e40ed7808aaeea7f4451968a8f22d3f82dfb022dc348f474d9",
+        "signature": "be57f7f20a694cffbf3264e1327ec472bcc756ba0d127290f38ab1326e139b16066dbd84f95d12a2f24ea36371e59d671576d030e957334e3eef84668f89f60f",
+        "algorithm": "ed25519"
+      }
+    ]
   }
 }

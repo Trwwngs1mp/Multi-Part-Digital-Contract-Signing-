@@ -299,8 +299,18 @@
         <div class="form-group"><label>Mật khẩu</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"></div>
         <button class="btn btn-primary" onclick="doLogin()" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
         <div class="auth-sample">
-          <div class="auth-sample-title">Tài khoản mẫu (click để đăng nhập nhanh)</div>
-          <div class="sample-users" id="sampleUsers"></div>
+          <div class="auth-sample-title">TÀI KHOẢN MẪU</div>
+          <div class="sample-users" id="sampleUsers">
+            <div style="grid-column:1/-1;color:var(--text-muted);font-size:.78rem;text-align:center;padding:.75rem;background:var(--bg-input);border-radius:6px;border:1px dashed var(--border)">
+              <strong>admin</strong> / admin123 (Quản trị)<br>
+              <strong>congty_abc</strong> / abc123 (Doanh nghiệp)<br>
+              <strong>nguyen_van_a</strong> / pass123 (Cá nhân)<br>
+              <strong>tran_thi_b</strong> / pass456 (Cá nhân)<br>
+              <strong>doanhnghiep_xyz</strong> / xyz123 (Doanh nghiệp)<br>
+              <strong>startup_tech</strong> / tech123 (Doanh nghiệp)<br>
+              <div style="margin-top:.5rem;font-size:.72rem">Xem đầy đủ tại <strong>prod/docs/sample_accounts.md</strong></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="auth-form" id="registerForm">
@@ -510,9 +520,6 @@ function doLogin() {
   fetch('/api/auth/login', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})})
   .then(r=>r.json()).then(d=>{if(d.success){currentUser=d.user;enterApp(d.user)}else showAuthError(d.error||'Đăng nhập thất bại')})
   .catch(e=>showAuthError(e.message)).finally(()=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> Đăng nhập'});
-}
-function quickLogin(u,p) {
-  document.getElementById('loginUsername').value=u; document.getElementById('loginPassword').value=p; doLogin();
 }
 function doRegister() {
   const u=document.getElementById('regUsername').value.trim(), p=document.getElementById('regPassword').value, p2=document.getElementById('regPassword2').value;
@@ -728,13 +735,6 @@ function hideLoading(){document.getElementById('loadingOverlay').classList.remov
 // ===== INIT =====
 fetch('/api/auth/session').then(r=>r.json()).then(d=>{
   if(d.authenticated&&d.user){currentUser=d.user;enterApp(d.user);loadSentContracts();loadReceivedContracts()}
-  fetch('/api/users/list').then(r=>r.json()).then(u=>{
-    if(u.success&&u.users.length>0){
-      const samples=[{user:'admin',pass:'admin123',name:'Admin',type:'individual'}];
-      u.users.slice(0,7).forEach(u2=>samples.push({user:u2.username,pass:'abc123',name:u2.full_name,type:u2.account_type}));
-      document.getElementById('sampleUsers').innerHTML=samples.map(s=>`<div class="sample-user" onclick="quickLogin('${s.user}','${s.pass}')"><strong>@${s.user}</strong><span>${s.name} <span class="user-type-badge ${s.type}">${s.type==='business'?'Biz':'Ind'}</span></span></div>`).join('');
-    }
-  });
 });
 
 const _origSwitch=switchSection;
