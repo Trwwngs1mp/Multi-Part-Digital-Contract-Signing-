@@ -1,0 +1,46 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Data files (contain sensitive info)
+data/
+!data/sample_users.json
+!data/.gitkeep
+
+# Logs
+logs/
+code/logs/
+
+# Keys
+.contract_signing_keys/
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output files
+output/
+
+# Distribution
+dist/
+build/
+*.egg-info/

@@ -7,18 +7,26 @@
 
 ## 📋 Giới thiệu
 
-Hệ thống **Multi-Part Digital Contract Signing** cho phép người gửi chia một hợp đồng điện tử thành nhiều phần, mỗi phần được ký số riêng bằng thuật toán **Ed25519/RSA-PSS**, và toàn bộ hợp đồng được đảm bảo tính toàn vẹn thông qua một **manifest được ký số tổng**.
+Hệ thống **Multi-Part Digital Contract Signing** cho phép người gửi chia một hợp đồng điện tử thành nhiều phần, mỗi phần được ký số riêng, và toàn bộ hợp đồng được đảm bảo tính toàn vẹn thông qua một **manifest được ký số tổng**.
+
+Hỗ trợ **3 thuật toán chữ ký số**: Ed25519, ECDSA P-256, RSA-PSS.
 
 ### Tính năng chính
 
+- ✅ **3 thuật toán chữ ký số**: Ed25519, ECDSA P-256, RSA-PSS
 - ✅ Chia hợp đồng thành nhiều phần (part)
 - ✅ Mỗi phần có: `part_id`, `contract_id`, `sequence_number`, `hash`, `signature`
-- ✅ Chữ ký số Ed25519 / RSA-PSS cho từng phần
 - ✅ Manifest toàn bộ hợp đồng được ký số
 - ✅ Phát hiện: thiếu phần, thừa phần, đảo thứ tự, sửa nội dung
+- ✅ **Mã hóa nội dung hợp đồng** bằng AES-GCM (256-bit)
 - ✅ Cơ chế chống replay (nonce + timestamp + sequence_number)
 - ✅ Ghi log bảo mật (không chứa key/password)
-- ✅ CLI thân thiện
+- ✅ **Web UI** Flask với đăng nhập/đăng ký (Cá nhân & Doanh nghiệp)
+- ✅ Upload file .txt từ máy
+- ✅ Gửi & nhận hợp đồng giữa các users
+- ✅ Người nhận xác nhận (Accept Contract) trước khi hoàn tất
+- ✅ CLI command-line interface
+- ✅ **Bcrypt** cho password hashing (PBKDF2-SHA256 fallback)
 
 ---
 
@@ -27,6 +35,7 @@ Hệ thống **Multi-Part Digital Contract Signing** cho phép người gửi ch
 ```
 fit4012-secure-system/
 ├── README.md
+├── .gitignore
 ├── requirements.txt
 │
 ├── prod/                       # Thư mục lên ý tưởng, spec, báo cáo, marketing
@@ -34,46 +43,44 @@ fit4012-secure-system/
 │   ├── spec/
 │   │   ├── protocol_design.md  # Thiết kế giao thức
 │   │   └── threat_model.md     # Phân tích mối đe dọa
-│   ├── report/
-│   │   └── report.pdf          # Báo cáo PDF (sẽ sinh sau)
+│   ├── report/                 # Báo cáo PDF (sẽ sinh sau)
 │   ├── figures/                # Sơ đồ kiến trúc, sequence diagram
 │   ├── docs/
-│   │   ├── test_report.md      # Test report tổng hợp
-│   │   ├── benchmark.md        # Benchmark hiệu năng
-│   │   └── video_demo.md       # Video demo
+│   │   ├── test_suite_guide.md # Hướng dẫn bộ kiểm thử
+│   │   ├── sample_accounts.md  # Danh sách tài khoản mẫu
+│   │   └── benchmark.md        # Benchmark hiệu năng
 │   └── marketing/              # Nội dung marketing, slide
 │
 ├── code/                       # Thư mục chứa mã nguồn
 │   ├── src/
+│   │   ├── web/                # Web UI (Flask)
+│   │   │   ├── app.py          # Flask application
+│   │   │   ├── user_manager.py # Quản lý user, auth, contract
+│   │   │   └── templates/
+│   │   │       └── index.html  # Giao diện người dùng
 │   │   ├── client/
-│   │   │   ├── __init__.py
-│   │   │   ├── contract_signer.py   # Ký hợp đồng
-│   │   │   └── cli.py               # Giao diện dòng lệnh
+│   │   │   ├── contract_signer.py
+│   │   │   └── cli.py          # Giao diện dòng lệnh
 │   │   ├── server/
-│   │   │   ├── __init__.py
 │   │   │   ├── contract_handler.py  # Xử lý hợp đồng
 │   │   │   └── manifest.py          # Quản lý manifest
 │   │   ├── crypto/
-│   │   │   ├── __init__.py
 │   │   │   └── crypto_manager.py    # Quản lý mã hóa, chữ ký
 │   │   └── utils/
-│   │       ├── __init__.py
-│   │       ├── logger.py            # Ghi log
+│   │       ├── logger.py            # Ghi log bảo mật
 │   │       └── replay_protection.py # Chống replay
 │   ├── tests/
-│   │   ├── test_valid_flow.py       # Test luồng hợp lệ
-│   │   ├── test_tampering.py        # Test sửa nội dung
-│   │   ├── test_replay.py           # Test replay
-│   │   ├── test_invalid_key.py      # Test sai key
-│   │   └── __init__.py
+│   │   ├── test_valid_flow.py       # 8 tests - Luồng hợp lệ
+│   │   ├── test_tampering.py        # 6 tests - Phát hiện giả mạo
+│   │   ├── test_replay.py           # 10 tests - Chống replay
+│   │   └── test_invalid_key.py      # 7 tests - Sai key
 │   └── sample_data/
-│       ├── contract_sample.txt      # Hợp đồng mẫu
-│       └── manifest_sample.json     # Manifest mẫu
+│       └── contract_sample.txt      # Hợp đồng mẫu
 ```
 
 ---
 
-## 🚀 Hướng dẫn cài đặt
+## 🚀 Cài đặt & Chạy
 
 ### Yêu cầu
 
@@ -83,57 +90,77 @@ fit4012-secure-system/
 ### Cài đặt
 
 ```bash
-# Clone repository
 git clone https://github.com/Trwwngs1mp/Multi-Part-Digital-Contract-Signing-.git
 cd Multi-Part-Digital-Contract-Signing
-
-# Cài đặt dependencies
 pip install -r requirements.txt
 ```
 
-### Chạy chương trình
+### Chạy Web UI (Khuyến nghị)
 
 ```bash
-# Chạy CLI
-python code/src/client/cli.py --help
+cd code
+python -m src.web.app
+# Mở trình duyệt tại http://localhost:5000
+```
 
-# Tạo key
-python code/src/client/cli.py generate-keys
+### Chạy CLI
 
-# Ký hợp đồng
-python code/src/client/cli.py sign --contract sample_data/contract_sample.txt
+```bash
+cd code
+python src/client/cli.py generate-keys
+python src/client/cli.py sign ../sample_data/contract_sample.txt
+python src/client/cli.py verify output/contract_sample/manifest.json output/contract_sample/parts/
+```
 
-# Xác minh hợp đồng
-python code/src/client/cli.py verify --contract sample_data/contract_sample.txt
+### Chạy tất cả test
 
-# Chạy tất cả test
-cd code && python -m pytest tests/ -v
+```bash
+cd code
+python -m pytest tests/ -v
 ```
 
 ---
 
 ## 🔐 Kỹ thuật bảo mật
 
-| Yêu cầu              | Giải pháp                              |
-|----------------------|----------------------------------------|
-| Mã hóa               | Không áp dụng trực tiếp (hợp đồng ký số) |
-| Chữ ký số            | Ed25519 (ưu tiên) + RSA-PSS            |
-| Kiểm tra toàn vẹn    | SHA-256 hash từng phần + manifest ký    |
-| Chống replay         | nonce (16 byte) + timestamp + sequence_number |
-| Quản lý khóa         | Tạo key bằng thư viện `cryptography`, lưu file PEM |
-| Log bảo mật          | `logging` + không in key/password      |
+| Yêu cầu              | Giải pháp                                        |
+|----------------------|--------------------------------------------------|
+| Mã hóa dữ liệu       | AES-GCM 256-bit cho nội dung hợp đồng khi lưu     |
+| Chữ ký số            | Ed25519 / ECDSA P-256 / RSA-PSS                  |
+| Kiểm tra toàn vẹn    | SHA-256 hash từng phần + manifest ký số          |
+| Chống replay         | nonce (16 byte) + timestamp + sequence_number    |
+| Quản lý khóa         | Lưu file PEM, không hard-code trong source       |
+| Log bảo mật          | `SecurityLogger` lọc key/password khỏi log       |
+| Password hashing     | Bcrypt (PBKDF2-SHA256 fallback)                  |
 
 ---
 
-## 📊 Kết quả kiểm thử (Test Coverage)
+## 👥 Tài khoản mẫu
 
-- ✅ Luồng hợp lệ: ký → xác minh → ghép hợp đồng
-- ✅ Phát hiện sửa nội dung một phần
-- ✅ Phát hiện thiếu phần hợp đồng
-- ✅ Phát hiện đảo thứ tự các phần
-- ✅ Phát hiện sai public key
-- ✅ Phát hiện replay (dùng lại gói tin cũ)
-- ✅ Benchmark hiệu năng
+Xem danh sách đầy đủ tại [`prod/docs/sample_accounts.md`](prod/docs/sample_accounts.md)
+
+| Username | Password | Loại |
+|----------|----------|------|
+| `admin` | `admin123` | Cá nhân (Quản trị) |
+| `congty_abc` | `abc123` | Doanh nghiệp |
+| `nguyen_van_a` | `pass123` | Cá nhân |
+| `tran_thi_b` | `pass456` | Cá nhân |
+| `doanhnghiep_xyz` | `xyz123` | Doanh nghiệp |
+| `startup_tech` | `tech123` | Doanh nghiệp |
+
+---
+
+## 🧪 Kết quả kiểm thử
+
+**34/34 tests PASSED** — Kiểm thử với pytest:
+
+| Nhóm test | File | Số lượng |
+|-----------|------|----------|
+| ✅ Luồng hợp lệ | `test_valid_flow.py` | 8 tests |
+| 🛡️ Phát hiện giả mạo | `test_tampering.py` | 6 tests |
+| 🔄 Chống replay | `test_replay.py` | 10 tests |
+| 🔑 Xử lý khóa sai | `test_invalid_key.py` | 7 tests |
+| ⚡ Benchmark | (CLI built-in) | 3 algorithms |
 
 ---
 
@@ -141,14 +168,14 @@ cd code && python -m pytest tests/ -v
 
 | STT | Họ và Tên | Vai trò |
 |-----|-----------|---------|
-| 1   | Tên A     | Leader / Backend & Crypto |
-| 2   | Tên B     | Backend - Xử lý hợp đồng & Server |
-| 3   | Tên C     | Frontend / CLI / Báo cáo & Demo |
+| 1   | Thành viên A | Leader / Backend & Crypto |
+| 2   | Thành viên B | Backend - Xử lý hợp đồng & Server |
+| 3   | Thành viên C | Frontend / CLI / Báo cáo & Demo |
 
-> Chi tiết phân công công việc xem tại [prod/assignment.md](prod/assignment.md)
+> Chi tiết phân công xem tại [`prod/assignment.md`](prod/assignment.md)
 
 ---
 
 ## 📝 Giấy phép
 
-Dự án học tập – FIT4012, Học kỳ ... năm học 20...
+Dự án học tập – FIT4012, Nhập môn An toàn Bảo mật Thông tin
